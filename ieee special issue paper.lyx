@@ -72,10 +72,29 @@ Terry Stewart and Chris Eliasmith
 \end_layout
 
 \begin_layout Abstract
-A review/tutorial paper on the neural engineering framework and how it has
- been used to build a 2.5-million spiking neuron model of the functioning
- brain (known as Spaun) that autonomously performs eight different cognitive
- tasks.
+In this paper we review the theoretical and software tools used to Spaun,
+ currently the largest functional brain model.
+ Specifically, we discuss the Neural Engineering Framework (NEF), a mathematical
+ theory that provides methods for systematically generating biologically
+ plausible spiking networks to implement nonlinear and linear dynamical
+ systems.
+ NEF models can be used to perform a wide variety of information processing
+ functions.
+ We then discuss the Semantic Pointer Architecture (SPA), which is a proposal
+ regarding some aspects of the organization, function, and representational
+ resources used in the mammalian brain.
+ We conclude by discussing Spaun, which is an example model that uses the
+ SPA and is implemented using the NEF.
+ Spaun performs eight different perceptual, motor, and cognitive tasks using
+ 2.5 million spiking neurons.
+ Spaun does not change between tasks, while capturing a wide variety of
+ behavioral and neural data.
+ Throughout we discuss the software tool Nengo, which allows for the synthesis
+ and simulation of neural models efficiently on the scale of Spaun, and
+ provides support for constructing models using the NEF and SPA.
+ We propose that the NEF/SPA/Nengo combination provides a useful tool set
+ for those wishing to explore large-scale neural computation and its connection
+ to function and thus behavior.
 \end_layout
 
 \begin_layout Section
@@ -110,7 +129,7 @@ In this paper, we describe the methodology and tools we have developed for
 The theoretical frameworks and software tools we describe in this paper
  are general-purpose, in that they are suitable for the creation of further
  biologically realistic spiking neuron models capable of cognitive processing.
- We start in section 2 with the Neural Engineering Framework, a 
+ We begin in section 2 with the Neural Engineering Framework, a 
 \begin_inset Quotes eld
 \end_inset
 
@@ -122,11 +141,19 @@ neural compiler
  and converting it into a spiking neural network.
  In section 3 we describe the Semantic Pointer Architecture, a method for
  taking cognitive algorithms and converting them into a vector-based description
- consistent with timing and neurobiology.
- Sections 2 and 3 both end with appropriate descriptions of our open-source
- software that implements these ideas.
- Finally, in section 4 we show how these ideas work in concert to produce
- Spaun.
+ consistent with mammalian neurobiological constraints.
+ Sections 2 and 3 both end with descriptions of our open-source software
+ that implements these ideas, Nengo.
+ Finally, in section 4 we show how these tools work can be used in concert
+ to produce Spaun.
+ Material throughout this paper is adapted from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2013,Eliasmith2012b,rasmussen2013modeling"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
@@ -163,11 +190,11 @@ neural compiler
 ed in biologically realistic ways.
  Importantly, the high-level algorithms must be expressed in terms of vectors
  and functions on those vectors (including ordinary differential equations).
- The resulting neural network approximate the desired functions, and the
+ The resulting neural networks approximate the desired functions, and the
  accuracy of this approximation can be made arbitrarily small by increasing
  the number of neurons.
  This makes the NEF ideal for expressing algorithms typically seen in domains
- such as control theory.
+ such as control theory, and determining their relevance to brain function.
 \end_layout
 
 \begin_layout Standard
@@ -241,8 +268,10 @@ key "Eliasmith2003f,Eliasmith2005p,stewart2012b,Eliasmith2012b"
 
 \end_inset
 
-, and the rest of this section serves an engineering-oriented summary of
- the three main principles within the NEF, plus our software tool Nengo.
+.
+ The rest of this section serves an engineering-oriented summary of the
+ three main principles within the NEF, plus our software tool Nengo.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -258,7 +287,7 @@ The core of the NEF is the idea that groups of neurons represent vectors,
 \end_layout
 
 \begin_layout Standard
-We start with the standard notion of a 
+We start with the notion of a 
 \begin_inset Quotes eld
 \end_inset
 
@@ -267,8 +296,8 @@ preferred direction vector
 \end_inset
 
 .
- It is well known that in the real brain, neurons will have some particular
- stimulus (or response) for which they will fire most quickly.
+ In the brain many neurons have a particular stimulus (or response) for
+ which they will fire most quickly.
  As the stimulus (or response) changes to become less similar to the preferred
  vector, the neuron will fire less quickly.
  This was originally identified in the motor system 
@@ -314,8 +343,15 @@ key "Stewart2011a"
 For the NEF, we generalize this idea to all neural populations.
  In particular, we quantify this by stating that the total current going
  into a neuron will be proportional to the dot product of the vector to
- be represented and the preferred direction vector for the neuron (plus
- a constant bias term).
+ be represented, 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+, and the preferred direction vector for the neuron, 
+\begin_inset Formula $\mathbf{e}_{i}$
+\end_inset
+
+ (plus a constant bias term).
  The response of a neuron 
 \series bold
 
@@ -364,7 +400,7 @@ where
 \end_inset
 
  is a randomly chosen fixed background current.
- We use
+ We use 
 \begin_inset Formula $\mathbf{e}$
 \end_inset
 
@@ -372,7 +408,14 @@ where
 \shape italic
 encoder
 \shape default
- to indicate this is a transformation between spaces: 
+ to indicate that (
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:enc"
+
+\end_inset
+
+) captures a transformation between spaces: 
 \series bold
 
 \begin_inset Formula $\mathbf{x}$
@@ -385,19 +428,6 @@ encoder
 \end_inset
 
  of the neurons.
- Importantly, this works for any neuron model (including both spiking and
- non-spiking models) by adjusting the function 
-\begin_inset Formula $G$
-\end_inset
-
- (whose input is the total current flowing into the neuron).
- The NEF will work for any nonlinearity 
-\begin_inset Formula $G$
-\end_inset
-
-.
- For our research we generally use the standard leaky-integrate-and-fire
- (LIF) model, for reasons of computational efficiency.
  Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -405,8 +435,28 @@ reference "fig:encoding"
 
 \end_inset
 
- shows this encoding for the case where x is two-dimensional and the neural
- population consists of four neurons.
+ shows this encoding for the case where 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ is two-dimensional and the neural population consists of four neurons.
+ Importantly, the NEF applies to a large variety of neuron models (including
+ both spiking and non-spiking models) since it makes no commitment to a
+ specific function 
+\begin_inset Formula $G$
+\end_inset
+
+ (whose input is the total current flowing into the neuron).
+ The leaky-integrate-and-fire (LIF) model is a common choice, for reasons
+ of computational efficiency (and is used in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:encoding"
+
+\end_inset
+
+), but a wide variety of neural models work with the NEF.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -453,8 +503,7 @@ NEF encoding in two dimensions with four neurons.
  The preferred direction vectors of all four neurons is also shown.
  d) The firing rate tuning curves of all four neurons.
  Gains and biases are randomly chosen.
- The script for generating elements of this figure is in the supplementary
- material (four_neurons.py).
+ 
 \end_layout
 
 \end_inset
@@ -468,8 +517,10 @@ NEF encoding in two dimensions with four neurons.
 \end_layout
 
 \begin_layout Standard
-Given an encoding operation, it is natural to define a decoding operation.
- For reasons that will be apparant in a moment, we use a 
+Given an encoding operation, it is natural to define a decoding operation,
+ in order to characterizing the information processing characteristics of
+ the system (in this case an ensemble of neurons).
+ For reasons that will be apparent in a moment, we use a 
 \shape italic
 linear
 \shape default
@@ -515,29 +566,16 @@ where
 \end_inset
 
  are the decoding vectors over which this error is minimized.
- We have shown that linear decoders and least-squares optimization are sufficien
-t to decode 95% [TODO: check this number] of the information available in
- 
-\begin_inset Formula $a$
-\end_inset
-
- about 
-\series bold
-
-\begin_inset Formula $\mathbf{x}$
-\end_inset
-
-
-\series default
- 
+ It has been shown that linear decoders are sufficient to decode ~95% of
+ the information available in a spike train generated by a stimulus 
 \begin_inset CommandInset citation
 LatexCommand cite
-key "Eliasmith2003m"
+key "Rieke1997b"
 
 \end_inset
 
 .
- The decoding process is depicted in Figure 
+ The NEF decoding process is depicted in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:NEF-decoding"
@@ -546,7 +584,15 @@ reference "fig:NEF-decoding"
 
 , where the optimal linear decoders have been found and used for twenty
  neurons.
- 
+ Temporal decoding is also linear, and is performed using the post-synaptic
+ current-based filters (see section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Principle-3--"
+
+\end_inset
+
+ for further discussion).
 \end_layout
 
 \begin_layout Standard
@@ -602,8 +648,7 @@ values, while noisy lines represent the estimate
  to generate the decodings shown in a) and b).
  Encoding vectors are randomly chosen from an uniform distribution around
  the unit circle, and gains and biases are also randomly chosen, as in Spaun.
- The script for generating elements of this figure is in the supplementary
- material (twenty_neurons.py).
+ 
 \end_layout
 
 \end_inset
@@ -624,13 +669,14 @@ While decoders are useful for visualizing the information encoded within
  optimize over the entire space of all connection weights, we instead solve
  the simpler problem of optimizing over the space of decoders, and then
  use that result to solve for the connection weights.
- Importantly, given neural activity with preferred direction vectors, there
- is no loss in using this smaller space.
+ Importantly, given the characterization of neural activity with preferred
+ direction vectors, there is no difference between using this smaller space
+ and using the equivalent full connection matrix.
 \end_layout
 
 \begin_layout Standard
-If a connection between neural groups is meant to compute the identity function
- 
+For example, if a connection between neural groups is meant to compute the
+ identity function 
 \begin_inset Formula $\mathbf{y}=\mathbf{x}$
 \end_inset
 
@@ -660,7 +706,7 @@ where
 \end_inset
 
  indexes the neurons in B.
- This is shown in Figure 
+ Behavior of this network is shown in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Using-NEF-weights"
@@ -674,7 +720,7 @@ a.
 \begin_layout Standard
 While the least-squares method for optimization we use here is not biologically
  plausible on its own, we have also shown that biologically realistic learning
- rules will also converge on an equivalent solution 
+ rules will converge on a similar solution 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "MacNeil2011a"
@@ -720,8 +766,7 @@ Using NEF derived connection weights to compute functions between neural
  These simulations are 1.2s long.
  Both populations have 20 neurons, with randomly chosen encoders, gains
  and biases.
- The script for generating elements of this figure is in the supplementary
- material (vector_square.py).
+ 
 \end_layout
 
 \end_inset
@@ -844,6 +889,12 @@ b shows the computation of the element-wise square (
 \end_layout
 
 \begin_layout Subsection
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Principle-3--"
+
+\end_inset
+
 Principle 3 - Dynamics
 \end_layout
 
@@ -856,7 +907,7 @@ While the first two principles are sufficient to build neural approximations
 , the NEF also provides a method for computing functions of the form 
 \series bold
 
-\begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}f(\mathbf{x})+g(\mathbf{u})$
+\begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}f(\mathbf{x},\mathbf{u})$
 \end_inset
 
 
@@ -875,15 +926,33 @@ While the first two principles are sufficient to build neural approximations
 \begin_inset Formula $h(t)=e^{-t/\tau}$
 \end_inset
 
-, where is the time constant of the neurotransmitter used.
- This time constant varies throughout the brain, from 2ms (AMPA [TODO: reference
-]) to 100ms (NMDA [TODO: reference]).
+, where 
+\begin_inset Formula $\tau$
+\end_inset
+
+ is the time constant of the neurotransmitter used.
+ This time constant varies throughout the brain, e.g., from 2-5 ms (AMPA;
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "jonas1993quantal"
+
+\end_inset
+
+) and ~100ms (NMDA; 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "sah1990properties"
+
+\end_inset
+
+).
  The effect of this filter is that instead of a connection computing the
- desired function 
+ function 
 \begin_inset Formula $\mathbf{y}(t)=f(\mathbf{x}(t))$
 \end_inset
 
- it will instead compute 
+ it will compute 
 \begin_inset Formula $\mathbf{y}(t)=f(\mathbf{x}(t))*h(t)$
 \end_inset
 
@@ -895,33 +964,32 @@ While the first two principles are sufficient to build neural approximations
 \end_layout
 
 \begin_layout Standard
-We can exploit this intrinsic dynamics of a neural connection to compute
- other dynamics by adding a connection from a neural population back to
- itself.
- This recurrent connection allows the network to control its own dynamics.
+We can use the intrinsic dynamics of a neural connection to compute other
+ dynamics by adding a connection from a neural population back to itself.
+ This recurrent connection determines the network dynamics.
  We have shown 
 \begin_inset CommandInset citation
 LatexCommand cite
-key "Eliasmith2003m"
+key "Eliasmith2003m,Eliasmith2013"
 
 \end_inset
 
  that neurons can approximate 
 \series bold
 
-\begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}f(\mathbf{x})+g(\mathbf{u})$
+\begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}f(\mathbf{x},\mathbf{u})$
 \end_inset
 
 
 \series default
- by using the above method to find connection weights that compute this
- function for the feedback loop:
+ by using the previous two NEF principles to find connection weights that
+ compute this function:
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\tau f(\mathbf{x})+\mathbf{x}\label{eq:dyn-feedback}
+\tau f(\mathbf{x},\mathbf{u})+\mathbf{x}\label{eq:dyn-feedback}
 \end{equation}
 
 \end_inset
@@ -930,14 +998,49 @@ key "Eliasmith2003m"
 \end_layout
 
 \begin_layout Standard
-and this function for the input
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-\tau g(\mathbf{u})\label{eq:dyn-input}
-\end{equation}
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Lorenz attractor and oscillator.eps
+	width 7in
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Two-dynamical-systems"
+
+\end_inset
+
+Two dynamical systems implemented with the NEF.
+ a) A simple linear harmonic oscillator.
+ b) A nonlinear dynamical system, specifically a chaotic Lorenz attractor.
+ Both are recurrently coupled populations of neurons, and the NEF is used
+ to compute the coupling connections to implement the two different dynamical
+ systems.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
 
 \end_inset
 
@@ -945,8 +1048,15 @@ and this function for the input
 \end_layout
 
 \begin_layout Standard
-Figure [TODO]a shows a single neural population with a recurrent feedback
- connection computing the standard linear oscillator 
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Two-dynamical-systems"
+
+\end_inset
+
+a shows a single neural population with a recurrent feedback connection
+ computing the standard linear oscillator 
 \series bold
 
 \begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}[-x_{2},-x_{1}]$
@@ -955,8 +1065,14 @@ Figure [TODO]a shows a single neural population with a recurrent feedback
 
 \series default
 .
- This same method works for nonlinear functions as well; in Figure [TODO]b
- we show the classic Lorenz attractor 
+ This same method works for nonlinear functions as well; in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Two-dynamical-systems"
+
+\end_inset
+
+b we show the classic Lorenz attractor 
 \series bold
 
 \begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}[10(x_{2}-x_{1}),x_{1}(28-x_{3})-x_{2},x_{1}x_{2}-\frac{8}{3}x_{3}]$
@@ -966,8 +1082,8 @@ Figure [TODO]a shows a single neural population with a recurrent feedback
 \series default
 .
  As a result of this process, the NEF allows for the construction of neural
- models that correspond to a very large family of functions, including modern
- control theory and dynamic systems theory.
+ models that correspond to a very large family of functions, including those
+ typically employed by modern control theory and dynamic systems theory.
 \end_layout
 
 \begin_layout Subsection
@@ -975,15 +1091,21 @@ Neural Engineering Objects (Nengo)
 \end_layout
 
 \begin_layout Standard
-This above mathematical framework is sufficient to implement all of our
- neural models.
- However, to simplify this process we have developed an open-source software
- package known as Nengo (Neural ENGineering Objects) that creates and runs
- these models.
- Models can be created using a drag-and-drop interface or specified using
- the Python scripting language.
+These three principles are sufficient to implement all of our neural models.
+ However, to simplify the process of constructing these models, we have
+ developed an open-source software package known as Nengo (Neural ENGineering
+ Objects) that creates and runs these models.
+ Models can be created in Nengo using a drag-and-drop graphical user interface
+ or specified using the Python scripting language.
  Full details and documentation can be found online at http://nengo.ca, and
- in other publications [TODO: ref to frontiers paper].
+ in other publications 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Stewart2009l"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -997,90 +1119,57 @@ reference "fig:Using-NEF-weights"
 a, we use the following script:
 \end_layout
 
-\begin_layout Standard
-[TODO: format these nicely.
- No idea how.
- Maybe be just loading them into a nice highlighting text editor and taking
- a screen shot?]
-\end_layout
-
-\begin_layout Standard
+\begin_layout LyX-Code
 net = nef.Network('Identity Function')
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 net.make('A', neurons=20, dimensions=1) 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 net.make('B', neurons=20, dimensions=1)
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 net.connect('A', 'B') 
 \end_layout
 
 \begin_layout Standard
-For Figure we need to compute the element-wise square.
- This is specified as a standard Python function as follows
+For Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Using-NEF-weights"
+
+\end_inset
+
+b we need to compute the element-wise square.
+ This is specified in a Python function as follows:
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 net = nef.Network('Identity Function')
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 net.make('A', neurons=20, dimensions=1) 
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 net.make('B', neurons=20, dimensions=1)
 \end_layout
 
-\begin_layout Standard
+\begin_layout LyX-Code
 def square(x):
 \end_layout
 
-\begin_layout Standard
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\begin_inset space \thinspace{}
-\end_inset
-
-
-\begin_inset space \thinspace{}
-\end_inset
-
+\begin_deeper
+\begin_layout LyX-Code
 return x[0]*x[0], x[1]*x[1] 
 \end_layout
 
-\begin_layout Standard
+\end_deeper
+\begin_layout LyX-Code
 net.connect('A', 'B', func=square) 
 \end_layout
 
@@ -1094,10 +1183,18 @@ Nengo also provides an interactive interface for displaying the results
  of a simulation while it is running, allowing for real-time interaction
  with a running model.
  This interface allows the generated plots to be exported, and was used
- to produce the figures in this paper.
+ to produce the previous figures in this paper (i.e.
+ all figures in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:The-Neural-Engineering"
+
+\end_inset
+
+).
  Furthermore, Nengo scales up to our largest models: the 2.5 million neuron
- Spaun model entirely run by Nengo, and can be downloaded at http://models.nengo.c
-a/spaun.
+ Spaun model is run in Nengo, and can be downloaded at http://models.nengo.ca/spau
+n.
 \end_layout
 
 \begin_layout Section
@@ -1107,8 +1204,9 @@ The Semantic Pointer Architecture (SPA)
 \begin_layout Standard
 While the Neural Engineering Framework specifies how to convert vector-based
  algorithms into spiking neural networks, a separate theory is needed to
- express cognition in terms of vectors.
- Our approach is called the Semantic Pointer Architecture (SPA).
+ describe cognitive function in terms of vector-based algorithms.
+ Our approach to this problem is called the Semantic Pointer Architecture
+ (SPA).
  While a full description can be found elsewhere 
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -1116,13 +1214,14 @@ key "Eliasmith2013"
 
 \end_inset
 
-, the core idea is to define a cognitive architecture: a set of basic modules,
- each of which can be defined in terms of vectors, and which can work together
- to implement cognitive algorithms.
- This requires a core definition of how structured representations (like
- sentences or symbol trees) can be represented using vectors and what basic
- operations need to be performed on those vectors to achieve memory, planning,
- pattern matching, and so on.
+, the core approach is to suggest a cognitive architecture: a set of basic
+ functional components, each of which can be defined in terms of vectors,
+ and an organization of those components that can work together to implement
+ cognitive algorithms.
+ Addressing cognitive behavior also requires hypotheses as to how structured
+ representations (like sentences) can be represented using vectors and what
+ basic operations need to be performed on those vectors to achieve memory,
+ planning, pattern matching, and so on.
  Furthermore, a control system is needed to selectively route information
  between these structures as appropriate to the current situation.
 \end_layout
@@ -1138,8 +1237,8 @@ reference "fig:SPA-subsystem-interface"
 
 .
  This core structure can be used for vision, audition, motor control, working
- memory, and even pattern completion.
- The details, of course, will vary, as discussed below.
+ memory, pattern completion, and so on.
+ The details, of course, will vary by function, as discussed below.
 \end_layout
 
 \begin_layout Standard
@@ -1151,8 +1250,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Documents/!Phil Pubs/biological cognition/figures/SPA-subsystem-interface.eps
-	width 10cm
+	filename SPA-subsystem-interface.eps
+	width 3.5in
 
 \end_inset
 
@@ -1218,8 +1317,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Documents/!Phil Pubs/biological cognition/figures/the-entire-SPA.eps
-	width 10cm
+	filename the-entire-SPA.eps
+	width 3.5in
 
 \end_inset
 
@@ -1621,8 +1720,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Documents/!Phil Pubs/biological cognition/figures/convolution-network.eps
-	width 100col%
+	filename convolution-network.eps
+	width 3.5in
 
 \end_inset
 
@@ -1675,8 +1774,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Documents/!Phil Pubs/biological cognition/figures/Binding-vectors.eps
-	width 100text%
+	filename Binding-vectors.eps
+	width 3.5in
 
 \end_inset
 
@@ -3118,21 +3217,10 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-centering
-\end_layout
-
-\end_inset
-
+\align center
  
 \begin_inset Graphics
-	filename spaunarchitecture.pdf
+	filename spaunarchitecture.eps
 	width 3.5in
 
 \end_inset
@@ -3218,21 +3306,11 @@ sideways false
 status open
 
 \begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-centering
-\end_layout
-
-\end_inset
-
+\align center
  
 \begin_inset Graphics
-	filename spikeplot_modified.pdf
+	filename spikeplot_modified.eps
+	lyxscale 25
 	width 3.5in
 
 \end_inset
@@ -3475,7 +3553,7 @@ options "plain"
 
 \end_inset
 
-
+
 \end_layout
 
 \end_body
