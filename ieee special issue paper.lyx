@@ -1163,12 +1163,10 @@ net.make('B', neurons=20, dimensions=1)
 def square(x):
 \end_layout
 
-\begin_deeper
 \begin_layout LyX-Code
-return x[0]*x[0], x[1]*x[1] 
+    return x[0]*x[0], x[1]*x[1]
 \end_layout
 
-\end_deeper
 \begin_layout LyX-Code
 net.connect('A', 'B', func=square) 
 \end_layout
@@ -1874,11 +1872,6 @@ To unbind vectors (i.e.
 \end_layout
 
 \begin_layout Standard
-[TODO: add comments about size of represenation -- human language in ~40,000
- neurons?]
-\end_layout
-
-\begin_layout Standard
 [TODO: note that this can be used for pattern matching -- combining advantages
  of symbol manipulations and vectors -- Raven's Matrices]
 \end_layout
@@ -2035,8 +2028,8 @@ key "Stewart2010a"
 \end_layout
 
 \begin_layout Standard
-To execute these desired actions, we turn to the well-known cortex-basal
- ganglia-thalamus loop through the brain (see figure 
+To execute these desired actions, we turn to the well-known cortex/basal
+ ganglia/thalamus loop through the brain (see figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:cortex_bg_thalamus"
@@ -2082,7 +2075,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Documents/!Phil Pubs/biological cognition/figures/cortex_bg_thalamus.eps
+	filename C:/Documents/!Phil Pubs/biological cognition/figures/cortex_bg_thalamus.eps
 	width 100text%
 
 \end_inset
@@ -2154,50 +2147,79 @@ production system
  and so on).
  Importantly, psychologists have consistently found that the human brain
  requires approximately 50 milliseconds to select and execute an action.
+ This same timing is found in our neural implementation [reference], where
+ the timing is due to the neurotransmitter time constants found in the cortex,
+ basal gangla, and thalamus.
 \end_layout
 
 \begin_layout Standard
-In our case, we generalize the IF portion of a rule to be a utility calculation,
- and the THEN portion of the rule to be a routing control signal.
- When we build neural models this way, we find that our model of this system
- requires exactly the right amount of time (50 milliseconds) to perform
- this process, due to the time constants of the neurotransmitters involved
- [reference].
-\end_layout
-
-\begin_layout Standard
-As an example, consider a simple application of this loop to a network that
- traverses the alphabet.
- In this network there is a mapping of the form
+To form this implementation, we generalize the IF portion of a rule to be
+ a utility calculation, and the THEN portion of the rule to be a routing
+ control signal.
+ As an example, the following rule says that if the visual system currently
+ contains a letter (i.e.
+ any of the semantic pointers for A, B, C, D, and so on), then remember
+ that letter.
+ Note that even if the vector stored in the visual field is not exactly
+ one of these letters, this rule will still have a high utility and will
+ be chosen by the basal ganglia (assuming no other rule has a higher utility).
 \end_layout
 
 \begin_layout Quotation
-IF visual cortex contains 
-\begin_inset Formula $\mathbf{letter}+?$
+UTILITY: 
+\begin_inset Formula $\mathbf{visual}\cdot(\mathbf{A+B+C+D+...)}$
 \end_inset
 
 
 \end_layout
 
 \begin_layout Quotation
-THEN copy visual cortex to working memory.
+ROUTING: 
+\begin_inset Formula $\mathbf{visual\rightarrow memory}$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-The 
+We can also add other rules; for instance, rules to traverse the alphabet.
+ The easiest way to implement this would be to add 25 rules of the same
+ form as the following, which says 
 \begin_inset Quotes eld
 \end_inset
 
-?
+if the item in memory is G, then replace it with H
 \begin_inset Quotes erd
 \end_inset
 
- stands for any valid letter.
- So when this rule is activated, the contents of visual cortex will be loaded
- into working memory, which is monitored by the same rules as before.
- Now, only when this state is available in visual cortex will it have any
- effect on the activity of the model.
- 
+:
+\end_layout
+
+\begin_layout Quotation
+UTILITY: 
+\begin_inset Formula $\mathbf{memory}\cdot\mathbf{G}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+ROUTING: 
+\begin_inset Formula $\mathbf{H\rightarrow memory}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The result of this system can be seen in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:alphabet_routing"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -2209,7 +2231,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Documents/!Phil Pubs/biological cognition/figures/alphabet_routing.eps
+	filename C:/Documents/!Phil Pubs/biological cognition/figures/alphabet_routing.eps
 	width 12cm
 
 \end_inset
@@ -2228,27 +2250,28 @@ name "fig:alphabet_routing"
 \end_inset
 
 The consequences of routing information in a simple sequence of actions.
- The contents of working memory are shown on top.
- The similarity of vocabulary vectors is found with respect to the decoded
- value of the working memory ensemble.
- The lower half of the graph shows spiking output from GPi indicating the
- action to perform.
+ The contents of working memory are shown on top, and is indicated by decoding
+ spiking activity from the memory population of neurons (via Equation
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:dec"
+
+\end_inset
+
+) and comparing that decoded value to the ideal vector for each letter (via
+ a dot product).
+ The lower half of the graph shows spiking output from the basal ganglia
+ indicating the action to perform.
  The 
-\begin_inset Formula $\mathbf{letter}+?$
+\begin_inset Formula $\mathbf{visual}$
 \end_inset
 
  action takes information from visual cortex and routes it to working memory
  (in this case 
-\begin_inset Formula $\mathbf{letter}+\mathbf{F}$
+\begin_inset Formula $\mathbf{F}$
 \end_inset
 
 ).
- The representation of 
-\series bold
-F
-\series default
- stays constantly on the input throughout this run.
- In this case, it does not interfere with the sequence because of the routing.
 \end_layout
 
 \end_inset
@@ -2262,62 +2285,10 @@ F
 \end_layout
 
 \begin_layout Standard
-Crucially, this 
-\begin_inset Quotes eld
-\end_inset
-
-copy visual cortex
-\begin_inset Quotes erd
-\end_inset
-
- command is the specification of a control state that consists in gating
- the information between visual inputs and working memory (unlike rules
- that only update representational states in the previous model).
- This demonstrates a qualitatively new kind of flexibility that is available
- once we allow actions to set control states.
- In particular, it shows that not only the content of cortical areas, but
- also the communication between such areas, can be controlled by our cognitive
- actions.
-\end_layout
-
-\begin_layout Standard
-There is a second interesting consequence of being able to specify control
- states.
- Notice that the specified rule applies to every letter, not just the one
- that happens to be in the visual input at the moment.
- This allows for rules to be defined at a more general category level than
- in the previous model.
- This demonstrates an improvement in the flexibility of the system, in so
- far as it can employ instance specific, or category specific rules.
- 
-\end_layout
-
-\begin_layout Standard
-In fact, routing can provide yet more flexibility.
- That is, it can do more than simply gate information flow between different
- cortical areas.
- If we allow our gating signal to take on values 
-\emph on
-between
-\emph default
- 0 and 1, we can use the same gating circuits to bind and unbind semantic
- pointers, thus not only routing, but also 
-\emph on
-processing
-\emph default
- signals.
- Essentially, we can give the gating signals useful content.
-\end_layout
-
-\begin_layout Standard
-Introducing this simple extension means that the same network structure
- as above can be used to perform syntactic processing.
- So, for example, we can implement a dynamic, controlled version of a question-a
-nswering network.
- In this network, we define semantic pointers that allow us to present simple
- language-like statements and then subsequently ask questions about those
- statements.
- So, for example, we might present the statement
+We can also introduce routing that manipulates vectors as they are passed
+ from one component to another.
+ This is vital for performing manipulations on these structured representations.
+ For example, we can perform simple question answering by starting with
 \end_layout
 
 \begin_layout Quotation
@@ -2328,8 +2299,8 @@ nswering network.
 \end_layout
 
 \begin_layout Standard
-to indicate that a blue circle and red square are in the visual field.
- We might then ask a question in the form
+to indicate that there is a blue circle and a red square.
+ If we then present the input
 \end_layout
 
 \begin_layout Quotation
@@ -2340,88 +2311,115 @@ to indicate that a blue circle and red square are in the visual field.
 \end_layout
 
 \begin_layout Standard
-which would be asking: 
-\begin_inset Quotes eld
-\end_inset
-
-What is red?
-\begin_inset Quotes erd
-\end_inset
-
- 
-\end_layout
-
-\begin_layout Standard
-To process this input, we can define the following rules
-\end_layout
-
-\begin_layout Quotation
-IF the visual cortex contains 
-\begin_inset Formula $\mathbf{statement}+?$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Quotation
-THEN copy visual cortex to working memory
-\end_layout
-
-\begin_layout Standard
-which simply gates the visual information to working memory as before.
- We can also define a rule that performs syntactic processing while gating
-\end_layout
-
-\begin_layout Quotation
-IF visual cortex contains 
-\begin_inset Formula $\mathbf{question}+?$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Quotation
-THEN apply visual cortex to the contents of working memory.
-\end_layout
-
-\begin_layout Standard
-Here, 
-\begin_inset Quotes eld
-\end_inset
-
-apply
-\begin_inset Quotes erd
-\end_inset
-
- indicates that the contents of visual cortex are to be convolved with the
- contents of working memory, and the result is stored in the network's output.
- More precisely, the contents of visual cortex are moved to a visual working
- memory store (to allow changes in the stimulus during question answering,
- as above), and the approximate inverse (a linear operation) of visual working
- memory is convolved with working memory to determine what is bound to the
- question.
- This result is then stored in an output working memory to allow it to drive
- a response.
- 
-\end_layout
-
-\begin_layout Standard
-The results of this model answering two different questions from the same
- remembered statement are given in figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Answering-questions"
-
+we want the system to respond with the vector for 
+\begin_inset Formula $\mathbf{square}$
 \end_inset
 
 .
- The circuit implementing these two generic rules can store any statements
- and answer any questions provided in this format.
- Notably, this same model architecture can reproduce all of the sequencing
- examples presented to this point.
- This means that the introduction of these more flexible control structures
- does not adversely impact any aspects of the simpler models' performance
- as described above.
+ This is the most basic form of question answering, in that this simple
+ example does not consider the harder problem of sequentially presenting
+ each word individually and building up these representations.
+ For a description of the rules and processing units needed to perform this,
+ see [refs: Xuan's paper and my paper from CogSci 2013].
+\end_layout
+
+\begin_layout Standard
+This basic case, however, can be implemented with two basal ganglia rules.
+ The first handles the initial statement:
+\end_layout
+
+\begin_layout Quotation
+UTILITY:
+\begin_inset Formula $\mathbf{visual\cdot statement}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+ROUTING: 
+\begin_inset Formula $\mathbf{visual\rightarrow memory}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and the second handles the question, indicating that the question should
+ be combined with the memory to produce an answer
+\end_layout
+
+\begin_layout Quotation
+UTILITY:
+\begin_inset Formula $\mathbf{visual\cdot question}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+ROUTING:
+\begin_inset Formula $\mathbf{memory\circledast visual'\rightarrow output}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These two rules will handle any question answering task of this form.
+ If we provide the network with the input described above, the first rule
+ will cause
+\begin_inset Formula $\mathbf{\mathbf{statement}+\mathbf{blue}\circledast\mathbf{circle}+\mathbf{red}\circledast square}$
+\end_inset
+
+ to be stored in memory.
+ When the question appears, the second rule will cause that value, bound
+ with the inverse of the question, to be output.
+ This gives the following result:
+\end_layout
+
+\begin_layout Quotation
+\begin_inset Formula $(\mathbf{statement}+\mathbf{blue}\circledast\mathbf{circle}+\mathbf{red}\circledast\mathbf{square})\circledast(\mathbf{\mathbf{question}+red})\mathbf{'}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+\begin_inset Formula $=(\mathbf{statement}+\mathbf{blue}\circledast\mathbf{circle}+\mathbf{red}\circledast\mathbf{square})\circledast(\mathbf{\mathbf{question'}+red'})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+\begin_inset Formula $=\mathbf{red}\circledast\mathbf{square}\circledast\mathbf{red'+}\mathbf{red}\circledast\mathbf{square}\circledast\mathbf{question'+...}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+\begin_inset Formula $\approx\mathbf{square}\mathbf{+}\mathbf{red}\circledast\mathbf{square}\circledast\mathbf{question'+...}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Since the binding operation produces vectors that are highly dissimilar
+ to the inputs, the extra terms will all be dissimilar to .
+ Therefore, the resulting output vector will be similar to square, in the
+ sense that it will have a large dot product with square.
+ We have shown that this approximation is sufficient to accurately store
+ and recall up to eight items, given a standard adult vocabulary size of
+ 60,000 items [reference].
+ To achieve this, we need 512-dimensional vectors.
+ Interestingly, we find that the neural models generated by the NEF to implement
+ circular convolution on 512-dimensional vectors are exactly the right size
+ for the connectivity found in human cortex [reference].
+ This gives a potential explanation for observed limits on human cognition,
+ such as the limited number of items stored in working memory.
  
 \end_layout
 
@@ -2434,7 +2432,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Documents/!Phil Pubs/biological cognition/figures/Answering-questions.eps
+	filename C:/Documents/!Phil Pubs/biological cognition/figures/Answering-questions.eps
 	width 12cm
 
 \end_inset
@@ -2478,21 +2476,18 @@ key "Stewart2010b"
 \end_layout
 
 \begin_layout Standard
-In addition, we can be confident that this control circuit will not adversely
- affect the scaling of the SPA.
- Only about 100 neurons need to be added for each additional rule in the
- basal ganglia.
- Of those, about 50 need to be added to striatum, which contains about 55
- million neurons 
+Finally, we note that the 55 million neurons 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Beckmann1997"
 
 \end_inset
 
-, 95% of which are input neurons.
- So, about one million rules can be encoded into a scaled-up version of
- this model.
+ found in the input nucleous of the basal ganglia gives an upper bound of
+ around one million rules for human cognition.
+ Determining what these rules may be is an outstanding research question,
+ but the action selection system defined here does continue to function
+ as expected when scaled up that far.
 \end_layout
 
 \begin_layout Subsection
@@ -2777,7 +2772,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Documents/!Phil Pubs/biological cognition/figures/STDP-learning-rule.eps
+	filename C:/Documents/!Phil Pubs/biological cognition/figures/STDP-learning-rule.eps
 	width 3.5in
 
 \end_inset
@@ -2922,7 +2917,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Documents/!Phil Pubs/biological cognition/figures/stdp-network-structure.eps
+	filename C:/Documents/!Phil Pubs/biological cognition/figures/stdp-network-structure.eps
 	width 3.5in
 
 \end_inset
@@ -3055,7 +3050,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename /Documents/!Phil Pubs/biological cognition/figures/learn-convolve-3D.eps
+	filename C:/Documents/!Phil Pubs/biological cognition/figures/learn-convolve-3D.eps
 	width 2.5in
 
 \end_inset
@@ -3553,7 +3548,7 @@ options "plain"
 
 \end_inset
 
-
+
 \end_layout
 
 \end_body
