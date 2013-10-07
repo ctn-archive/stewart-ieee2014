@@ -2715,8 +2715,137 @@ n channel between the input and the output.
 SPA in Nengo
 \end_layout
 
-\begin_layout Itemize
-spa module introduction
+\begin_layout Standard
+All of the SPA components discussed above can be built in Nengo using the
+ scripting system.
+ However, to simplify the creation of these cognitive models, we have developed
+ an additional library that assists in the creation of systems based on
+ this cortex, basal ganglia, and thalamus loop.
+ 
+\end_layout
+
+\begin_layout Standard
+Individual processing modules are specified using the standard NEF libraries.
+ To connect them, however, we use a custom syntax for defining the rules
+ that should be used to route information between areas.
+ For example, the following code creates the question answering model from
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Answering-questions"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout LyX-Code
+class Rules:
+\end_layout
+
+\begin_layout LyX-Code
+    def store(visual='STATEMENT'):
+\end_layout
+
+\begin_layout LyX-Code
+        set(memory=visual)
+\end_layout
+
+\begin_layout LyX-Code
+    def recall(visual='QUESTION'):
+\end_layout
+
+\begin_layout LyX-Code
+        set(output=memory*~visual)
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+class QuestionAnsweringModel(spa.SPA):
+\end_layout
+
+\begin_layout LyX-Code
+    dimensions = 512                   
+\end_layout
+
+\begin_layout LyX-Code
+    visual = spa.Buffer(feedback=0)     
+\end_layout
+
+\begin_layout LyX-Code
+    output = spa.Buffer(feedback=0)
+\end_layout
+
+\begin_layout LyX-Code
+    memory = spa.Buffer(feedback=1)             
+\end_layout
+
+\begin_layout LyX-Code
+    
+\end_layout
+
+\begin_layout LyX-Code
+    bg = spa.BasalGanglia(Rules)
+\end_layout
+
+\begin_layout LyX-Code
+    thalamus = spa.Thalamus(bg)
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+net = nef.Network('Question Answering')
+\end_layout
+
+\begin_layout LyX-Code
+model = QuestionAnsweringModel(net)
+\end_layout
+
+\begin_layout Standard
+In this model, the initial Rules specify the two routing rules discussed
+ above.
+ The second part of the code describes the cortical structure of the system.
+ Here, there are three 
+\begin_inset Quotes eld
+\end_inset
+
+Buffers
+\begin_inset Quotes erd
+\end_inset
+
+, which are simple neural ensembles that can store one vector.
+ In this case, the number of dimensions for that vector is set to 512.
+ The feedback argument specifies whether or not these neural ensemble use
+ the dynamics principle to store their own state.
+ When set to 0 there is no recurrence.
+ As noted in section 2.3, this means that if input is given to the visual
+ system it will decay very quickly, due to the short time constant of the
+ filter 
+\begin_inset Formula $h(t)=e^{-t/\tau}$
+\end_inset
+
+introduced by the post-synaptic current.
+ However, with feedback equal to 1, the dynamics principle is used to construct
+ an integrator (
+\series bold
+
+\begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}\mathbf{u}$
+\end_inset
+
+
+\series default
+).
+ This, ideally, would result in a system with an effectively infinite time
+ constant.
+ However, the neural approximation of the integrator will never be perfect
+ (with a finite number of neurons).
+ This means that memories will decay over time, as expected.
 \end_layout
 
 \begin_layout Section
