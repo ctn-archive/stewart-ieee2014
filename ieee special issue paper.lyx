@@ -2408,9 +2408,20 @@ These two rules will handle any question answering task of this form.
 
 \begin_layout Standard
 Since the binding operation produces vectors that are highly dissimilar
- to the inputs, the extra terms will all be dissimilar to .
- Therefore, the resulting output vector will be similar to square, in the
- sense that it will have a large dot product with square.
+ to the inputs, the extra terms will all be dissimilar to
+\begin_inset Formula $\mathbf{square}$
+\end_inset
+
+.
+ Therefore, the resulting output vector will be similar to 
+\begin_inset Formula $\mathbf{square}$
+\end_inset
+
+, in the sense that it will have a large dot product with 
+\begin_inset Formula $\mathbf{square}$
+\end_inset
+
+.
  We have shown that this approximation is sufficient to accurately store
  and recall up to eight items, given a standard adult vocabulary size of
  60,000 items [reference].
@@ -2501,206 +2512,58 @@ Learning
 \end_layout
 
 \begin_layout Standard
-The NEF methods are useful partly because they do not demand that learning
- be central to designing models.
- But, of course, this does not mean that learning is not an important aspect
- of our cognitive theories.
- So, in this section we consider not only how learning can be included in
- SPA-based models, but how our understanding of learning can be enhanced
- by adopting a method that allows for the direct construction of some networks.
- 
+The NEF allows very large-scale neural models to be built via optimization,
+ rather than through online learning, as is standard for neural network
+ research.
+ However, any complex cognitive system will also need to be able to adapt
+ based on its experiences.
+ To handle this, our approach is to use the NEF to generate the initial
+ connection weights of a model, but then also introduce a learning rule
+ on 
+\shape italic
+some
+\shape default
+ of those connections.
+ Importantly, this rule is not applied everywhere throughout the model;
+ as in the real brain, some connections are more maleable than others.
 \end_layout
 
 \begin_layout Standard
-It is difficult to specify what counts as a 
+We have developed a spike-timing dependent plasticity (STDP) learning rule
+ that is a more realistic version of the standard Hebbian 
 \begin_inset Quotes eld
 \end_inset
 
-biologically plausible
+neurons that fire together, wire together
 \begin_inset Quotes erd
 \end_inset
 
- learning rule, as there are many mechanisms of synaptic modification in
- the brain 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "Feldman2009,Caporale2008"
-
-\end_inset
-
-.
- However, the vast majority of characterizations of synaptic plasticity
- that claim to be biologically plausible still adhere to Donald Hebb's 
+ principle 
 \begin_inset CommandInset citation
 LatexCommand citeyearpar
 key "Hebb1949f"
 
 \end_inset
 
- suggestion that: 
-\begin_inset Quotes eld
-\end_inset
-
-When an axon of cell A is near enough to excite cell B and repeatedly or
- persistently takes part in firing it, some growth process or metabolic
- change takes place in one or both cells such that A's efficiency, as one
- of the cells firing B, is increased
-\begin_inset Quotes erd
-\end_inset
-
- (p.
- 62).
- Or, more pithily: 
-\begin_inset Quotes eld
-\end_inset
-
-Neurons that fire together, wire together.
-\begin_inset Quotes erd
-\end_inset
-
- Most importantly, this means that any modification of synaptic connection
- weights must be based on information directly available to the cell whose
- weight is changed (i.e., it must be based on presynaptic and postsynaptic
- activity alone).
- Unfortunately, most learning rules stop here.
- That is, they introduce variables that stand-in for pre- and postsynaptic
- activity (usually these are 
-\begin_inset Quotes eld
-\end_inset
-
-firing rates
-\begin_inset Quotes erd
-\end_inset
-
-), but they typically do not work with actual neural activity (i.e., temporal
- spiking patterns).
-\end_layout
-
-\begin_layout Standard
-This is problematic from a plausibility perspective because there is increasingl
-y strong evidence that the modification of synaptic strength can be highly
- dependent on the 
-\emph on
-timing
-\emph default
- of the pre- and postsynaptic spikes 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "Markram1997,Bi1998"
-
-\end_inset
-
 .
- But, rules that employ firing rates do not capture relative spike timing.
- Such spike-driven learning has become known as STDP (spike-timing dependent
- plasticity).
- STDP refers to the observation that, under certain circumstances, if a
- presynaptic spike occurs before a postsynaptic spike, there is an increase
- in the likelihood of the next presynaptic spike causing a postsynaptic
- spike.
- However, if the postsynaptic spike precedes the presynaptic spike, then
- there is a decrease in the likelihood of the next presynaptic spike causing
- a postsynaptic spike.
- Or, more succinctly, a presynaptic spike followed closely in time by a
- postsynaptic spike will potentiate a synapse, and the reverse timing depresses
- it.
- Ultimately, this can be thought of as a more precise statement of 
-\begin_inset Quotes eld
-\end_inset
-
-fire together, wire together.
-\begin_inset Quotes erd
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Interestingly, there is also recent evidence that it is not specifically
- postsynaptic 
-\emph on
-spikes
-\emph default
- themselves that drive this plasticity.
- Instead, other indicators of postsynaptic activity like synaptic potentials
- and dendritic calcium flux are much more important for generating synaptic
- plasticity 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "Hardie2009"
-
-\end_inset
-
-.
- Consequently, non-spiking activity of the cell may be a more appropriate
- measure of postsynaptic activity for learning rules.
-\end_layout
-
-\begin_layout Standard
-In addition, there has long been evidence that there are homeostatic mechanisms
- in individual neurons that are important for learning 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "Turrigiano2004"
-
-\end_inset
-
-.
- Intuitively, these mechanisms ensure that neurons do not increase their
- weights indefinitely: if two neurons firing together causes them to wire
- more strongly, there is no reason for them to stop increasing their connection
- strength.
- Homeostatic mechanisms have been suggested that ensure that this kind of
- synaptic saturation does not occur.
- Some have suggested that the total connection strength a neuron can have
- over all synapses is a constant.
- Others have suggested that neurons monitor their average firing rate and
- change connection strengths to ensure that this rate stays constant.
- Still others have suggested that a kind of 
-\begin_inset Quotes eld
-\end_inset
-
-plasticity threshold,
-\begin_inset Quotes erd
-\end_inset
-
- which changes depending on recent neuron activity and determines whether
- weights are positively or negatively increased for a given activity level,
- is the mechanism responsible 
+ It is a local rule, meaning that all the information needed to implement
+ it is available locally at a particular synapse, and it matches observed
+ adaptive timing effects in individual neurons [ref: new learning rule].
+ This learning rule combines the well-known homeostatic BCM rule 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Bienenstock1982y"
 
 \end_inset
 
-.
- It is still unclear what the sub-cellular details of many of these mechanisms
- might be, but their effects have been well-established experimentally.
-\end_layout
-
-\begin_layout Standard
-Our lab has recently devised a learning rule that incorporates many of these
- past insights, and is able to both reproduce the relevant physiological
- experiments and learn high-dimensional vector transformations (refs???).
- This rule is based on two past rules, the well-known BCM rule that characterize
-s a homeostatic mechanism 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "Bienenstock1982y"
-
-\end_inset
-
-, and a recently proposed spike-driven rule from my lab that learns using
- postsynaptic activity in combination with error information 
+ with an error-driven spiking rule 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "MacNeil2011a"
 
 \end_inset
 
-.
- This rule is well-described as a homeostatic, prescribed error sensitivity
- (hPES) rule.
+, making it a homeostatic, prescribed error sensitivity (hPES) rule.
 \end_layout
 
 \begin_layout Standard
@@ -2727,140 +2590,44 @@ key "Gershman2010"
 .
  Thus, hPES can be usefully employed in a biologically plausible network
  that can be characterized as representing and transforming a vector in
- spiking neurons -- precisely the kinds of networks we find in the SPA.
+ spiking neurons.
+ This is precisely the kinds of networks we find in the SPA.
  
 \end_layout
 
 \begin_layout Standard
-To demonstrate the biological plausibility of hPES, figure 
+We have shown that this rule can learn the connections needed to perform
+ arbitrary functions.
+ That is, instead of using the NEF equations to solve for connection weights,
+ it would also be possible to learn those connections using our hPES rule.
+ For example, Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "fig:Reproduction-of-STDP"
+reference "fig:stdp-network-structure"
 
 \end_inset
 
- shows that the rule reproduces both the timing and frequency results determined
- in STDP experiments.
- It is notable that it is not necessary to separately consider spike triplets
- in order to capture the frequency effects.
- Thus, the proposed rule is much simpler than that in 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "Pfister2006"
-
-\end_inset
-
-, while capturing the same experimental results\SpecialChar \@.
- This makes it clear that
- the rule is able to function appropriately in a spiking network, and has
- a sensitivity to spike timing that mimics our best current characterization
- of learning 
-\emph on
-in vivo
-\emph default
-.
- More than this, however, we would like to demonstrate that the rule can
- learn useful functions.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename C:/Documents/!Phil Pubs/biological cognition/figures/STDP-learning-rule.eps
-	width 3.5in
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Reproduction-of-STDP"
-
-\end_inset
-
-Reproduction of STDP timing and frequency results with the hPES rule.
- a) Spike timing effects using hPES.
- Simulated data points are closed circles.
- Exponential fits to these data points are solid black lines.
- Data from figure Bi & Poo ref??? is reproduced (open circles, dashed lines)
- for comparison.
- The simulated experiments capture the experimental data well, though are
- less noisy.
- In particular, the exponential fit (black lines) are very similar.
- b) Data (open circles, dashed lines) and simulations (closed circles, solid
- lines) for frequency dependent effects for STDP (data from 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "Kirkwood1996"
-
-\end_inset
-
- with permission).
- Each line shows the increasing efficacy as a function of changing the stimulati
-on frequency.
- Black versus grey colors compare low versus high expected background firing
- (controlled by rearing animals in the dark and light respectively).
- The hPES rule captures these effects well.
- All points are generated with a post-pre spike time difference of 1.4ms.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Like many other rules, this rule can incorporate error information coming
- from other parts of the brain, to affect the weight changes in a synapse.
- There is good evidence for this kind of modulatory learning in several
- brain areas.
- For instance, the stability of the oculomotor integrator is dependent on
- retinal slip information, but only after it has been processed by other
- parts of brain stem 
-\begin_inset CommandInset citation
-LatexCommand citep
-after "ch. 5"
-key "Askay2000x,Ikezu2008"
-
-\end_inset
-
-.
- More famously, modulatory learning is also subserved by the neurotransmitter
- dopamine in cortex and basal ganglia.
- Specifically, there is strong evidence that some dopamine neurons modulate
- their firing rate both when rewards that are not predicted occur, and when
- predicted rewards do not occur 
+ shows this rule learning a two-dimensional identity function.
+ This is, of course, much slower than simply using the NEF to solve for
+ the resulting connection weights, but it establishes the capability of
+ this rule.
+ Importantly, learning a function requires an error signal, and the system
+ will learn whatever function is consistent with that error signal.
+ In the real brain, this error signal can have many forms, but most famously
+ one sees modulatory learning associated with the neurotransmitter dopamine
+ in both the cortex and basal ganglia.
+ This is a reinforcement or reward signal, known to indicate when actions
+ go well (or go poorly).
+ Dopamine acts to help modify the connections from the rest of the brain
+ to the basal ganglia, and this plays a central role in how living creatures
+ adjust their actions to deal with a changing environment 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Hollerman1998"
 
 \end_inset
 
-.
- Consequently, it has been suggested that dopamine can act as a modulatory
- input to cortex and parts of the basal ganglia (e.g., striatum), helping
- to determine when connections should be changed in order to account for
- unexpected information in the environment.
- It is now well-established that this kind of learning has a central role
- to play in how biological systems learn to deal with contingencies in their
- world 
+
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Maia2009"
@@ -2868,44 +2635,22 @@ key "Maia2009"
 \end_inset
 
 .
- Unsurprisingly, such learning is important in SPA models that seek to explain
- such behavior.
+ 
 \end_layout
 
 \begin_layout Standard
-So, while the source of the error signal may be quite varied, it is clear
- that biological learning processes can take advantage of such information.
- To demonstrate that hPES is able to do so, figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:stdp-network-structure"
+We incorporate this learning into the Semantic Pointer Architecture by providing
+ a reward signal and using it to adjust the utililty of the rules in the
+ basal ganglia.
+ This gives the system the capability of reinforcement learning (RL) [ref:
+ Sutton and Barto].
+ So far, we have only shown basic RL capabilities such as learning which
+ of three options gives the best chance of a reward (a three-armed-bandit
+ task [ref]).
+\end_layout
 
-\end_inset
-
- shows a simple example of applying this rule to a vector representation,
- with feedback error information.
- This network learns a simple two-dimensional communication channel.
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:stdp-network-structure"
-
-\end_inset
-
-a shows the structure of a simple circuit that generates an error signal
- and learns from it, and figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:stdp-network-structure"
-
-\end_inset
-
-b shows an example run during which the output population learns to represent
- the input signal.
- To keep things simple, this example includes the generation of the error
- signal in the network.
- However, the error signal could come from any source, internal or external
- to the network.
+\begin_layout Standard
+[TODO: add a picture of the bandit task learning?]
 \end_layout
 
 \begin_layout Standard
@@ -2954,141 +2699,6 @@ n channel between the input and the output.
  Over time, the decoded value of the output population (solid lines) begins
  to follow the decoded value of the input population (dashed lines), meaning
  that the network has learned to represent its input values correctly.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-This example demonstrates that the rule can learn a simple communication
- channel, but of course much more sophisticated nonlinear functions are
- important for biological cognition.
- A particularly important transformation in the SPA is circular convolution:
- recall that it is used for binding, unbinding, and content sensitive control.
- Given the central role of convolution in the architecture, it is natural
- to be concerned that it might be a highly specialized, hand-picked, and
- possibly unlearnable transformation.
- If this was the case, that would make the entire architecture much less
- plausible.
- After all, if binding cannot be learned, we would have to tell a difficult-to-v
-erify evolutionary story about its origins.
- Fortunately, binding can be learned, and it can be learned with the same
- learning rule used to learn a communication channel.
- 
-\end_layout
-
-\begin_layout Standard
-Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:stdp-learning-binding"
-
-\end_inset
-
- shows the results of hPES being applied to a network with the same structure
- as that shown in figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:stdp-network-structure"
-
-\end_inset
-
-a, but which is given examples of binding of 3-dimensional vectors to generate
- the error signal.
- These simulations demonstrate that the binding operation we have chosen
- is learnable using a biologically realistic, spike-time sensitive learning
- rule.
- Furthermore, these results show that the learned network can be more accurate
- than an optimal NEF network with the same number of cells.
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-The fact that the learned network is better than 
-\begin_inset Quotes eld
-\end_inset
-
-optimal
-\begin_inset Quotes erd
-\end_inset
-
- should not be too surprising.
- Optimal weights are computed with known approximations: e.g., that the tuning
- curves are smooth, and that the rate model responses are the same as the
- spiking responses.
- It strikes me as interesting, and worth exploring in more detail, that
- NEF models may be improved with the fine-tuning provided by appropriate
- learning rules.
- This is explored briefly in 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "MacNeil2011a"
-
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename C:/Documents/!Phil Pubs/biological cognition/figures/learn-convolve-3D.eps
-	width 2.5in
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:stdp-learning-binding"
-
-\end_inset
-
-Learning circular convolution of vectors.
- This graph shows that hPES can learn a multi-dimensional, nonlinear, vector
- function.
- Specifically, the network learns the binding operator (circular convolution)
- used in the SPA.
- The input is two 3D vectors, and the output is their convolution.
- An error signal is generated as in figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:stdp-network-structure"
-
-\end_inset
-
-.
- As can be seen, the learned network eventually does better than the one
- whose weights are optimally computed using the NEF methods.
- Both networks have 1200 neurons, 20 versions of each were run.
- Relative error is calculated with respect to the time and trial averaged
- NEF error.
- The grey band indicates the 95% confidence interval.
- 
 \end_layout
 
 \end_inset
