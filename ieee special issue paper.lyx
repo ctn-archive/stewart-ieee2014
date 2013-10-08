@@ -3222,177 +3222,115 @@ Conclusion
 \end_layout
 
 \begin_layout Standard
-One of the key benefits of this type of model is that it provides a comprehensiv
-e description of processes ranging from high-level behavior down to the
- level of single neurons.
- For example, at the highest level of the serial recall task the model specifies
- a given input-output mapping (given a list of digits, output the list in
- the same order).
- However, we are not limited to examining the model at that abstract level
- by, for example, noting its match to human error rates.
- We can look within the model to see how the functional components work
- together and process information in order to carry out the necessary computatio
-ns (Figure
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:spikeplot"
-
-\end_inset
-
-a/b).
- We can further map those functional components onto neuroanatomical ones
- (Figure
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:spaunarchitecture"
-
-\end_inset
-
-b).
- And we can examine the details of those components, as they are implemented
- by specific neural circuits, allowing us to characterize the flow and processin
-g of information at the level of neural ensembles.
- Furthermore, within any of those ensembles, we can record and analyze,
- for example, the dendritic inputs, the membrane voltage, or the spiking
- behavior of single neurons (Figure
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:spikeplot"
-
-\end_inset
-
-c).
- This allows us to demonstrate the model's match to electrophysiological
- data, such as single neuron spike frequency spectrum shifts in monkeys
- performing a similar working memory task.
+The theorethical methods and software suite described in this article form
+ the first comprehensive tool chain for connecting high-level behaviour
+ to low-level neural processes.
+ The Neural Engineering Framework compiles any algorithm expressed in terms
+ of vectors and functions on those vectors (or their derivatives) into a
+ neural network that approximates those functions.
+ Any neural model can be used, and accuracy can be increased arbitrarily
+ by increasing the number of neurons used.
+ This provides a generic framework for expressing a very large class of
+ functions in terms of biologically realistic spiking neurons.
 \end_layout
 
 \begin_layout Standard
-This fully mechanistic explanation allows the model to address interesting
- questions about the connections within and between these levels of analysis.
- For example, how do drug-like perturbations to postsynaptic current dynamics
- affect the model's ability to remember lists of digits? How does information
- encoding impairment (e.g., damage to the anterior inferotemporal cortex)
- affect the model's ability to reproduce an observed digit? We are still
- at the early stages of exploring such questions, and there are many more
- to be asked.
- We have made Spaun publicly available, so that other researchers may ask
- their own questions and test the model as they see fit (
-\begin_inset Flex Flex:URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://models.nengo.ca/spaun
-\end_layout
-
-\end_inset
-
-).
+The Semantic Pointer Architecture provides a standard for expressing structured
+ symbol-like representations using vectors, and a method for flexibly manipulati
+ng these representations, passing them between different brain areas as
+ appropriate for the task at hand.
+ This gives a control system somewhat similar to a classical production
+ system, but one that functions on the space of vectors, giving it considerably
+ more flexibility.
+ This integrates well with neural learning rules, providing the system a
+ way to learn from experience.
 \end_layout
 
 \begin_layout Standard
-Large-scale mechanistic neural models present many exciting possibilities
- for understanding the brain.
- A model like Spaun allows us to take an interventionist approach, manipulating
- or interfering with different aspects of the model and examining the result.
- For example, we are currently exploring the effects of ageing, examining
- how neurophysiological changes associated with age (such as neuron loss
- or connectivity decreases) affect behavioral performance when we recreate
- them in the model.
- The detailed neuroanatomical mapping (Figure
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:spaunarchitecture"
-
-\end_inset
-
-) also allows us to explore the functional impact of lesioning specific
- brain regions, allowing us to recreate the effects of strokes or other
- brain damage.
- These explorations are not limited to negative effects; for example, we
- can increase the working memory capacity of the model and examine how that
- affects performance across the eight tasks.
- These are not new questions, but by performing these investigations using
- a mechanistic model it is easier to draw causal---rather than correlational---c
-onclusions, since we are directly manipulating the variable of interest
- (which is often not possible in a real brain).
- In addition, such models allow for the investigation of systemic interactions
- across many levels of intervention (e.g., direct brain stimulation, drug-based
- therapies, or behavioral interventions).
+To support these theoretical ideas, we have also presented an introduction
+ to Nengo, a software tool that implements both the NEF and the SPA.
+ This allows a user to specify the high-level function to be implemented
+ (along with whatever neural constraints are appropriate), and Nengo will
+ use the NEF to solve for the connection weights needed, run the resulting
+ model, and collect the results.
+ Nengo has also been shown to scale up well, as it was used to create Spaun,
+ the world's largest functional brain simulation, with 2.5 million neurons
+ and over 60 billion synapses.
 \end_layout
 
 \begin_layout Standard
-Given the limited behavioral repertoire of current models, we expect much
- future work to be directed at expanding models' functional capabilities.
- For example, we are interested in improving their behavioral flexibility---givi
-ng models the ability to dynamically operate in new ways, rather than having
- tasks pre-specified.
- Our research in this area is evolving in two related directions.
- The first is giving models the ability to follow task instructions; that
- is, the model is given a description of a task (
-\begin_inset Quotes eld
-\end_inset
-
-add together the next two numbers you see then subtract the third
-\begin_inset Quotes erd
-\end_inset
-
-), and then carries that task out.
- The second direction is to allow models to learn new tasks based on reward.
- In this case the model is not given instructions on how to complete the
- task, only feedback on whether it did the task right or wrong.
- It uses that information to gradually learn to perform the new task successfull
-y.
- These capabilities will allow models to develop larger and more fluid behaviora
-l repertoires, helping to capture these sophisticated aspects of human behavior.
+This approach provides a novel method for creating large-scale neural networks
+ that can exhibit desired high-level cognitive behaviour.
+ This opens the door for a variety of new areas of research.
+ Most directly, it provides a new method for understanding human cognition.
+ Our ongoing research involves testing psychological theories by implementing
+ them in neurons and comparing the model performance to human (and animal)
+ performance.
+ Importantly, we can do this comparison based not only on the overt behaviour,
+ but also on low-level neural measurements, such as firing patterns in different
+ brain areas.
+ This provides strong constraints on theories of brain function.
+ In particular, we find that overall reaction time is strongly connected
+ with the neurotransmitter time constants.
+ Understanding these cognitive processes can also lead to new possibilities
+ for treating neural disorders, from Alzheimer's Disease to Parkinson's
+ Disease to stroke to other brain traumas.
+ Neural models can be built and damaged in the same way as seen in these
+ diseases, and then various treatment options can be tried in simulation.
 \end_layout
 
 \begin_layout Standard
-As mentioned in Section 3, one of the limitations on existing models is
- simulation speed.
- This restricts the development of larger, more complex models, and also
- prevents Spaun from interacting in real time with its environment.
- These limitations have driven our interest in neuromorphic hardware---custom
- computing hardware designed to simulate million or billions of neurons
- in real time.
- We are collaborating with other research groups
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Merolla2007,Khan2008"
+A more surprising direction for this research is that it provides a novel
+ method for programming highly parallel hardware.
+ After all, the human brain can be thought of as 100 billion interconnected
+ processors (neurons).
+ Each of these processors are slow, noisy, and can only compute one operation
+ (the neural non-linearity 
+\series bold
 
+\begin_inset Formula $G$
 \end_inset
 
- to combine ideas from theoretical neuroscience with the power of neuromorphic
- hardware.
+
+\series default
+), but by connecting them in different ways we can approximate a wide variety
+ of functions.
+ This is a new approach for neuromorphic engineering, and our ongoing collaborat
+ions [references: Neurogrid, SpiNNafer] are examining the possibilities
+ for implementing complex cognitive algorithms extremely efficiently.
 \end_layout
 
 \begin_layout Standard
-In conclusion, the recent Spaun model, while making significant advances
- in connecting our understanding of basic biological components to sophisticated
- behavior, is just a first step.
- It provides tantalizing hints of the utility of large-scale mechanistic
- models for neuroscience, psychology, and artificial intelligence.
- In the coming years we expect to see the potential of these models become
- more widely exploited, enhancing and expanding our basic understanding
- of the brain and helping in the diagnosis and treatment of a wide variety
- of brain disorders.
+On the cognitive side, there is clearly still much more to be done.
+ Our current work is to expand the input capabilities of Spaun, including
+ basic linguistic processing, so that it can be instructed to perform new
+ tasks [ref: CogSci conf papers (Xuan's and Terry's)].
+ The reinforcement learning capabilities are being expanded for more complex
+ domains, including features such as second-order conditioning [ref: Carter].
+ We are also making the motor control system much richer, handling the quick
+ adaptation to new conditions seen in mammals [ref: ???].
+\end_layout
+
+\begin_layout Standard
+Simulating the human brain is a monumental task.
+ We have only just begun this task, and we know that it is much larger than
+ one research group.
+ This is why much of our emphasis has been on creating general tools that
+ can be applied to many different brain areas and many different kinds of
+ cognitive tasks.
+ Furthermore, we have developed extensive tutorials and documentation on
+ our open-source Nengo software, and have included both a complete scripting
+ system and an integrated drag-and-drop GUI interface [ref: first Nengo
+ paper].
+ We are also running a summer school [ref: website?] focused on giving new
+ researchers hands-on experience building these models.
+ Being able to integrate ideas from psychology, neuroscience, and artificial
+ intelligence and construct complete large-scale neural models that connect
+ sensory systems, cognitive system, and motor systems makes for an exciting
+ new domain for research.
+ We believe these sorts of models will be extremely beneficial for understanding
+ human cognition, treating brain disorders, and developing efficient parallel
+ computation.
 \end_layout
 
 \begin_layout Standard
