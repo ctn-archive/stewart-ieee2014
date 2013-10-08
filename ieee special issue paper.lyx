@@ -2859,78 +2859,141 @@ Semantic Pointer Architecture Unified Network (Spaun)
 \end_layout
 
 \begin_layout Standard
-We refer to the large-scale neural model we have recently developed as the
- Semantic Pointer Architecture Unified Network (Spaun).
- It is one example of a model implementing the more general Semantic Pointer
- Architecture.
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Eliasmith2013"
-
+The previous sections described our general approach to building large-scale
+ models.
+ We identify particular computational functions that need to be computed
+ by a cognitive system, we build neural modules that implement those functions,
+ and we route information between them using our cognitive control model
+ of the basal ganglia.
+ This approach has allowed us to build the largest existing brain model
+ that is capable of performing cognitive tasks.
+ We did this by taking existing models we have built using the NEF and combining
+ them into one unified network.
+ The resulting 2.5 million neuron model is thus called the Semantic Pointer
+ Architecture Unified Network, or 
+\begin_inset Quotes eld
 \end_inset
 
- Spaun consists of 2.5 million leaky integrate-and-fire (LIF) model neurons,
- each of which is simulated concurrently on a supercomputer.
- The physiological and tuning properties of the cells are statistically
- matched to the various anatomical areas included in the model.
- There are about 20 anatomical areas accounted for (out of the approximately
- 1000 typically identified
+Spaun
+\begin_inset Quotes erd
+\end_inset
+
+ [ref.
+\end_layout
+
+\begin_layout Standard
+The individual modules of Spaun have all been previously described as separate
+ components.
+ There is a neural component for vision [ref: one of Charlie Tang's papers],
+ recognition [ref: cleanup memory paper].
+ serial working memory [ref: Xuan], pattern matching [ref: Dan], reward
+ processing [ref: Trevor], and motor control [ref:Travis].
+ All together this model includes 20 components, each of which is mapped
+ onto a particular anatomical area, and is consistent with the physiological
+ properties of the neurons found in those areas.
+ Of course, the human brain has many more areas (approximately 1000
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Hagmann2008"
 
 \end_inset
 
-), organized and connected so as to reflect the brain's known anatomy (see
- Figure
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:spaunarchitecture"
-
-\end_inset
-
-).
- Four types of neurotransmitters are included in the model (GABA, AMPA,
- NMDA, and Dopamine), and their known time constants and synaptic effects
- are simulated.
- This degree of biological detail is comparable to other large-scale models
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Ananthanarayanan2007"
-
-\end_inset
-
-, although some other work has included more detailed models of single cells
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Markram2006b"
-
-\end_inset
-
-.
+), so there is much work still to be done.
 \end_layout
 
 \begin_layout Standard
-What makes Spaun unique is its functional abilities.
- Spaun receives input from the environment through its single eye, which
- is shown images of handwritten or typed digits and letters, and it manipulates
- the environment by moving a physically modelled arm, which has mass, length,
- inertia, and so on.
- Spaun uses these natural interfaces, in combination with internal cognitive
- processes, to perceive visual input, remember information, reason using
- that information, and generate motor output (writing out numbers or letters).
- It uses these abilities to perform eight different tasks, ranging from
- perceptual-motor tasks (recreating the appearance of a perceived digit)
- to reinforcement learning (in a gambling task) to language-like inductive
- reasoning (completing abstract patterns in observed sequences of digits).
- These tasks can be performed in any order, they are all executed by the
- same model, and there are no changes to the model between tasks.
- We will not go into detail on the eight tasks here; we recommend watching
- the videos at 
+The key feature of Spaun is that it can use the different neural components
+ flexibly, thanks to the control structure.
+ Spaun can perform eight different tasks, and each of these tasks use most
+ of the cognitive modules, but in their own way.
+ For example, in the list memory task, it is shown a list and then it repeats
+ it back, while in the question answering task it is first shown a list,
+ and then it waits for a question about this list.
+ Importantly, we do not make any changes to Spaun to change the task.
+ Rather, we 
+\shape italic
+tell
+\shape default
+ Spaun to change tasks.
+ Since the only input to Spaun is its 28x28 visual field, we tell Spaun
+ what task to do by presenting the letter 
+\begin_inset Quotes eld
+\end_inset
+
+A
+\begin_inset Quotes erd
+\end_inset
+
+ followed by a number that indicates what task to perform.
+ Spaun responds to this command thanks to two control rules:
+\end_layout
+
+\begin_layout Quotation
+UTILITY:
+\begin_inset Formula $\mathbf{visual\cdot A}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+ROUTING: 
+\begin_inset Formula $\mathbf{NONE\rightarrow task}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+UTILITY:
+\begin_inset Formula $(\mathbf{visual\cdot(ZERO+ONE+TWO+...)+task\cdot NONE})/2$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+ROUTING: 
+\begin_inset Formula $\mathbf{visual\rightarrow task}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The first rule clears (by setting it to the random vector
+\series bold
+
+\begin_inset Formula $\mathbf{NONE}$
+\end_inset
+
+
+\series default
+) the part of working memory that keeps track of whatever task Spaun is
+ currently doing when Spaun sees the letter A.
+ The second rule will only have a high utility if the task is 
+\series bold
+
+\begin_inset Formula $\mathbf{NONE}$
+\end_inset
+
+
+\series default
+ and a number has been seen.
+ When this occurs, that number is sent to the task memory.
+ To implement the various tasks, more rules are added, each of which has
+ as part of their utility calculation a dependency on the task memory.
+ This makes the rules task-specific, but the actual neural modules that
+ the rules make use of are general across tasks.
+ Spaun is able to perceive visual input through a 28x28 pixel retina, remember
+ that information, act on it as appropriate, and generate motor output that
+ moves a physically-modelled arm to write numbers.
+ The eight tasks it can perform (digit recognition, digit style copying,
+ list memory, question answering, addition by counting, reinforcement learning,
+ pattern completion, and the Raven's Progressive matrix intelligence test)
+ are all implemented with only nineteen basal ganglia rules.
+ More information on these tasks can be found in [ref: Spaun] and via the
+ online videos of Spaun's performance at
 \begin_inset Flex Flex:URL
 status collapsed
 
@@ -2941,7 +3004,19 @@ http://nengo.ca/build-a-brain/spaunvideos
 
 \end_inset
 
-for more detailed demonstrations of performance.
+.
+ The overall architecture can be seen in Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:spaunarchitecture"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -3014,23 +3089,65 @@ name "fig:spaunarchitecture"
 \end_layout
 
 \begin_layout Standard
-Our purpose in building such models is to understand brain function.
- As a result, it is critical to demonstrate that these models are working
- in a brain-like manner.
- In the case of Spaun, we have compared the performance of the model to
- human and animal data at several levels of detail.
- Along many metrics the two align; for example, the model and the brain
- share (1) dynamics of firing rate changes in striatum during the gambling
- task, (2) error rates as a function of position when reporting digits in
- a memorized list, (3) coefficient of variation of inter-spike intervals,
- (4) reaction time mean and variance as a function of sequence length in
- a counting task, (5) accuracy rates of recognizing unfamiliar handwritten
- digits, and (6) success rates when solving induction tasks similar to those
- found on the Raven's Progressive Matrices (a standard test of human intelligenc
-e), among other measures.
- It is these comparisons, demonstrating the range and quality of matches
- between the model and real neural systems, that makes it plausible to suggest
- that Spaun is capturing some central aspects of neural organization.
+As an example of Spaun performing a task, Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:spikeplot"
+
+\end_inset
+
+ shows the list memory task.
+ The input starts with an 
+\begin_inset Quotes eld
+\end_inset
+
+A
+\begin_inset Quotes erd
+\end_inset
+
+ followed by a 
+\begin_inset Quotes eld
+\end_inset
+
+3
+\begin_inset Quotes erd
+\end_inset
+
+, telling Spaun which task to perform.
+ Next is a series of numbers that it should attempt to remember.
+ When it sees a question mark, it should respond with the list.
+ Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:spikeplot"
+
+\end_inset
+
+ shows spiking activity of a few different parts of the model.
+ Of particular interest is DLPFC (dorsolateral prefrontal cortex), which
+ is where it is storing the list.
+ This list is stored as a vector, using the Semantic Pointer approch described
+ above.
+ The DLPFC graph shows the similarity (as measured by the dot product) between
+ the vector stored there (decoded from the spikes using the NEF) and the
+ ideal vector for numbers in different positions.
+ This activity decays over time and becomes less accurate the more items
+ there are in the list.
+ In this particular case, this inaccuracy is enough to cause Spaun to make
+ a mistake: it forgets the fourth item in the list (the eight).
+ This is exactly the sort of mistake typically made by people, and is part
+ of how we validate our models.
+ After all, if we are accurately modelling human cognition, Spaun should
+ make the same sorts of mistakes as people do.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -3041,7 +3158,6 @@ status open
 
 \begin_layout Plain Layout
 \align center
- 
 \begin_inset Graphics
 	filename spikeplot_modified.eps
 	lyxscale 25
@@ -3099,6 +3215,10 @@ name "fig:spikeplot"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Section
+Conclusion
 \end_layout
 
 \begin_layout Standard
@@ -3275,8 +3395,8 @@ In conclusion, the recent Spaun model, while making significant advances
  of brain disorders.
 \end_layout
 
-\begin_layout Section
-Conclusion
+\begin_layout Standard
+
 \end_layout
 
 \begin_layout Standard
