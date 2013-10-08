@@ -1212,16 +1212,23 @@ key "Eliasmith2013"
 
 \end_inset
 
-, the core approach is to suggest a cognitive architecture: a set of basic
- functional components, each of which can be defined in terms of vectors,
- and an organization of those components that can work together to implement
- cognitive algorithms.
- Addressing cognitive behavior also requires hypotheses as to how structured
+, the core of our approach is to suggest a vector-based cognitive architecture:
+ i.e., a set of basic functional components, each of which can be defined
+ in terms of vector operations, and an organization of those components
+ that can work together to implement cognitive algorithms.
+ In addition to these components, we provide a hypothesis as to how structured
  representations (like sentences) can be represented using vectors and what
  basic operations need to be performed on those vectors to achieve memory,
- planning, pattern matching, and so on.
- Furthermore, a control system is needed to selectively route information
- between these structures as appropriate to the current situation.
+ planning, pattern matching, and other behaviors.
+ We refer to our proposed form of neurally plausible representation as 
+\begin_inset Quotes eld
+\end_inset
+
+semantic pointers.
+\begin_inset Quotes erd
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1236,7 +1243,7 @@ reference "fig:SPA-subsystem-interface"
 .
  This core structure can be used for vision, audition, motor control, working
  memory, pattern completion, and so on.
- The details, of course, will vary by function, as discussed below.
+ The details, of course, vary by function as discussed below.
 \end_layout
 
 \begin_layout Standard
@@ -1299,7 +1306,7 @@ reference "fig:the-entire-SPA"
 
 \end_inset
 
- combines these basic components together via a control system.
+ combines these basic components together with a control system.
  The separate components can be thought of as physically distinct areas
  of the brain, each of which can perform one type of operation on its inputs.
  The control system is responsible for ensuring that the right information
@@ -1343,8 +1350,9 @@ reference "fig:SPA-subsystem-interface"
 \end_inset
 
 .
- Dark black lines are projections carrying representations between parts
- of the system, while thinner lines indicate control and error signals.
+ Dark black lines are projections carrying semantic pointer representations
+ between parts of the system, while thinner lines indicate control and error
+ signals.
  An 
 \begin_inset Quotes eld
 \end_inset
@@ -1369,7 +1377,7 @@ internal subsystem
 \end_layout
 
 \begin_layout Standard
-We call the basic representation used by the SPA 
+The 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1377,21 +1385,31 @@ semantic pointers
 \begin_inset Quotes erd
 \end_inset
 
-.
- These are compressed representations where the compression 
+ used by the SPA are compressed representations, where the compression 
 \shape italic
 maintains similarity information
 \shape default
 .
  That is, semantic pointers are vectors that are formed by taking input
- vector(s) and producing a lower-dimensional representation of that high-dimensi
-onal representation, where it is possible to recover that high-dimensional
- representation and where similar inputs will produce similar outputs.
+ vector(s) and producing a lower-dimensional representation of the original
+ high-dimensional representation.
+ While this compression is assumed to be 
+\begin_inset Quotes eld
+\end_inset
+
+lossy
+\begin_inset Quotes erd
+\end_inset
+
+, it is generally possible to recover the original high-dimensional representati
+on (or something very similar).
+ Because of this compression/decompression relationship, similar inputs
+ will produce similar outputs.
 \end_layout
 
 \begin_layout Standard
-Semantic pointers are compact ways of referencing large amounts of data;
- consequently they function similarly to 
+In short, semantic pointers are compact ways of referencing large amounts
+ of data; consequently they function similarly to 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1425,22 +1443,28 @@ semantic
  used to reference.
  This means that semantic pointers carry similarity information that is
  derived from their source, in contrast to an arbitrary index that does
- not contain semantic information.
+ not contain semantic information, as generally used in modern computers.
  
 \end_layout
 
 \begin_layout Standard
 In our models, we use a variety of compression operations.
  For vision (and other sensory modalities), we learn this compression from
- the structure of the input.
- This is exactly the approach taken by vision research such as Deep Belief
- Networks [ref].
+ the structure of the sensory input.
+ This is the same approach taken by vision researchers who use Deep Belief
+ Networks 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hinton2006,Tang2010"
+
+\end_inset
+
+.
  However, for cognitive operations such as combining concepts together into
- structured representations, we can use a particular mathematical function,
+ structured representations, we use a particular mathematical function,
  as discussed in the next section.
  Importantly, this function (circular convolution) is straightforward for
- neurons to accurately compute given the Neural Engineering Framework described
- above (section 
+ neurons to accurately compute given the NEF described above (section 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "sec:The-Neural-Engineering"
@@ -1462,9 +1486,9 @@ Structure
 \end_layout
 
 \begin_layout Standard
-The core question for implementing cognitive processing using neurons (or
- vectors) is how structured information is to be represented.
- Structure is vital in any explanation of cognitive behavior 
+A central concern for modeling cognitive processing using neurons (or vectors)
+ is how to effectively represent structured information.
+ Structure is vital to explanations of cognitive behavior 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Anderson2007"
@@ -1472,15 +1496,14 @@ key "Anderson2007"
 \end_inset
 
 .
- As an example, consider the idea that 
+ As an example, consider the sentence 
 \begin_inset Quotes eld
 \end_inset
 
-cats chase mice
+cats chase mice.
 \begin_inset Quotes erd
 \end_inset
 
-.
  If this is to be represented as a vector, then we need to represent it
  in such as way that 
 \begin_inset Quotes eld
@@ -1494,21 +1517,21 @@ cats chase mice
 \begin_inset Quotes eld
 \end_inset
 
-mice chase cats
+mice chase cats.
 \begin_inset Quotes erd
 \end_inset
 
-.
  In an artificial language, like those typically used in computers, such
  a phrase may be represented with a structured representation like 
 \family typewriter
-chases(cats, mice)
+chase(cats, mice)
 \family default
 .
- Much of theories that explain human cognition rely on the ability to store
- and manipulate these representations.
- However, the question of how neurons could possibly perform such manipulations
- has been a long-standing problem for cognitive science 
+ The majority of theories that attempt to explain human cognition rely on
+ the ability to store and manipulate these representations.
+ However, the problem of whether, or how, neurons could possibly perform
+ such manipulations has lead to a long-standing debate in cognitive science
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Fodor1988p"
@@ -1520,13 +1543,19 @@ key "Fodor1988p"
 \end_layout
 
 \begin_layout Standard
-The approach we take is to define two different compression operators.
+The approach we take is to define two different compression operators 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Plate1994,Stewart2011a"
+
+\end_inset
+
+.
  The first of these is simple vector addition.
  This takes in two vectors and produces a single new vector as output.
- Now, if each of the basic terms to be combined together are themselves
- already vectors, then we could write the full sentence as follows, where
- terms in bold are particular vectors for each concept (these can be randomly
- chosen).
+ If each of the terms to be combined together are themselves vectors, then
+ we could write the full sentence as follows, where terms in bold are particular
+ vectors for each concept:
 \end_layout
 
 \begin_layout Standard
@@ -1541,7 +1570,8 @@ The approach we take is to define two different compression operators.
 \end_layout
 
 \begin_layout Standard
-However, this cannot work on its own, since with just this approach 
+However, this cannot serve to represent structure, since with this approach
+ 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1553,12 +1583,11 @@ cats chase mice
 \begin_inset Quotes eld
 \end_inset
 
-mice chase cats
+mice chase cats.
 \begin_inset Quotes erd
 \end_inset
 
-.
- What is needed is a 
+ As a result we need a second 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1566,18 +1595,18 @@ binding
 \begin_inset Quotes erd
 \end_inset
 
- operator: an operation that will take two vectors as input and produce
- a third that is very dissimilar to the original inputs (as opposed to vector
- addition, which produces an output that is highly similar to the inputs).
- If we indicate this operation as
+ operator: an operator that takes two vectors as input and produces a third
+ that is very dissimilar to the original inputs (as opposed to vector addition,
+ which produces an output that is highly similar to the inputs).
+ Denoting this operation as 
 \begin_inset Formula $\mathbf{\circledast}$
 \end_inset
 
-and if we introduce new vectors for the 
+, and introducing new vectors for the 
 \shape italic
 roles
 \shape default
- the terms in the sentence take on, we can represent the sentence
+ that terms in the sentence take on, we can represent the sentence 
 \begin_inset Formula $\mathbf{S}$
 \end_inset
 
@@ -1587,7 +1616,7 @@ roles
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\mathbf{S}=\mathbf{agent}\circledast\mathbf{cats}+\mathbf{verb}\circledast\mathbf{chase}+\mathbf{theme}\circledast\mathbf{mice}
+\mathbf{S}=\mathbf{agent}\circledast\mathbf{cats}+\mathbf{verb}\circledast\mathbf{chase}+\mathbf{object}\circledast\mathbf{mice}
 \]
 
 \end_inset
@@ -1596,7 +1625,8 @@ roles
 \end_layout
 
 \begin_layout Standard
-Importantly, we also need to reverse this operation.
+Importantly, we also need to reverse (i.e.
+ decompress) these operations.
  Given a sentence, we need to be able to identify what the verb is, for
  example.
  For this, we need an inverse operation such that 
@@ -1626,9 +1656,9 @@ Importantly, we also need to reverse this operation.
 \end_layout
 
 \begin_layout Standard
-There are a number of different binding operations that can achieve this,
- and this family of approaches are known as Vector Symbolic Architectures
- (VSAs) 
+There are a number of different vector operations that can fulfill the role
+ of a binding operator, and this family of approaches are known as Vector
+ Symbolic Architectures (VSAs) 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Gayler2003l"
@@ -1636,9 +1666,9 @@ key "Gayler2003l"
 \end_inset
 
 .
- The one most natural to implement in neurons via the NEF is circular convolutio
-n, which was originally explored by Plate in his Holographic Reduced Representat
-ions 
+ One that is natural to implement in neurons via the NEF is circular convolution
+, which was originally explored by Plate in his Holographic Reduced Representati
+ons 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Plate1991g"
@@ -1646,15 +1676,15 @@ key "Plate1991g"
 \end_inset
 
 .
- To efficiently implement this compression operation in neurons, we note
- that a) circular convolution is elementwise multiplication in the Fourier
- transform space, and b) the Fourier transform of a vector is a linear operation
- (multiplication by
+ To efficiently implement this operation in neurons, we note that a) circular
+ convolution is elementwise multiplication in the Fourier transform space,
+ and b) the Fourier transform of a vector is a linear operation (multiplication
+ by 
 \begin_inset Formula $\mathbf{F}$
 \end_inset
 
 , the discrete Fourier transform matrix).
- Thus the binding of any two vectors
+ Thus the binding of any two vectors, 
 \begin_inset Formula $\mathbf{A}$
 \end_inset
 
@@ -1662,7 +1692,7 @@ key "Plate1991g"
 \begin_inset Formula $\mathbf{B}$
 \end_inset
 
- can be computed by 
+, can be computed by 
 \begin_inset Formula 
 \[
 \mathbf{C}=\mathbf{A}\circledast\mathbf{B}=\mathbf{F}^{-1}(\mathbf{FA}\odot\mathbf{FB})
@@ -1670,7 +1700,7 @@ key "Plate1991g"
 
 \end_inset
 
-where
+where 
 \begin_inset Formula $\mathbf{\odot}$
 \end_inset
 
@@ -1750,7 +1780,14 @@ The network architecture of a binding network.
  representation.
  The decoding of the C-layer vector is shown in the top right graph, as
  another 8D vector.
- The results for 200ms of simulation time are shown.
+ The results for 200ms of simulation time are shown (from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2013"
+
+\end_inset
+
+).
 \end_layout
 
 \end_inset
@@ -1837,7 +1874,14 @@ cloud
  to 2D points using principle component (PC) analysis to preserve as much
  of the variability of the higher-dimensional data as possible.
  Similar vectors thus map to points that are close together in these plots.
- Mean values of the groups of points are given by white circles.
+ Mean values of the groups of points are given by white circles (from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2013"
+
+\end_inset
+
+).
 \end_layout
 
 \end_inset
@@ -1851,11 +1895,10 @@ cloud
 \end_layout
 
 \begin_layout Standard
-To unbind vectors (i.e.
- to extract information out of the sentence), the same circular convolution
- operation is used.
- For the inverse, we use an approximate inverse found by permuting the elements
- of the vector.
+To unbind vectors (i.e., to extract information out of a sentence), the same
+ circular convolution operation is used.
+ For the inverse, we use an approximation found by permuting the elements
+ of the vector (i.e., the involution).
  This is a linear operation (denoted here as 
 \begin_inset Formula $\mathbf{S}$
 \end_inset
@@ -1886,16 +1929,24 @@ The above approach to structured representation can be used for many purposes.
 \begin_inset Quotes eld
 \end_inset
 
-seven six four
+seven, six, four
 \begin_inset Quotes erd
 \end_inset
 
- we could store the vector 
-\begin_inset Formula $\mathbf{seven\circledast P1+six\circledast P2+four\circledast P3}$
+ we can represent it as the vector 
+\begin_inset Formula $\mathbf{M}=\mathbf{seven\circledast P1+six\circledast P2+four\circledast P3}$
 \end_inset
 
 .
- To store a vector, we build a network whose dynamics are 
+ To actually store such a representation in a 
+\begin_inset Quotes eld
+\end_inset
+
+working memory
+\begin_inset Quotes erd
+\end_inset
+
+ we can build a network whose dynamics are essentially 
 \series bold
 
 \begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}\mathbf{u}$
@@ -1903,30 +1954,29 @@ seven six four
 
 
 \series default
-(i.e.
- an integrator).
- However, in order to use these components effectively, we need to have
- a mechanism whereby the output from one component can be routed to the
- input to another component, as appropriate.
+ (i.e., an integrator).
+ However, in order to use such a component effectively, we need to have
+ a means of routing the output of one component to the input of another
+ component, depending on task demands.
 \end_layout
 
 \begin_layout Standard
 This control problem can be broken down into two parts: action selection
  (determining which routing is appropriate right now) and action execution
  (implementing the routing).
- For action selection, we take the simplest approach available for a vector-base
-d representation: we take the current state of the system (the outputs from
- all the processing components) and determine the similarity between this
- state and the 
+ For action selection, we have adopted a biologically plausible approach
+ available for a vector-based representation: monitor the current state
+ of the system (the outputs from all the processing components in cortex)
+ and determine the similarity between this state and the 
 \begin_inset Quotes eld
 \end_inset
 
-ideal
+preferred
 \begin_inset Quotes erd
 \end_inset
 
- states for each action.
- This similarity is considred to be the 
+ states for each available action.
+ This similarity is considered to be the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1934,28 +1984,29 @@ utility
 \begin_inset Quotes erd
 \end_inset
 
- of the action at the current moment.
- Whichever ideal state has the highest utility is the action to be selected.
- To compute this similarity, we use the dot product, as it is a linear operator
- and easily computed with the NEF.
+ of the action.
+ Whichever state has the highest utility is the action to be selected.
  
 \end_layout
 
 \begin_layout Standard
-Unfortunately, determining the maximum value over the elements in a vector
- turns out to be extremely difficult to do in neurons.
+To compute similarity, we use the dot product implemented direction in connectio
+n weights, as it is a linear operator and easily computed with the NEF.
+ Unfortunately, determining the maximum value over the elements in a vector
+ turns out to be difficult to do in neurons.
  If we use the NEF to directly compute this function, the neural approximation
  is highly inaccurate.
- Making it more accurate by increasing the number of neurons leads to action
- selection over only 100 actions requiring more neurons than exist in the
- human brain.
- We thus need an approximation of a maximum function that can be efficiently
- computed using neurons.
+ Making it more accurate by increasing the number of neurons leads to a
+ solution that, for only 100 actions, requires more neurons than exist in
+ the human brain.
+ We have thus adopted an approximation of the maximum function that can
+ be more efficiently computed using neurons.
 \end_layout
 
 \begin_layout Standard
-To find this new operation, we turn to the basal ganglia, a highly interconnecte
-d cluster of brain areas found underneath the neocortex and near the thalamus.
+Specifically, such a function seems to be computed in the brain by the basal
+ ganglia, a highly interconnected cluster of brain areas found underneath
+ the neocortex and near the thalamus.
  This brain area has been consistently implicated in the ability to choose
  between alternative courses of action.
  Damage to the basal ganglia occurs in several diseases of motor control,
@@ -1996,8 +2047,9 @@ key "Lieberman2006,Lieberman2007"
 \end_layout
 
 \begin_layout Standard
-Examining the structure of the basal ganglia has led to an algorithm that
- approximates a maximum function 
+Modeling the anatomical and physiological structure of the basal ganglia
+ has led to algorithms that effectively approximate the maximum function
+ 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Gurney2001"
@@ -2005,19 +2057,18 @@ key "Gurney2001"
 \end_inset
 
 .
- This work considers the input to the basal ganglia to be a vector of the
- utility of each action, and the output is a vector indicating which action
- to pick.
+ In such models, the input to the basal ganglia is a vector of the utility
+ of each action, and the output is a vector indicating which action to pick.
  Each connection between areas of the basal ganglia computes some simple
- function on its vector.
- This is exactly the form needed for use with the NEF.
- As such we take this theory and create a biologically realistic spiking
- implementation of this algorithm.
+ function on a vector.
+ Thus, these models are in exactly the form needed for use with the NEF.
+ As a result, we have extended these models to create a biologically realistic
+ spiking implementation that can process high-dimensional representations.
  The result is a close approximation to a maximum operation, but one where
  there are some situations where more than one action is selected, and some
  where no actions are selected (although these are rare occurences and are
  only seen when actions have highly similar utilities).
- For more information, see 
+ For further details, see 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Stewart2010a"
@@ -2028,8 +2079,8 @@ key "Stewart2010a"
 \end_layout
 
 \begin_layout Standard
-To execute these desired actions, we turn to the well-known cortex/basal
- ganglia/thalamus loop through the brain (see figure 
+To execute the actions chosen by this mechanism, we turn to the well-known
+ cortex/basal ganglia/thalamus loop through the brain (see figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:cortex_bg_thalamus"
@@ -2041,11 +2092,11 @@ reference "fig:cortex_bg_thalamus"
  representations, the basal ganglia map current brain states to courses
  of action, and the thalamus applies routing signals to cortical and input
  pathways.
- To route information, we simply form a connection from the output of one
- processing component to the input of another processing component through
- an intermediate group of neurons.
+ To route information, we form a connection from the output of one processing
+ component to the input of another processing component through an intermediate
+ group of neurons.
  Each of these connections is optimized to compute the identity function.
- However, we use the output from the basal ganglia to 
+ As a result, we can use the output from the basal ganglia to 
 \shape italic
 inhibit
 \shape default
@@ -2055,9 +2106,9 @@ inhibit
 not
 \shape default
  chosen, the relevant interconnections are all strongly inhibited, stopping
- the intermediate neurons from firing at all.
+ the intermediate neurons from firing.
  If they do not fire, their input to their target populations will be zero,
- so they will be unaffected.
+ so they will not route their input signal to the target.
  This matches closely with the connectivity and inhibition characteristics
  found in the mammalian brain.
  The basal ganglia thus control the exploitation of cortical resources by
@@ -2075,8 +2126,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename C:/Documents/!Phil Pubs/biological cognition/figures/cortex_bg_thalamus.eps
-	width 100text%
+	filename cortex_bg_thalamus.eps
+	width 3.5in
 
 \end_inset
 
@@ -2117,7 +2168,14 @@ The cortex-basal ganglia-thalamus loop.
  back to the cortex.
  Each column of this matrix specifies an appropriate cortical state that
  is the consequence of the selected action.
- The relevant anatomical structures are pictured on the right.
+ The relevant anatomical structures are pictured on the right (from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2013"
+
+\end_inset
+
+).
 \end_layout
 
 \end_inset
@@ -2231,8 +2289,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename C:/Documents/!Phil Pubs/biological cognition/figures/alphabet_routing.eps
-	width 12cm
+	filename alphabet_routing.eps
+	width 3.5in
 
 \end_inset
 
@@ -2269,6 +2327,13 @@ reference "eq:dec"
  action takes information from visual cortex and routes it to working memory
  (in this case 
 \begin_inset Formula $\mathbf{F}$
+\end_inset
+
+; from 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2013"
+
 \end_inset
 
 ).
@@ -2443,8 +2508,8 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename C:/Documents/!Phil Pubs/biological cognition/figures/Answering-questions.eps
-	width 12cm
+	filename Answering-questions.eps
+	width 3.5in
 
 \end_inset
 
@@ -2465,15 +2530,14 @@ Answering two different questions starting from the same statement.
  Gray areas indicate the period during which the stimuli were presented.
  The similarity between the contents of network's output and the top 7 possible
  answers is shown.
- The correct answer is chosen in both cases after about 50ms.
- (Figure from 
+ The correct answer is chosen in both cases after about 50ms (from 
 \begin_inset CommandInset citation
 LatexCommand citealp
 key "Stewart2010b"
 
 \end_inset
 
-.)
+).
 \end_layout
 
 \end_inset
@@ -2662,7 +2726,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename C:/Documents/!Phil Pubs/biological cognition/figures/stdp-network-structure.eps
+	filename stdp-network-structure.eps
 	width 3.5in
 
 \end_inset
@@ -2698,7 +2762,15 @@ err
 n channel between the input and the output.
  Over time, the decoded value of the output population (solid lines) begins
  to follow the decoded value of the input population (dashed lines), meaning
- that the network has learned to represent its input values correctly.
+ that the network has learned to represent its input values correctly (from
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2013"
+
+\end_inset
+
+).
 \end_layout
 
 \end_inset
