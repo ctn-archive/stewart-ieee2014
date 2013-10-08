@@ -1721,24 +1721,7 @@ reference "fig:Network-architecture-binding"
 \end_inset
 
 ).
- Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Binding-vectors"
-
-\end_inset
-
- shows the results of binding four sets of vectors using the circular convolutio
-n method in spiking neurons.
- The approximate nature of the binding is evident from the 
-\begin_inset Quotes eld
-\end_inset
-
-clouds
-\begin_inset Quotes erd
-\end_inset
-
- of bindings.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1768,115 +1751,40 @@ name "fig:Network-architecture-binding"
 
 \end_inset
 
-The network architecture of a binding network.
- The network is a simple two-layer, feedforward network, as there are connection
- weights into the Bind and C layers.
- In this particular network, A, B, and C have 150 neurons and Bind has 760
- neurons.
- This network is binding two 8D vectors projected into the A and B neurons,
- whose decoded values are shown on the left side.
- These neurons project to the Bind layer, which forms a representation that
- allows the computation of the necessary nonlinearities.
- The spiking activity is shown for 38 randomly selected Bind neurons.
- This activity drives the C layer, which extracts the binding from that
- representation.
- The decoding of the C-layer vector is shown in the top right graph, as
- another 8D vector.
- The results for 200ms of simulation time are shown (from 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Eliasmith2013"
-
+A network computing the binding operation (circular convolution) on two
+ eight-dimensional vectors.
+ There are four groups of neurons: A, B, Bind, and C.
+ A, B, and C have 150 neurons and Bind has 760 neurons.
+ The decoded vectors from A, B, and C are shown, and can be seen to be roughtly
+ constant.
+ The spiking activity over 200ms of 38 randomly chosen neurons in the Bind
+ population are shown.
+ These neurons encode 
+\begin_inset Formula $\mathbf{FA}$
 \end_inset
 
-).
-\end_layout
-
+ and 
+\begin_inset Formula $\mathbf{FB}$
 \end_inset
 
-
-\end_layout
-
+, where 
+\begin_inset Formula $\mathbf{F}$
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename Binding-vectors.eps
-	width 3.5in
-
+ is the discrete fourier transfom matrix.
+ The connections from Bind to C compute 
+\begin_inset Formula $\mathbf{F}^{-1}(\mathbf{FA}\odot\mathbf{FB})$
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Binding-vectors"
-
-\end_inset
-
-Binding vectors with spiking neurons.
- A 10D vector 
+, which is the circular convolution of 
 \begin_inset Formula $\mathbf{A}$
 \end_inset
 
- is bound with a 10D vector 
+ and 
 \begin_inset Formula $\mathbf{B}$
 \end_inset
 
- to produce a 10D vector 
-\begin_inset Formula $\mathbf{C}$
-\end_inset
-
-.
- This figure shows four separate instances of binding.
- In each instance, instantaneous decoded samples are drawn every 10ms from
- a neural representation of vectors 
-\begin_inset Formula $\mathbf{A}$
-\end_inset
-
-, 
-\begin_inset Formula $\mathbf{B}$
-\end_inset
-
-, and 
-\begin_inset Formula $\mathbf{C}$
-\end_inset
-
- over a period of one second.
- This forms a collection of points that are plotted with a unique marker
- (e.g., the light gray circles in the first plot were bound with the light
- gray circles in the second plot resulting in the group of light gray circles
- in the third plot).
- These samples form a 
-\begin_inset Quotes eld
-\end_inset
-
-cloud
-\begin_inset Quotes erd
-\end_inset
-
- because of the neural variability over time due to spiking and other sources
- of noise.
- To visualize the 10D vectors used in this process, vectors are reduced
- to 2D points using principle component (PC) analysis to preserve as much
- of the variability of the higher-dimensional data as possible.
- Similar vectors thus map to points that are close together in these plots.
- Mean values of the groups of points are given by white circles (from 
+ (from 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Eliasmith2013"
@@ -2355,21 +2263,28 @@ name "fig:alphabet_routing"
 
 \end_inset
 
-The consequences of routing information in a simple sequence of actions.
- The content of working memory is shown on top, and is determined by decoding
- spiking activity from the memory population of neurons (Equation 
+Routing information to give a sequence of actions.
+ The decoded content of working memory is shown on top.
+ This is the similarity (dot product) of the decoded vector with the (randomly
+ chosen) ideal vectors for the different letters of the alphabet (Equation
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:dec"
 
 \end_inset
 
-) and comparing that decoded value to the ideal vector for each letter (using
- a dot product).
+).
  The lower half of the graph shows spiking output from the basal ganglia
  indicating the action to perform.
+ The output from the basal ganglia is inhibitory, so the chosen action is
+ the one for which the neurons 
+\shape italic
+do not
+\shape default
+ fire.
  The 
-\begin_inset Formula $\mathbf{visual}$
+\begin_inset Formula $\mathbf{look}$
 \end_inset
 
  action takes information from visual cortex and routes it to working memory
@@ -2605,11 +2520,22 @@ name "fig:Answering-questions"
 
 \end_inset
 
-Answering two different questions starting from the same statement.
- Gray areas indicate the period during which the stimuli were presented.
- The similarity between the contents of network's output and the top 7 possible
- answers is shown.
- The correct answer is chosen in both cases after about 50ms (from 
+Question answering with neurons.
+ The indicated visual input is provided to the network during the periods
+ shaded in gray.
+ For these two examples, the same statement is provided to the network,
+ but then a different question is given.
+ The decoded vector in the output population is shown by giving its similarity
+ to the ideal vectors for the possible answers.
+ For the first question, the correct answer is 
+\begin_inset Formula $\mathbf{square}$
+\end_inset
+
+ and for the second question the correct answer is 
+\begin_inset Formula $\mathbf{circle}$
+\end_inset
+
+ (from 
 \begin_inset CommandInset citation
 LatexCommand citealp
 key "Stewart2010b"
@@ -2823,11 +2749,16 @@ name "fig:stdp-network-structure"
 
 \end_inset
 
-A network learning a 2D communication channel.
- a) The network consists of an initially random set of connections between
- the input and output populations that uses hPES to learn a desired function
- (dashed line).
- The 
+Learning a function.
+ a) Rather than solving for the ideal connection weights to compute the
+ two-dimensional identity function, we start with random connections and
+ provide an error signal from a separate neural population.
+  The hPES rule adjusts the connections between the input and output.
+ A network learning a 2D communication channel.
+ b) The network learns to approximate the desired function.
+ Over time the decoded output (solid lines) converge to the desired output
+ (dotted lines).
+ The error signal is computed by the neural population 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2835,14 +2766,7 @@ err
 \begin_inset Quotes erd
 \end_inset
 
- population calculates the difference, or error, between the input and output
- populations, and projects this signal to the output population.
- b) A sample run of the network as it learns a simple 2-dimensional communicatio
-n channel between the input and the output.
- Over time, the decoded value of the output population (solid lines) begins
- to follow the decoded value of the input population (dashed lines), meaning
- that the network has learned to represent its input values correctly (from
- 
+ as the difference between the two (from 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Eliasmith2013"
@@ -3189,19 +3113,24 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Functional and anatomical architecture of Spaun.
- (a) Functional architecture of Spaun.
- The working memory, visual input, and motor output components represent
- hierarchies that compress/decompress neural representations between different
- representational spaces.
- The action selection component chooses which action to execute given the
- current state of the rest of the system.
- The five internal subsystems, from left to right, are used to 1) map visual
- inputs to conceptual representations, 2) induce relationships between represent
-ations, 3) associate input with reward, 4) map conceptual representations
- to motor actions, and 5) map motor actions to specific patterns of movement.
- (b) Corresponding neuroanatomical architecture, with matching colors and
- line styles indicating corresponding components.
+The functional and anatomical architecture of Spaun.
+ (a) A breakdown of the separate logical components within Spaun and their
+ connections.
+ The working memory, visual input, and motor output components are typical
+ hierarchies as per Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:SPA-subsystem-interface"
+
+\end_inset
+
+, while the other components compute functions of these representations.
+ From left to right, these 1) map visual inputs to conceptual representations,
+ 2) induce relationships between representations, 3) associate input with
+ reward, 4) map conceptual representations to motor actions, and 5) map
+ motor actions to specific patterns of movement.
+ (b) The corresponding neuroanatomical architecture, with matching colors
+ and line styles indicating corresponding components.
  Abbreviations: V1/V2/V4 (primary/secondary/extrastriate visual cortex),
  AIT/IT (anterior/inferotemporal cortex), DLPFC/VLPFC/OFC (dorso-lateral/ventro-
 lateral/orbito- frontal cortex), PPC (posterior parietal cortex), M1 (primary
@@ -3320,14 +3249,22 @@ status open
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Recordings from Spaun performing the serial recall task.
- The top row (a and b) shows Spaun's experimental environment.
- The internal processing of the model is shown in the thought bubbles as
- the spiking activity of a component overlaid with the information represented
- by those spikes.
- The brain surface itself shows spatially arranged firing rates.
- a) Spaun observing and processing inputs.
- b) Spaun moving its arm to draw a response.
+Spaun performing a serial recall task.
+ Spaun must remember and then write out the sequence 
+\begin_inset Quotes eld
+\end_inset
+
+0, 1, 5, 8, 7, 3
+\begin_inset Quotes erd
+\end_inset
+
+.
+ It has never seen this particular sequence before.
+ a) A snapshot of Spaun while it is seeing the third digit in the list.
+ b) A snapshot of Spaun while it is writing its result.
+ The internal processing of the model is shown in thought bubbles with decoded
+ values overlaid on the spiking activity.
+ Colours on the brain image show overall firing rates in different regions.
  c) The neural spiking activity of various components of the model (see
  Figure
 \begin_inset space ~
@@ -3343,9 +3280,9 @@ reference "fig:spaunarchitecture"
  for details).
  In this particular trial Spaun makes a mistake, forgetting the digit in
  the middle of the list (just as human subjects often do).
- The spiking activity in DLPFC and the corresponding decoded information
- reveal the cause of this mistake, showing the representation of the 8 position
- decaying.
+ The spiking activity in DLPFC is decoded to reveal the cause of this mistake
+ (the vector stored in memory has become too dissimilar to the ideal representat
+ion of an 8).
 \end_layout
 
 \end_inset
@@ -3455,7 +3392,14 @@ ions [references: Neurogrid, SpiNNafer] are examining the possibilities
 On the cognitive side, there is clearly still much more to be done.
  Our current work is to expand the input capabilities of Spaun, including
  basic linguistic processing, so that it can be instructed to perform new
- tasks [ref: CogSci conf papers (Xuan's and Terry's)].
+ tasks 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "stewart2013,choo2013"
+
+\end_inset
+
+.
  The reinforcement learning capabilities are being expanded for more complex
  domains, including features such as second-order conditioning [ref: Carter].
  We are also making the motor control system much richer, handling the quick
