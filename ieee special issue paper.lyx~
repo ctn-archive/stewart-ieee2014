@@ -2108,12 +2108,12 @@ not
  chosen, the relevant interconnections are all strongly inhibited, stopping
  the intermediate neurons from firing.
  If they do not fire, their input to their target populations will be zero,
- so they will be unaffected.
+ so they will not route their input signal to the target.
  This matches closely with the connectivity and inhibition characteristics
  found in the mammalian brain.
  The basal ganglia thus control the exploitation of cortical resources by
- selecting appropriate motor and cognitive actions, based entirely on representa
-tions available in cortex itself.
+ selecting appropriate motor and cognitive actions, based on representations
+ available in cortex itself.
  
 \end_layout
 
@@ -2189,54 +2189,99 @@ key "Eliasmith2013"
 \end_layout
 
 \begin_layout Standard
-With this system in place, we can now build cognitive control systems.
- In particular, this network is ideally suited for neurally implementing
- something akin to a 
+Using this architecture, we can implement a controlled cognitive system.
+ To understand how this structure operates, we can begin by thinking of
+ it as a neural implementation of a 
 \shape italic
 production system
 \shape default
-, the standard tool used for explaining human cognition.
- These are large sets of IF-THEN rules, where at any moment in time only
- one of those rules should be active (depending on which rule's IF condition
- best matches the current situation).
- The THEN part of the rule indicates the cognitive action that should be
- taken (moving information from vision to working memory, modifying the
- information, moving information from working memory to the speech areas,
- and so on).
- Importantly, psychologists have consistently found that the human brain
- requires approximately 50 milliseconds to select and execute an action.
- This same timing is found in our neural implementation [reference], where
- the timing is due to the neurotransmitter time constants found in the cortex,
- basal gangla, and thalamus.
+, a standard approach for explaining human cognition (although the SPA is
+ more computationally powerful 
+\begin_inset CommandInset citation
+LatexCommand cite
+after " chp. 7"
+key "Eliasmith2013"
+
+\end_inset
+
+).
+ A production system consists of a large set of IF-THEN rules.
+ At any moment in time only one of those rules can be active (determined
+ by which rule's IF condition best matches the current situation).
+ When a rule 
+\begin_inset Quotes eld
+\end_inset
+
+fires
+\begin_inset Quotes erd
+\end_inset
+
+, the THEN part of that rule is taken to indicate the cognitive action that
+ should be taken (e.g., moving information from the visual system to working
+ memory, modifying certain information, moving information from working
+ memory to the speech areas, etc.).
+ Psychologists have consistently inferred from behaviour that the human
+ brain requires approximately 50 milliseconds to select and execute such
+ a cognitive action 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Anderson2007"
+
+\end_inset
+
+.
+ Similar timing is found in our neural implementation 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Stewart2010a"
+
+\end_inset
+
+, but in that case the timing is due to the neurotransmitter time constants
+ measured from the relevant physiological characteristics of neurons.
 \end_layout
 
 \begin_layout Standard
-To form this implementation, we generalize the IF portion of a rule to be
- a utility calculation, and the THEN portion of the rule to be a routing
- control signal.
- As an example, the following rule says that if the visual system currently
- contains a letter (i.e.
+In building this neural architecture, we generalize the IF portion of a
+ rule to be a utility calculation, and the THEN portion of the rule to be
+ a routing control signal.
+ As an example, consider the following rule: 
+\end_layout
+
+\begin_layout Quotation
+\begin_inset Formula $U_{i}=\mathbf{visual}\cdot(\mathbf{A+B+C+D+...)}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+\begin_inset Formula $R_{i}:\mathbf{visual\rightarrow memory}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $U_{i}$
+\end_inset
+
+ is the utility of the 
+\begin_inset Formula $i$
+\end_inset
+
+th rule and 
+\begin_inset Formula $R_{i}$
+\end_inset
+
+ is the routing implemented by that rule.
+ This rule says that if the visual system currently contains a letter (i.e.,
  any of the semantic pointers for A, B, C, D, and so on), then remember
  that letter.
  Note that even if the vector stored in the visual field is not exactly
  one of these letters, this rule will still have a high utility and will
  be chosen by the basal ganglia (assuming no other rule has a higher utility).
-\end_layout
-
-\begin_layout Quotation
-UTILITY: 
-\begin_inset Formula $\mathbf{visual}\cdot(\mathbf{A+B+C+D+...)}$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Quotation
-ROUTING: 
-\begin_inset Formula $\mathbf{visual\rightarrow memory}$
-\end_inset
-
-
 \end_layout
 
 \begin_layout Standard
@@ -2254,23 +2299,21 @@ if the item in memory is G, then replace it with H
 \end_layout
 
 \begin_layout Quotation
-UTILITY: 
-\begin_inset Formula $\mathbf{memory}\cdot\mathbf{G}$
+\begin_inset Formula $U_{i}=\mathbf{memory}\cdot\mathbf{G}$
 \end_inset
 
 
 \end_layout
 
 \begin_layout Quotation
-ROUTING: 
-\begin_inset Formula $\mathbf{H\rightarrow memory}$
+\begin_inset Formula $R_{i}:\mathbf{H\rightarrow memory}$
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-The result of this system can be seen in Figure 
+The result of simulating this simple system can be seen in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:alphabet_routing"
@@ -2309,7 +2352,7 @@ name "fig:alphabet_routing"
 
 The consequences of routing information in a simple sequence of actions.
  The contents of working memory are shown on top, and is indicated by decoding
- spiking activity from the memory population of neurons (via Equation
+ spiking activity from the memory population of neurons (via Equation 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "eq:dec"
@@ -2376,7 +2419,7 @@ to indicate that there is a blue circle and a red square.
 \end_layout
 
 \begin_layout Standard
-we want the system to respond with the vector for 
+we expect the system to respond with the vector for 
 \begin_inset Formula $\mathbf{square}$
 \end_inset
 
