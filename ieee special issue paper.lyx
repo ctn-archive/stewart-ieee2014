@@ -87,8 +87,8 @@ In this paper we review the theoretical and software tools used to construct
  SPA and is implemented using the NEF.
  Spaun performs eight different perceptual, motor, and cognitive tasks using
  2.5 million spiking neurons.
- Spaun does not change between tasks, while capturing a wide variety of
- behavioral and neural data.
+ Spaun captures a wide variety of behavioral and neural data, and does not
+ need to be manually changed to switch tasks.
  Throughout we discuss the software tool Nengo, which allows for the synthesis
  and simulation of neural models efficiently on the scale of Spaun, and
  provides support for constructing models using the NEF and the SPA.
@@ -127,7 +127,7 @@ In this paper, we describe the methodology and tools we have developed for
 
 \begin_layout Standard
 The theoretical frameworks and software tools we describe in this paper
- are general-purpose, in that they are suitable for the creation of further
+ are general-purpose, in that they are suitable for the creation of other
  biologically realistic spiking neuron models capable of cognitive processing.
  We begin in section 2 with the Neural Engineering Framework, a 
 \begin_inset Quotes eld
@@ -140,7 +140,7 @@ neural compiler
  capable of taking a vector-based description of a system (and its dynamics)
  and converting it into a spiking neural network.
  In section 3 we describe the Semantic Pointer Architecture, a method for
- taking cognitive algorithms and converting them into a vector-based description
+ taking cognitive algorithms and converting them into vector-based descriptions
  consistent with mammalian neurobiological constraints.
  Sections 2 and 3 both end with descriptions of our open-source software
  that implements these ideas, Nengo.
@@ -244,7 +244,7 @@ key "Litt2008u"
 \end_inset
 
 .
- We have also taken into account biological constraints such a Dale's Principle
+ We have also taken into account biological constraints such as Dale's Principle
  
 \begin_inset CommandInset citation
 LatexCommand citep
@@ -340,10 +340,10 @@ key "Stewart2011a"
 \end_layout
 
 \begin_layout Standard
-For the NEF, we generalize this idea to all neural populations.
- In particular, we quantify this by stating that the total current going
- into a neuron will be proportional to the dot product of the vector to
- be represented, 
+For the NEF, we generalize this concept to all neural populations.
+ In particular, we quantify it by stating that the total current going into
+ a neuron will be proportional to the dot product of the vector to be represente
+d, 
 \begin_inset Formula $\mathbf{x}$
 \end_inset
 
@@ -528,7 +528,7 @@ NEF encoding of a two-dimensional signal using four neurons.
 
 \begin_layout Standard
 Given an encoding operation, it is natural to define a decoding operation,
- in order to characterizing the information processing characteristics of
+ in order to characterize the information processing characteristics of
  the system (in this case an ensemble of neurons).
  For reasons that will be apparent in a moment, we use a 
 \shape italic
@@ -669,13 +669,13 @@ values, while noisy lines represent the estimate
 \end_layout
 
 \begin_layout Standard
-While decoders are useful for visualizing the information encoded within
- the activity of a group of neurons, they also provide a direct way to solve
- for connection weights between groups of neurons.
+While linear decoders are useful for visualizing the information encoded
+ within the activity of a group of neurons, they also provide a direct way
+ to solve for connection weights between groups of neurons.
  This is a key advantage of the NEF: rather than using a learning rule to
  optimize over the entire space of all connection weights, we instead solve
- the simpler problem of optimizing over the space of decoders, and then
- use that result to solve for the connection weights.
+ the simpler problem of optimizing over the space of linear decoders, and
+ then use that result to solve for the connection weights.
  Importantly, given the characterization of neural activity with preferred
  direction vectors, there is no difference between using this smaller space
  and using the equivalent full connection matrix.
@@ -956,7 +956,7 @@ key "jonas1993quantal"
 
 \end_inset
 
-) and ~100ms (NMDA; 
+) up to ~100ms (NMDA; 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "sah1990properties"
@@ -1112,7 +1112,7 @@ These three principles are sufficient to implement all of our neural models.
  However, to simplify the process of constructing these models, we have
  developed an open-source software package known as Nengo (Neural ENGineering
  Objects) that creates and runs these models.
- Models can be created in Nengo using a drag-and-drop graphical user interface
+ Models can be built in Nengo using a drag-and-drop graphical user interface
  or specified using the Python scripting language.
  Full details and documentation can be found online at http://nengo.ca, and
  in other publications 
@@ -1260,7 +1260,7 @@ reference "fig:SPA-subsystem-interface"
 .
  This core structure can be used for vision, audition, motor control, working
  memory, pattern completion, and so on.
- The details, of course, vary by function as discussed below.
+ The details, of course, vary by function, as discussed below.
 \end_layout
 
 \begin_layout Standard
@@ -1531,9 +1531,8 @@ chase(cats, mice)
 .
  The majority of theories that attempt to explain human cognition rely on
  the ability to store and manipulate these representations.
- However, the problem of whether, or how, neurons could possibly perform
- such manipulations has lead to a long-standing debate in cognitive science
- 
+ However, the problem of how neurons could possibly perform such manipulations
+ has lead to a long-standing debate in cognitive science 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Fodor1988p"
@@ -1825,9 +1824,9 @@ To unbind vectors (i.e., to extract information out of a sentence), the same
 \end_layout
 
 \begin_layout Standard
-As noted above, this method for representing structured information allows
- us to perform symbol-like manipulations: building larger structures out
- of basic vectors and extracting (approximations of) those vectors.
+This method for representing structured information allows us to perform
+ symbol-like manipulations: building larger structures out of basic vectors
+ and extracting (approximations of) those vectors.
  However, the fact that these representations are vectors rather than symbols
  adds new functionality beyond that of standard symbol systems.
  In particular, we have shown that these representations can be used to
@@ -1870,7 +1869,8 @@ across
 
 .
  This type of pattern completion has proven difficult to do computationally
- without simply giving a computer a set of patterns to look for.
+ without simply giving a computer a set of pre-determined patterns to look
+ for.
  However, semantic pointers allow the system to induce the pattern.
  To solve this problem with semantic pointers, each item is converted into
  a structured representation as above, then the transformation between each
@@ -1898,41 +1898,31 @@ next
 \end_inset
 
  the following is computed:
-\begin_inset Formula 
-\[
-\mathbf{T_{1}}=\mathbf{P_{2}}\circledast\mathbf{P_{1}}'
-\]
+\end_layout
 
+\begin_layout Quotation
+\begin_inset Formula $\mathbf{T_{1}}=\mathbf{P_{2}}\circledast\mathbf{P_{1}}'$
 \end_inset
 
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\[
-\mathbf{T_{2}}=\mathbf{P_{3}}\circledast\mathbf{P_{2}}'
-\]
-
-\end_inset
-
-
-\begin_inset Formula 
-\[
-\mathbf{T}=\frac{1}{2}(\mathbf{T_{1}}+\mathbf{T_{2}})
-\]
-
+\begin_layout Quotation
+\begin_inset Formula $\mathbf{T_{2}}=\mathbf{P_{3}}\circledast\mathbf{P_{2}}'$
 \end_inset
 
 
 \end_layout
 
-\begin_layout Standard
-\begin_inset Formula 
-\[
-\mathbf{P_{4}}=\mathbf{P_{3}}\circledast\mathbf{T}
-\]
+\begin_layout Quotation
+\begin_inset Formula $\mathbf{T}=\frac{1}{2}(\mathbf{T_{1}}+\mathbf{T_{2}})$
+\end_inset
 
+
+\end_layout
+
+\begin_layout Quotation
+\begin_inset Formula $\mathbf{P_{4}}=\mathbf{P_{3}}\circledast\mathbf{T}$
 \end_inset
 
 
@@ -1983,7 +1973,7 @@ seven, six, four
 \end_inset
 
  we can represent it as the vector 
-\begin_inset Formula $\mathbf{M}=\mathbf{seven\circledast P1+six\circledast P2+four\circledast P3}$
+\begin_inset Formula $\mathbf{M}=\mathbf{seven\circledast item1+six\circledast item2+four\circledast item3}$
 \end_inset
 
 .
@@ -2004,6 +1994,15 @@ working memory
 
 \series default
  (i.e., an integrator).
+ This will hold its value over time given no input (
+\series bold
+
+\begin_inset Formula $\mathbf{u}=0$
+\end_inset
+
+
+\series default
+).
  However, in order to use such a component effectively, we need to have
  a means of routing the output of one component to the input of another
  component, depending on task demands.
@@ -2039,8 +2038,8 @@ utility
 \end_layout
 
 \begin_layout Standard
-To compute similarity, we use the dot product implemented direction in connectio
-n weights, as it is a linear operator and easily computed with the NEF.
+To compute similarity, we use the dot product (implemented via the NEF in
+ the connection weights), as it is a linear operator and easily computed.
  Unfortunately, determining the maximum value over the elements in a vector
  turns out to be difficult to do in neurons.
  If we use the NEF to directly compute this function, the neural approximation
@@ -2049,7 +2048,7 @@ n weights, as it is a linear operator and easily computed with the NEF.
  solution that, for only 100 actions, requires more neurons than exist in
  the human brain.
  We have thus adopted an approximation of the maximum function that can
- be more efficiently computed using neurons.
+ be more efficiently computed.
 \end_layout
 
 \begin_layout Standard
@@ -2113,7 +2112,7 @@ key "Gurney2001"
  Thus, these models are in exactly the form needed for use with the NEF.
  As a result, we have extended these models to create a biologically realistic
  spiking implementation that can process high-dimensional representations.
- The result is a close approximation to a maximum operation, but one where
+ This gives a close approximation to a maximum operation, but one where
  there are some situations where more than one action is selected, and some
  where no actions are selected (although these are rare occurrences and
  are only seen when actions have highly similar utilities).
@@ -2325,10 +2324,11 @@ th rule and
 \begin_inset Formula $R_{i}$
 \end_inset
 
- is the routing implemented by that rule.
+ is the routing that should occur when this rule's utility is higher than
+ all the other utility values.
  The utility calculation for this rule consists of taking the dot product
  between what ever is currently represented in the visual system, and the
- sum of already known representations of letters A-Z.
+ sum of already known representations of the letters A-Z.
  This means the utility will be high if there is a letter in the visual
  system, and low otherwise.
  If utility is high, this rule is likely to be selected and then the resulting
@@ -2695,7 +2695,7 @@ Question answering with neurons.
  shaded in gray.
  For these two examples, the same statement is provided to the network,
  but then a different question is given.
- The decoded vector in the output population is shown by giving its similarity
+ The decoded vector from the output population is shown by giving its similarity
  to the ideal vectors for the possible answers.
  For the first question, the correct answer is 
 \begin_inset Formula $\mathbf{square}$
@@ -2733,7 +2733,7 @@ key "Beckmann1997"
 
 \end_inset
 
- found in the input nucleus of the basal ganglia (i.e., striatum) gives an
+ found in the input nucleus of the basal ganglia (i.e., striatum) give an
  upper bound of around one million rules for human cognition.
  Determining what these rules may be is a significant, outstanding research
  question, but we believe that the action selection system described here
@@ -3250,8 +3250,8 @@ Nevertheless, one key feature of Spaun is that it can use its neural components
 tell
 \shape default
  Spaun to change tasks.
- Since the only input to Spaun is its 28x28 visual field, we present the
- letter 
+ Since the only input to Spaun is its 28x28 visual field, we do this by
+ presenting the letter 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3265,28 +3265,28 @@ A
 \end_layout
 
 \begin_layout Quotation
-\begin_inset Formula $U_{i}=\mathbf{visual\cdot A}$
+\begin_inset Formula $U_{1}=\mathbf{visual\cdot A}$
 \end_inset
 
 
 \end_layout
 
 \begin_layout Quotation
-\begin_inset Formula $R_{i}:\mathbf{NONE\rightarrow task}$
+\begin_inset Formula $R_{1}:\mathbf{NONE\rightarrow task}$
 \end_inset
 
 
 \end_layout
 
 \begin_layout Quotation
-\begin_inset Formula $U_{i}=(\mathbf{visual\cdot(ZERO+ONE+TWO+...)+task\cdot NONE})/2$
+\begin_inset Formula $U_{2}=(\mathbf{visual\cdot(ZERO+ONE+TWO+...)+task\cdot NONE})/2$
 \end_inset
 
 
 \end_layout
 
 \begin_layout Quotation
-\begin_inset Formula $R_{i}:\mathbf{visual\rightarrow task}$
+\begin_inset Formula $R_{2}:\mathbf{visual\rightarrow task}$
 \end_inset
 
 
@@ -3471,7 +3471,7 @@ reference "fig:spikeplot"
 \end_inset
 
 c shows spiking activity of several parts of the model.
- Of particular note is DLPFC (dorsolateral prefrontal cortex), where Spaun
+ Of particular note is DLPFC (dorso-lateral prefrontal cortex), where Spaun
  is storing the list.
  The list is stored as a vector, using semantic pointers as described in
  section 
@@ -3645,8 +3645,8 @@ Combined, these approaches provide a novel method for creating large-scale
  but also on low-level neural measurements, such as firing patterns in different
  brain areas.
  This provides strong constraints on theories of brain function.
- In particular, we find that overall reaction time is strongly connected
- with the neurotransmitter time constants.
+ For example, we find that overall reaction time is strongly connected with
+ the neurotransmitter time constants.
  Understanding these cognitive processes can lead to new possibilities for
  treating neural disorders, from Alzheimer's Disease and Parkinson's Disease
  to stroke and other brain traumas.
