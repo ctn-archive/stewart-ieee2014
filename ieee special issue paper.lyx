@@ -1825,8 +1825,132 @@ To unbind vectors (i.e., to extract information out of a sentence), the same
 \end_layout
 
 \begin_layout Standard
-[TODO: note that this can be used for pattern matching -- combining advantages
- of symbol manipulations and vectors -- Raven's Matrices]
+As noted above, this method for representing structured information allows
+ us to perform symbol-like manipulations: building larger structures out
+ of basic vectors and extracting (approximations of) those vectors out again.
+ However, the fact that these representations are still vectors adds new
+ functionality over and above that of standard symbol systems.
+ In particular, we have shown that this provides a natural method for doing
+ pattern matching 
+\shape italic
+across
+\shape default
+ structured information.
+ For example, given the sequence 
+\begin_inset Quotes eld
+\end_inset
+
+3
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+33
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+333
+\begin_inset Quotes erd
+\end_inset
+
+, a person can quickly conclude that the next item is 
+\begin_inset Quotes eld
+\end_inset
+
+3333
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This type of pattern completion is very difficult to do computationally
+ without simply giving a computer a set of types of patterns to look for.
+ To solve this problem with semantic pointers, we simply convert each item
+ into a structured represenation, find the transformations between each
+ vector, and average them together.
+ This gives a new transformation that can be applied to the last item to
+ give the next in the sequence.
+ That is, if the three items in the pattern are
+\begin_inset Formula $\mathbf{P_{1}},$
+\end_inset
+
+
+\begin_inset Formula $\mathbf{P_{2}},$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathbf{P_{3}},$
+\end_inset
+
+ then we compute the following:
+\begin_inset Formula 
+\[
+\mathbf{T_{1}}=\mathbf{P_{2}}\circledast\mathbf{P_{1}}'
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbf{T_{2}}=\mathbf{P_{3}}\circledast\mathbf{P_{2}}'
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\mathbf{T}=\frac{1}{2}(\mathbf{T_{1}}+\mathbf{T_{2}})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mathbf{P_{4}}=\mathbf{P_{3}}\circledast\mathbf{T}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We have shown [ref: Dan's stuff] that this basic method for producing 
+\begin_inset Formula $\mathbf{P_{4}},$
+\end_inset
+
+ a prediction of the next item in the list, matches well to human performance
+ on Raven's Progressive Matrices, the leading measure of general fluid intellige
+nce.
+ All of these steps are easy to implement using neurons via the NEF, and
+ the result is not only the first neural explanation of this cognitive behaviour
+, but also the first explanation in any form which does not 
+\begin_inset Quotes eld
+\end_inset
+
+build in
+\begin_inset Quotes erd
+\end_inset
+
+ a large set of different pattern types.
+ The key advantage here is that semantic pointers can not only contain structure
+d information, but can also be meaningful as a vector, in that operations
+ such as averaging across structures becomes meaningful.
 \end_layout
 
 \begin_layout Subsection
