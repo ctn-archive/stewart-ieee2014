@@ -3725,18 +3725,6 @@ options "plain"
 \end_layout
 
 \begin_layout Biography
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-{Terrence C.
- Stewart}
-\end_layout
-
-\end_inset
-
- 
 \begin_inset Argument
 status open
 
@@ -3752,81 +3740,18 @@ status open
 
 \end_inset
 
- recieved a B.A.Sc degree in systems design engineering at the University
- of Waterloo in 1999, an M.Phil degree in computer science and artificial
- intelligence at Sussex University in 2000 and a Ph.D.
- degree in cognitive science from Carleton University in 2007.
-\end_layout
-
-\begin_layout Biography
-He is a post-doctoral research associate with the Centre for Theoretical
- Neuroscience at the University of Waterloo, in Waterloo, Canada.
- His core interests are in understanding human cognition by building biologicall
-y realistic neural simulations, and he is currently focusing on language
- processing and motor control.
-\end_layout
-
-\begin_layout Biography
-Dr.
- Stewart is a Behavioral & Brain Sciences Associate, a member of the Cognitive
- Science Society, and a founding member of the Biologically Inspired Cognitive
- Architecture society.
- He also co-chaired the 2013 International Conference on Cognitive Modelling,
- held in Ottawa, Canada.
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace smallskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Biography
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-{Chris Eliasmith}
-\end_layout
-
-\end_inset
-
-
-\series bold
-
-\begin_inset Argument
-status open
-
-\begin_layout Plain Layout
-
-\series bold
-\begin_inset Graphics
-	filename n1cjV7o.png
-	lyxscale 50
-	scale 23
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\series default
- received a B.A.Sc.
- degree in systems design engineering in 1994 and a M.A.
+Terrence C.
+ Stewart his B.A.Sc.
+ degree in systems design engineering in 1994 and his M.A.
  degree in philosophy in 1995 from the University of Waterloo.
- He received a Ph.D.
+ H received his his Ph.D.
  degree in philosophy from Washington University in St.
  Louis in 2000.
 \end_layout
 
 \begin_layout Biography
-From 2000-2001 he was a postdocoral researcher with Charlie Anderson in
- David van Essen's lab at Washington University Medical School.
+From 2000-2001 he was a postdoc with Charlie Anderson in David van Essen's
+ lab at Washington University Medical School.
  Since then he has been an assistant, associate, and full professor at the
  University of Waterloo.
  He is currently Director of the Centre for Theoretical Neuroscience at
@@ -3840,6 +3765,122 @@ From 2000-2001 he was a postdocoral researcher with Charlie Anderson in
 Professor Eliasmith holds a P.Eng designation, is associate editor for the
  journal Cognitive Science, and a member of the Society for Neuroscience,
  the Canadian Philosophical Association, and the Society for Cognitive Science.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{IEEEbiography}[{
+\backslash
+includegraphics[scale=0.1]{n1cjV7o.png}}] Author1 Biography 
+\backslash
+end{IEEEbiography}  
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Biography
+Chris 
+\series bold
+
+\begin_inset Argument
+status collapsed
+
+\begin_layout Plain Layout
+
+\series bold
+\begin_inset Graphics
+	filename n1cjV7o.png
+	lyxscale 25
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\series default
+ Eliasmith received his B.A.Sc.
+ degree in systems design engineering in 1994 and his M.A.
+ degree in philosophy in 1995 from the University of Waterloo.
+ He received his his Ph.D.
+ degree in philosophy from Washington University in St.
+ Louis in 2000.
+\end_layout
+
+\begin_layout Biography
+From 2000-2001 he was a postdoc with Charlie Anderson in David van Essen's
+ lab at Washington University Medical School.
+ Since then he has been an assistant, associate, and full professor at the
+ University of Waterloo.
+ He is currently Director of the Centre for Theoretical Neuroscience at
+ the University of Waterloo and holds a Canada Research Chair in Theoretical
+ Neuroscience.
+ He has authored or coauthored two books and over 90 publications in philosophy,
+ psychology, neuroscience, computer science, and engineering venues.
+\end_layout
+
+\begin_layout Biography
+Professor Eliasmith holds a P.Eng designation, is associate editor for the
+ journal Cognitive Science, and a member of the Society for Neuroscience,
+ the Canadian Philosophical Association, and the Society for Cognitive Science.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{IEEEbiography}[{
+\backslash
+includegraphics[scale=0.1]{n1cjV7o.png}}] {Chris Eliasmith} received his B.A.Sc.
+ degree in systems design engineering in 1994 and his M.A.
+ degree in philosophy in 1995 from the University of Waterloo.
+ He received his his Ph.D.
+ degree in philosophy from Washington University in St.
+ Louis in 2000.
+\end_layout
+
+\begin_layout Plain Layout
+
+From 2000-2001 he was a postdoc with Charlie Anderson in David van Essen's
+ lab at Washington University Medical School.
+ Since then he has been an assistant, associate, and full professor at the
+ University of Waterloo.
+ He is currently Director of the Centre for Theoretical Neuroscience at
+ the University of Waterloo and holds a Canada Research Chair in Theoretical
+ Neuroscience.
+ He has authored or coauthored two books and over 90 publications in philosophy,
+ psychology, neuroscience, computer science, and engineering venues.
+\end_layout
+
+\begin_layout Plain Layout
+
+Professor Eliasmith holds a P.Eng designation, is associate editor for the
+ journal Cognitive Science, and a member of the Society for Neuroscience,
+ the Canadian Philosophical Association, and the Society for Cognitive Science.
+ 
+\backslash
+end{IEEEbiography}  
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body
