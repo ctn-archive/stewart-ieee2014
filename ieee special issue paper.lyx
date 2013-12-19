@@ -567,7 +567,7 @@ Any optimization method can be used to find these decoders.
  The simplest is to use standard least-squares optimization:
 \begin_inset Formula 
 \begin{equation}
-E=\frac{1}{2}\int[\mathbf{x}-\sum_{i}a_{i}(\mathbf{x)}\mathbf{d}_{i}]^{2}d\mathbf{x}\label{eq:error}
+\underset{\mathbf{d}_{i}}{arg\, min}\int[\mathbf{x}-\sum_{i}^{N}a_{i}(\mathbf{x)}\mathbf{d}_{i}]^{2}d\mathbf{x}\label{eq:error}
 \end{equation}
 
 \end_inset
@@ -845,7 +845,7 @@ reference "eq:error"
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-E=\frac{1}{2}\int[f(\mathbf{x})-\sum_{i}a_{i}(\mathbf{x)}\mathbf{d}_{i}^{f}]^{2}d\mathbf{x}.\label{eq:error-fcns}
+\underset{\mathbf{d}_{i}^{f}}{arg\, min}\int[f(\mathbf{x})-\sum_{i}a_{i}(\mathbf{x)}\mathbf{d}_{i}^{f}]^{2}d\mathbf{x}.\label{eq:error-fcns}
 \end{equation}
 
 \end_inset
@@ -941,10 +941,14 @@ While the first two principles are sufficient to build neural approximations
  current that flows into the second neuron is a low-pass-filtered version
  of that spike.
  In particular, the post-synaptic current is well-approximated by 
-\begin_inset Formula $h(t)=e^{-t/\tau}$
+\begin_inset Formula $h(t)=u(t)e^{-t/\tau}$
 \end_inset
 
-, where 
+, where
+\begin_inset Formula $u(t)$
+\end_inset
+
+ is the step function and 
 \begin_inset Formula $\tau$
 \end_inset
 
@@ -982,17 +986,70 @@ key "sah1990properties"
 \end_layout
 
 \begin_layout Standard
-We can use the intrinsic dynamics of a neural connection to compute other
- dynamics by adding a connection from a neural population back to itself.
- This recurrent connection determines the network dynamics.
- We have shown 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Eliasmith2003m,Eliasmith2013"
-
+It turns out that this implicit low-pass filter can be used to generate
+ neural models that compute abitrary dynamics.
+ Given a neural population representing 
+\begin_inset Formula $\mathbf{x}$
 \end_inset
 
- that neurons can approximate 
+, an input 
+\begin_inset Formula $\mathbf{u}(t)$
+\end_inset
+
+, and a feedback connection from 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ back to itself computing 
+\begin_inset Formula $g(\mathbf{x}(t))$
+\end_inset
+
+, we note that in the Laplace domain we get 
+\begin_inset Formula $\mathbf{X}(s)=(\mathbf{G}(s)+\mathbf{U}(s))H(s)$
+\end_inset
+
+.
+ Since the Laplace transform of 
+\begin_inset Formula $h(t)=u(t)e^{-t/\tau}$
+\end_inset
+
+ is 
+\begin_inset Formula $H(s)=1/(1+s\tau)$
+\end_inset
+
+, we can rearrange this to get 
+\begin_inset Formula $s\mathbf{X}(s)=(\mathbf{G}(s)-\mathbf{X}(s))/\tau+\mathbf{U}(s)/\tau$
+\end_inset
+
+.
+ Converting back to the time domain, 
+\series bold
+
+\begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}\frac{g(\mathbf{x}(t))-\mathbf{x}(t)}{\tau}+\frac{\mathbf{u}(t)}{\tau}$
+\end_inset
+
+
+\series default
+.
+ Thus, if we desire the dynamics 
+\series bold
+
+\begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}f(\mathbf{x}(t))+\mathbf{u}(t)$
+\end_inset
+
+
+\series default
+, we introduce a feedback connection that uses the previous two NEF principles
+ to find connection weights that compute 
+\begin_inset Formula $g(\mathbf{x}(t))=\tau f(\mathbf{x})+\mathbf{x}$
+\end_inset
+
+ and we scale the input by 
+\begin_inset Formula $\frac{1}{\tau}$
+\end_inset
+
+.
+ For arbitrary dynamics of the form 
 \series bold
 
 \begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}f(\mathbf{x},\mathbf{u})$
@@ -1000,19 +1057,12 @@ key "Eliasmith2003m,Eliasmith2013"
 
 
 \series default
- by using the previous two NEF principles to find connection weights that
- compute this function:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-\tau f(\mathbf{x},\mathbf{u})+\mathbf{x}\label{eq:dyn-feedback}
-\end{equation}
-
+, we do a change of variables 
+\begin_inset Formula $\mathbf{x}^{\prime}=\langle\mathbf{x},\mathbf{u}\rangle$
 \end_inset
 
-
+.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -1020,10 +1070,6 @@ key "Eliasmith2003m,Eliasmith2013"
 wide false
 sideways false
 status open
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \align center
@@ -1056,17 +1102,23 @@ Two dynamical systems implemented with the NEF.
 
 \end_layout
 
-\begin_layout Plain Layout
-
-\end_layout
-
 \end_inset
 
 
 \end_layout
 
 \begin_layout Standard
-Figure 
+This exploitation of the inherent first-order low-pass filter found in synaptic
+ connections allows for the implementation of a very wide variety of systems,
+ including oscillators, integrators, and arbitrary attractor networks 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2005p"
+
+\end_inset
+
+.
+ Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Two-dynamical-systems"
@@ -1099,9 +1151,9 @@ b we show the classic Lorenz attractor
 
 \series default
 .
- As a result of this process, the NEF allows for the construction of neural
- models that correspond to a very large family of functions, including those
- typically employed by modern control theory and dynamic systems theory.
+ This approach allows for the construction of neural models that correspond
+ to a very large family of functions, including those typically employed
+ by modern control theory and dynamic systems theory.
 \end_layout
 
 \begin_layout Subsection
