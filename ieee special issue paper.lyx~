@@ -74,7 +74,8 @@ Terrence C.
 
 \begin_layout Abstract
 In this paper we review the theoretical and software tools used to construct
- Spaun, currently the largest functional brain model.
+ Spaun, the first (and so far only) brain model capable of performing cognitive
+ tasks.
  Specifically, we discuss the Neural Engineering Framework (NEF), a mathematical
  theory that provides methods for systematically generating biologically
  plausible spiking networks to implement nonlinear and linear dynamical
@@ -107,8 +108,12 @@ In this paper, we describe the methodology and tools we have developed for
  building large-scale systems from simulated spiking neurons.
  In particular, we describe two theoretical tools (the Neural Engineering
  Framework and the Semantic Pointer Architecture) and one software suite
- (Nengo) that we used to construct what is currently the world's largest
- brain model capable of performing a variety of tasks.
+ (Nengo) that we used to construct what is currently the world's first 
+\emph on
+functional
+\emph default
+ brain model (i.e.
+ one that is capable of performing a variety of cognitive tasks).
  This model, which we refer to as the Semantic Pointer Architecture Unified
  Network (or Spaun), consists of 2.5 million simulated spiking neurons whose
  properties and interconnections are consistent with those found in the
@@ -763,7 +768,7 @@ For example, if a connection between neural groups is meant to compute the
  between individual neurons are given by 
 \begin_inset Formula 
 \begin{equation}
-\omega_{ij}=\mathbf{d}_{i}\alpha_{j}\mathbf{e}_{j}\label{eq:weights}
+\omega_{ij}=\alpha_{j}\mathbf{d}_{i}\mathbf{e}_{j}\label{eq:weights}
 \end{equation}
 
 \end_inset
@@ -925,7 +930,7 @@ reference "eq:weights"
 \end_inset
 
 ).
- For linear functions
+ For the special case of linear functions
 \series bold
  
 \begin_inset Formula $f(\mathbf{x})=\mathbf{L}\mathbf{x}$
@@ -933,13 +938,17 @@ reference "eq:weights"
 
 
 \series default
- we can put 
+, rather than solving for a new decoder, we can simply put 
 \begin_inset Formula $\mathbf{L}$
 \end_inset
 
- directly into the weight equation itself, rather than solving for a new
- decoder.
- In general, the neural connection weights needed to compute the function
+ directly into the weight equation itself, resulting in 
+\begin_inset Formula $\omega_{ij}=\alpha_{j}\mathbf{d}_{i}\mathbf{L}\mathbf{e}_{j}$
+\end_inset
+
+.
+ Combining these two approaches, the neural connection weights needed to
+ approximate the function
 \series bold
  
 \begin_inset Formula $\mathbf{y=L}f(\mathbf{x\textrm{)}}$
@@ -1107,8 +1116,12 @@ It turns out that this implicit low-pass filter can be used to generate
 \begin_inset Formula $g(\mathbf{x}(t))=\tau f(\mathbf{x})+\mathbf{x}$
 \end_inset
 
- and we scale the input by 
-\begin_inset Formula $\frac{1}{\tau}$
+ and we scale the input 
+\begin_inset Formula $\mathbf{u}(t)$
+\end_inset
+
+ by 
+\begin_inset Formula $\tau$
 \end_inset
 
 .
@@ -1198,6 +1211,35 @@ a shows a single neural population with a recurrent feedback connection
 
 \series default
 .
+ Here, the post-synapic time constant 
+\begin_inset Formula $\tau$
+\end_inset
+
+ is 100ms, but the period of oscillation is 
+\begin_inset Formula $2/\pi$
+\end_inset
+
+.
+ Importantly, we achieve different periods of oscillation without changing
+ the neural property 
+\begin_inset Formula $\tau$
+\end_inset
+
+; rather, we change the function being computed by the feedback connection,
+ resulting in a different set of connection weights.
+ For example, we could compute 
+\series bold
+
+\begin_inset Formula $\mathbf{\frac{\mathrm{d}x}{\mathrm{dt}}=}[-x_{2}/2,-x_{1}/2]$
+\end_inset
+
+
+\series default
+, giving a period of 
+\begin_inset Formula $1/\pi$
+\end_inset
+
+, instead.
  This same method works for nonlinear functions as well; in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1217,6 +1259,22 @@ b we show the classic Lorenz attractor
  This approach allows for the construction of neural models that correspond
  to a very large family of functions, including those typically employed
  by modern control theory and dynamic systems theory.
+\end_layout
+
+\begin_layout Standard
+It should be noted that networks constructed with this approach are fundamentall
+y different from Echo State Networks and Liquid State Machines.
+ In both of those approaches, the recurrent connections are randomly chosen,
+ and then a linear combination of the outputs are found that compute the
+ desired function.
+ With the NEF, we also find a linear combination of the outputs (
+\begin_inset Formula $\mathbf{d}_{i}$
+\end_inset
+
+), but we solve for the ideal recurrent connection weights to achieve the
+ desired dynamics.
+ This makes the NEF much more efficient and capable of computing a much
+ wider range of dynamics.
 \end_layout
 
 \begin_layout Subsection
@@ -1648,7 +1706,7 @@ chase(cats, mice)
  The majority of theories that attempt to explain human cognition rely on
  the ability to store and manipulate these representations.
  However, the problem of how neurons could possibly perform such manipulations
- has lead to a long-standing debate in cognitive science 
+ has been a long-standing problem in cognitive science 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Fodor1988p"
@@ -1660,7 +1718,11 @@ key "Fodor1988p"
 \end_layout
 
 \begin_layout Standard
-The approach we take is to define two different compression operators 
+The approach we present here is speculative, but is the only approach we
+ know of that is both flexible enough for us to develop large-scale cognitive
+ models and implementable within known biological constraints [REF: Compositiona
+lity paper].
+ This approach is based on two different compression operators 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Plate1994,Stewart2011a"
@@ -1769,13 +1831,30 @@ Importantly, we also need to reverse (i.e.
 
 
 \series default
-.
+ (i.e.
+ something that what bound with 
+\series bold
+
+\begin_inset Formula $\mathbf{S}$
+\end_inset
+
+
+\series default
+ will produce 
+\series bold
+
+\begin_inset Formula $\mathbf{chase}$
+\end_inset
+
+
+\series default
+).
 \end_layout
 
 \begin_layout Standard
 There are a number of different vector operations that can fulfill the role
- of a binding operator, and this family of approaches are known as Vector
- Symbolic Architectures (VSAs) 
+ of the binding and inverse operators, and this family of approaches are
+ known as Vector Symbolic Architectures (VSAs) 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Gayler2003l"
@@ -2160,7 +2239,7 @@ d information, but can also be manipulated using vector operations (e.g.
 \end_layout
 
 \begin_layout Subsection
-Control
+Cognitive Control: Action Selection and Execution
 \end_layout
 
 \begin_layout Standard
@@ -2173,7 +2252,7 @@ seven, six, four
 \begin_inset Quotes erd
 \end_inset
 
- we can represent it as the vector 
+ we can represent the vector 
 \begin_inset Formula $\mathbf{M}=\mathbf{seven\circledast item1+six\circledast item2+four\circledast item3}$
 \end_inset
 
@@ -2204,28 +2283,32 @@ working memory
 
 \series default
 ).
- However, in order to use such a component effectively, we need to have
- a means of routing the output of one component to the input of another
- component, depending on task demands.
+ However, in order to make use of such a component within a larger cognitive
+ system, we need a method for controlling the inputs and outputs to this
+ component.
+ However, we cannot do this by having connections between components appear
+ and disappear at different times during the simulation: real biological
+ synaptic connections do not change so quickly.
+ Rather, we need a biologically plausible method for selectively routing
+ the output of one component to the input of another component, depending
+ on task demands.
+ We call these routings 
+\begin_inset Quotes eld
+\end_inset
+
+actions
+\begin_inset Quotes erd
+\end_inset
+
+, but note that they can be both physical actions and cognitive actions
+ (moving vectors from one area of the brain to another).
 \end_layout
 
 \begin_layout Standard
 This control problem can be broken down into two parts: action selection
  (determining which routing is appropriate right now) and action execution
  (implementing the routing).
- For action selection, we have adopted a biologically plausible approach
- available for a vector-based representation: monitor the current state
- of the system (the outputs from all the processing components in cortex)
- and determine the similarity between this state and the 
-\begin_inset Quotes eld
-\end_inset
-
-preferred
-\begin_inset Quotes erd
-\end_inset
-
- states for each available action.
- This similarity is considered to be the 
+ For action selection, we take the standard approach of computing the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2233,10 +2316,81 @@ utility
 \begin_inset Quotes erd
 \end_inset
 
- of the action.
- Whichever state has the highest utility is the action to be selected.
- To compute similarity, we use the dot product (implemented via the NEF
- in the connection weights), as it is a linear operator and easily computed.
+ of each action (how good it would be to perform this action in the current
+ context) and then choosing the action with the highest utility.
+ If different brain areas contain the current cognitive states 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+, 
+\begin_inset Formula $\mathbf{y}$
+\end_inset
+
+, and 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ then we can use the NEF to compute the utility of an action 
+\begin_inset Formula $i$
+\end_inset
+
+ of the form 
+\begin_inset Formula $U_{i}=f(\mathbf{x})+g(\mathbf{y})+h(\mathbf{z})$
+\end_inset
+
+.
+ This can be done using equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:weights-general"
+
+\end_inset
+
+ and connection weights coming from the neural populations encoding 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+, 
+\begin_inset Formula $\mathbf{y}$
+\end_inset
+
+, and 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+.
+ Note that if we want the more general 
+\begin_inset Formula $U_{i}=f(\mathbf{x},\mathbf{y},\mathbf{z})$
+\end_inset
+
+ we can achieve this by forming a new neural group representing 
+\begin_inset Formula $\mathbf{q}=\langle\mathbf{x},\mathbf{y},\mathbf{z}\rangle$
+\end_inset
+
+and making connections from the original areas to the new area.
+ However, for the models discussed here we find that most of the time the
+ functions needed to compute utility are extremely simple linear function
+ such as 
+\begin_inset Formula $U_{i}=\mathbf{L}\cdot\mathbf{x}$
+\end_inset
+
+ where 
+\series bold
+
+\begin_inset Formula $\mathbf{L}$
+\end_inset
+
+
+\series default
+ is a vector and 
+\series bold
+
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+
+\series default
+ is the state stored in a particular brain area.
  
 \end_layout
 
@@ -2574,7 +2728,7 @@ th rule and
  is the routing that should occur when this rule's utility is higher than
  all the other utility values.
  The utility calculation for this rule consists of taking the dot product
- between what ever is currently represented in the visual system, and the
+ between whatever is currently represented in the visual system, and the
  sum of already known representations of the letters A-Z.
  This means the utility will be high if there is a letter in the visual
  system, and low otherwise.
@@ -2587,18 +2741,76 @@ th rule and
  Note that even if the vector stored in the visual field is not exactly
  one of these letters, this rule will still have a high utility and will
  be chosen by the basal ganglia (assuming no other rule has a higher utility).
+ To implement this rule, we form connections between the 
+\series bold
+
+\begin_inset Formula $\mathbf{visual}$
+\end_inset
+
+
+\series default
+ neural population and the neurons in the basal ganglia representing the
+ input utility of the 
+\begin_inset Formula $i$
+\end_inset
+
+th rule.
+ These connections are set using the NEF to compute the linear function
+ 
+\begin_inset Formula $U_{i}=\mathbf{visual}\cdot(\mathbf{A+B+C+D+...)}$
+\end_inset
+
+.
+ To implement the effect of the rule, we add neurons to the thalamus that
+ simply take in the value from the 
+\series bold
+
+\begin_inset Formula $\mathbf{visual}$
+\end_inset
+
+
+\series default
+ neurons and output that same value to the 
+\series bold
+
+\begin_inset Formula $\mathbf{memory}$
+\end_inset
+
+
+\series default
+ neurons (computing the identity function each time).
+ A purely inhibitory connection is then made from the 
+\begin_inset Formula $i$
+\end_inset
+
+th output of the basal ganglia to these new neurons in the thalamus.
+ Thus, when this action is 
+\emph on
+not
+\emph default
+ chosen (i.e.
+ when it is not the action with the highest utility), the output from the
+ basal ganglia will inhibit these neurons, stopping the information from
+ passing through.
+ When the action is chosen, this inhibition is released, allowing the effect
+ of the rule to occur.
 \end_layout
 
 \begin_layout Standard
 Note that despite our characterization of the functioning of the system
  as implementing a rule, it is doing something much more computationally
  powerful.
- Because the vectors are high dimensional, normalized, and comparisons are
- being made with a dot product, we can think of the utility mapping as being
- statistical inference.
- Since the routing determined by the rule is a result of a maximization
- calculation, we can think of traversal through the whole loop as being
- a kind of expectation maximization (see 
+ The particular cases mentioned here only make use of linear functions to
+ compute 
+\begin_inset Formula $U_{i}$
+\end_inset
+
+, but the NEF allows for nonlinear functions as well.
+ Furthermore, the action selection system gives a more flexible comparison
+ system than the strict if-and-only-if approach seen in standard production
+ systems.
+ Indeed, this same system can be used for Bayesian expectation maximization
+ (see 
 \begin_inset CommandInset citation
 LatexCommand cite
 after " chp. 7"
@@ -3390,7 +3602,7 @@ The previous sections described our general approach to building large-scale
  that need to be computed by a cognitive system; 2) build neural components
  that implement those functions; and 3) determine how to route information
  between the components using the basal ganglia to provide integrated function.
- This approach has recently allowed us to build what is currently the largest
+ This approach has recently allowed us to build what is currently the first
  brain model that is capable of performing cognitive tasks.
  The resulting 2.5 million neuron model is called the Semantic Pointer Architectu
 re Unified Network, or 
@@ -3919,7 +4131,7 @@ To make these theoretical ideas more practically useful, we have also briefly
  use the NEF to solve for the connection weights needed, run the resulting
  model, and collect the results.
  Nengo has also been shown to scale up well, as it was used to create Spaun,
- the world's largest functional brain simulation, with 2.5 million neurons
+ the world's first functional brain simulation, with 2.5 million neurons
  and over 60 billion synapses.
 \end_layout
 

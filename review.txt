@@ -37,29 +37,37 @@ I have real concerns that a broader audience may *heavily* over interpret the cl
  - ADDED CLARIFICATION ON THIS TO INTRO
 
 "This is exactly the sort of mistake typically made by people, and is part of how we validate our models. After all, to accurately model human cognition Spaun should make the same sort of mistakes as people do." Please cut this.   Just because Spaun makes mistakes with memory, doesn't mean it's similar to the human brain.  Almost all the statements like this should be removed.  The state of neuroscience isn't nearly far along for these statements to be meaningful, and they are deeply misleading.
+ - WEAKENED CLAIM, AND CITED CHOO2010
 
 "It has been shown to reproduce spike patterns in the basal ganglia during a reinforcement learning task, single neuron tuning curves found in primary visual cortex, population spectrogram shifts during a working memory task, recognition accuracy on naturalistic stimuli (i.e., handwritten digits), and reaction times during a counting task [14].
 Are all of these the same [14] citation? If not, please cite them all. Assuming they do come from [14], the problem is that this citations are coming from a book by the main author of the review, not a peer reviewed journal read by neuroscientists.  It is therefore difficult to know if these statements should be taken at face value.  For this reason, it is very difficult for me to find these statements reasonable to admit. Perhaps [14] is just a summary citation.  If so, then the original citations for the peer-reviewed articles should be used for these examples.
+ - CLARIFIED AND CITED (mostly in the Science paper)
 
 "The Semantic Pointer Architecture suggests a means of organizing neural models consistent with contemporary neuroscience".  While true to some extent, again this is a meaningless statement due to the state of neuroscience.  I think it should be cut because it is deeply misleading.
-
+ - CLARIFIED THAT THIS IS JUST A SUGGESTION, and noted that there are no other known ways to do this
+ 
 For my part, I think the authors do themselves a disservice to use a metric such as "the largest functional brain model" as a way to distinguish themselves.  My experience of computational neuroscience is that those who distinguish themselves as having the largest simulation almost always have the least to offer scientifically.  This group most certainly does not fall into this camp, which is why "largest model" seems a disservice.  Honestly, I'm not sure how to address my concern but I encourage the authors to think about it. As a pro in the field, I hate the idea that the complexity of model the simulation can achieve (something akin to Kolmogorov complexity) is being routinely swapped out for the largest number of neurons a model has (something akin to who has the bigger computers, i.e. who has more money).  The Kolmogorov complexity of the European Blue Brain project is "spit out the string '01' a billion times", despite the gajillion components and multi-component neurons contained in the model.  Switzerland has rolling brown outs and the Blue Brain has epilepsy.  Nice.
-
+ - WE DEFINITELY AGREE.  "LARGEST" has been replaced with "FIRST", with a highlight on the "FUNCTIONAL" aspect.
+ 
 The section on "B. Control" needs to be massaged pretty heavily, I think. Perhaps even rewritten. Despite several attempts, I could not get more than a vague idea of what was being communicated.  This seems like the neatest, most new thinking related to SPA/Spaun so the effort would be worth it to improve it substantially.
 
 While the NEF is explained regarding how one codes up a simple y = L x type of vector function, I think it would be nice to have a paragraph like "putting it altogether" for SPA/Spaun.  How are all the bits of spaun successfully glued together in terms of the nuts and bolts?  The authors have explained how the system is intended to work, but not how it put together.  Is it really just NEF over and over again?  Even stating that would be a statement of the power of the framework.
 
 The section on dynamics was unclear to me.  I understand the point about synaptic filtering, but the next paragraph doesn't sew it all together for me.  Perhaps I would understand it better if the connection of equation (7) to the derivative dx/dt was made clear, or perhaps the least squares error function was also defined.  Dynamics can be baffling to some, so I hope this gets a better treatment.
-
+ - ADDED DERIVATION OF EQ(7)
+ 
 MINOR POINTS
 
 "originally identified in the motor system..."  The idea of neural tuning (e.g. preferred directions) go back to Hubel and Weisel with respect to orientation tuning (orientation in 2D space is a vector, no?).  If you are referring to something more complex than Figure 1d, it should be made more clear.
 
 "For linear functions f(x) = Lx, we can put L directly .... In general, the neural connection weights needed to compute the function y = Lf(x) are:"   Is f(x) the linear function on the vector space x, i.e. f(x) = L x?  I thought y = f(x), so y = L x, so I don't understand y = L f(x). in the next sentence.  Please make clearer.
+ - CLARIFIED AND REORGANIZED A BIT
 
 My intuition is that the dynamics principle boils down to the Echostate architecture, in which the desired dynamical output is decoded and then fed back in to the network.  If I'm right, it should be cited or compare and contrast.  If I'm wrong, please ignore this point.
-
+ - I HOPE THE CHANGES TO THE DYNAMICS SECTION HELP WITH THIS POINT.  ADDED EXPLICIT NOTE COMPARING ECHO STATE/LSM TO NEF
+ 
 Please put time scales on the figures with time.  This is important for figure 4a, where it would be interesting to note oscillation period (and the number of neurons and which neurotransmitters were used).
+ - CLARIFIED THE OSCILLATION PERIOD
 
 Something with figure 5 (or 4?) is very wrong.  It has somehow grown so large as to hide the caption of Figure 5.
 
@@ -68,32 +76,39 @@ The idea of semantic pointers seems very similar to semantic hashing. You mentio
 There is a citation missing [?] at the top of page 5, second column.
 
 I think the "hypothesis" about structured information should be moved to the top of the structure section, or reiterated there.  This is highly speculative stuff.
+ - FAIR ENOUGH.  ADDED.
 
 In the structure section, you write "where verb' is the inverse of verb".  I get the general idea of what you are proposing but I don't understand this statement.  Aren't verb and verb' vectors, in which case what is the inverse, and in what sense?  I guess you are defining the inverse as S bind verb' pulls out chase. If so, then I'm curious how one finds verb and verb'.  Perhaps the inverse bit below (involution, etc., should be moved up and expanded a bit?)
+ - CLARIFIED INVERSE, ADDED DISCUSSION OF CIRCULAR CORRELATION
 
 I did not find figure 6 particularly helpful.  I understand that it builds off of figure 5, but I could not understand the point, other than "encoded stuff goes places".
 
 In figure 7, the caption says that "... 38 randomly chosen neurons in the Bind population are shown", but there is a small "C" in the title of the subfigure.
 
 I did not understand the mechanics of the generalization of 3->33->333-> at all.  I guess T1 = 3 and T2 = 3 and T = 3 So P4 = 333 bind 3?
+ - ADDED CLARIFICATION
 
 The section "B. Control" I think would be better labeled "Action selection and action execution".  The authors previously mentioned control in the sense of traditional control theory (e.g. controlling a plant) previously, so I wan't ready for this new concept of control.
-
+ - CHANGED TITLE
 I did not understand the paragraph with "monitor the current state of the system and determine the similarity between this state and the preferred states for each action. I didn't understand what a "preferred state" was.  It should probably be defined and a very simple example given.
-
+ - MODIFIED DESCRIPTION (PART OF EXTENSIVE REWORKING)
+ 
 The connection anatomical explanation of the basal ganglia didn't make sense coming right after something about not being able to compute the max in NEF.
-
+ - REWORKED
+ 
 In the paragraph starting "To execute the actions chosen by this mechanism", there is a confusion of terminology in which neuroanatomical terms: basal ganglia, cortex, etc. are used to describe *model* components.  I think this usage of exact neuroanatomical terms to describe model components should be avoided as it can only serve to cause confusion.  This happens here and there in the manuscript, also. The same is true of Figure 8, especially given the diagram it  is confusing.  How about "model of the thalamus" instead of "thalamus", etc.?
 
 The "thalamus" of the model was never defined or described but it being used in this paragraph.
 
 
 "Psychologists have consistently inferred from behavior... in that case the timing is due to the neurotransmitter time constants."  This is pretty far fetched.  The section is already complicated.  My suggestion is to remove it.
-
+ - I'D LIKE TO KEEP THIS, AS IT'S A PRETTY SURPRISING RESULT.
+ 
 Page 11 would not print on my printer.  It's a pretty good printer, so I imagine there may be something wrong with the figure on the page or perhaps the figure is too large.
 
 "we can think of the utility mapping as being statistical inference." Huh?  From wikipedia I have, "statistical inference is the process of drawing conclusions from data that are subject to random variation". The manuscript has not defined any noise model anywhere.  The notion of probability hasn't been defined whatsoever.  Please expand or remove.
-
+ - REMOVED AND SIMPLIFIED
+ 
 One basic thing I could not figure out is if the rules are held as vectors or as connection weights.
 
 "The NEF allows very large-scale neural models to be built via optimization, rather than through online or batch learning, as is standard for neural network research."  I think this terminology is incorrect.  Surely, most neural network researchers are optimizing their networks with either online or batch learning routines.  Perhaps you mean by optimization a closed-form least squares operation?
