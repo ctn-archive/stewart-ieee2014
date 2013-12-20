@@ -2043,6 +2043,43 @@ key "Rasmussena,Rasmussen201"
 \end_inset
 
 , the leading measure of general intelligence.
+ In the case of the sequence 
+\begin_inset Quotes eld
+\end_inset
+
+3
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+33
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+333
+\begin_inset Quotes erd
+\end_inset
+
+, the result is approximately 
+\begin_inset Formula $\mathbf{three\circledast item1+three\circledast item2+three\circledast item3+three\circledast item4}$
+\end_inset
+
+, or 
+\begin_inset Quotes eld
+\end_inset
+
+3333
+\begin_inset Quotes erd
+\end_inset
+
+.
  The necessary steps are natural to implement in neurons using the NEF,
  and the result is not only the first neural explanation of this cognitive
  behavior, but also the first explanation in any form which does not 
@@ -2135,25 +2172,59 @@ utility
 
  of the action.
  Whichever state has the highest utility is the action to be selected.
+ To compute similarity, we use the dot product (implemented via the NEF
+ in the connection weights), as it is a linear operator and easily computed.
  
 \end_layout
 
 \begin_layout Standard
-To compute similarity, we use the dot product (implemented via the NEF in
- the connection weights), as it is a linear operator and easily computed.
- Unfortunately, determining the maximum value over the elements in a vector
- turns out to be difficult to do in neurons.
- If we use the NEF to directly compute this function, the neural approximation
- is highly inaccurate.
- Making it more accurate by increasing the number of neurons leads to a
- solution that, for only 100 actions, requires more neurons than exist in
- the human brain.
- We have thus adopted an approximation of the maximum function that can
- be more efficiently computed.
+Determining which utility value is the largest is, however, more complicated.
+ The most obvious approach is to take the vector of all utilities for each
+ action 
+\series bold
+
+\begin_inset Formula $\mathbf{U}$
+\end_inset
+
+
+\series default
+ and compute the function 
+\series bold
+
+\begin_inset Formula $max(\mathbf{U})$
+\end_inset
+
+
+\series default
+.
+ Unfortunately, this function turns out to be difficult for neurons to approxima
+te, requiring more neurons than exist in the human brain for a vector of
+ only 100 actions.
+ Another approach is to build a Winner-Take-All system by implementing the
+ dynamical system 
+\series bold
+
+\begin_inset Formula $\mathbf{\frac{\mathrm{d}U_{i}}{\mathrm{dt}}=}\mathbf{U}_{i}-\sum_{i\neq j}\mathbf{U}_{j}$
+\end_inset
+
+
+\series default
+.
+ This approach, however, requires a fair bit of time, as the system must
+ wait for the value 
+\series bold
+
+\begin_inset Formula $\mathbf{U}$
+\end_inset
+
+
+\series default
+ to settle to a stable equillibrium.
+ 
 \end_layout
 
 \begin_layout Standard
-Specifically, such a function seems to be computed in the brain by the basal
+For our models, we have chosen an alternate approach based on the basal
  ganglia, a highly interconnected cluster of brain areas found underneath
  the neocortex and near the thalamus.
  This brain area has been consistently implicated in the ability to choose

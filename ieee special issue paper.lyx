@@ -2071,6 +2071,14 @@ key "Rasmussena,Rasmussen201"
 \begin_inset Formula $\mathbf{three\circledast item1+three\circledast item2+three\circledast item3+three\circledast item4}$
 \end_inset
 
+, or 
+\begin_inset Quotes eld
+\end_inset
+
+3333
+\begin_inset Quotes erd
+\end_inset
+
 .
  The necessary steps are natural to implement in neurons using the NEF,
  and the result is not only the first neural explanation of this cognitive
@@ -2164,25 +2172,59 @@ utility
 
  of the action.
  Whichever state has the highest utility is the action to be selected.
+ To compute similarity, we use the dot product (implemented via the NEF
+ in the connection weights), as it is a linear operator and easily computed.
  
 \end_layout
 
 \begin_layout Standard
-To compute similarity, we use the dot product (implemented via the NEF in
- the connection weights), as it is a linear operator and easily computed.
- Unfortunately, determining the maximum value over the elements in a vector
- turns out to be difficult to do in neurons.
- If we use the NEF to directly compute this function, the neural approximation
- is highly inaccurate.
- Making it more accurate by increasing the number of neurons leads to a
- solution that, for only 100 actions, requires more neurons than exist in
- the human brain.
- We have thus adopted an approximation of the maximum function that can
- be more efficiently computed.
+Determining which utility value is the largest is, however, more complicated.
+ The most obvious approach is to take the vector of all utilities for each
+ action 
+\series bold
+
+\begin_inset Formula $\mathbf{U}$
+\end_inset
+
+
+\series default
+ and compute the function 
+\series bold
+
+\begin_inset Formula $max(\mathbf{U})$
+\end_inset
+
+
+\series default
+.
+ Unfortunately, this function turns out to be difficult for neurons to approxima
+te, requiring more neurons than exist in the human brain for a vector of
+ only 100 actions.
+ Another approach is to build a Winner-Take-All system by implementing the
+ dynamical system 
+\series bold
+
+\begin_inset Formula $\mathbf{\frac{\mathrm{d}U_{i}}{\mathrm{dt}}=}\mathbf{U}_{i}-\sum_{i\neq j}\mathbf{U}_{j}$
+\end_inset
+
+
+\series default
+.
+ This approach, however, requires a fair bit of time, as the system must
+ wait for the value 
+\series bold
+
+\begin_inset Formula $\mathbf{U}$
+\end_inset
+
+
+\series default
+ to settle to a stable equillibrium.
+ 
 \end_layout
 
 \begin_layout Standard
-Specifically, such a function seems to be computed in the brain by the basal
+For our models, we have chosen an alternate approach based on the basal
  ganglia, a highly interconnected cluster of brain areas found underneath
  the neocortex and near the thalamus.
  This brain area has been consistently implicated in the ability to choose
@@ -2225,9 +2267,9 @@ key "Lieberman2006,Lieberman2007"
 \end_layout
 
 \begin_layout Standard
-Modeling the anatomical and physiological structure of the basal ganglia
- has led to algorithms that effectively approximate the maximum function
- 
+The anatomical and physiological structure of the basal ganglia suggests
+ that it computes a particular dynamical system which effectively approximates
+ the maximum function 
 \begin_inset CommandInset citation
 LatexCommand citep
 key "Gurney2001"
@@ -2235,17 +2277,29 @@ key "Gurney2001"
 \end_inset
 
 .
- In such models, the input to the basal ganglia is a vector of the utility
- of each action, and the output is a vector indicating which action to pick.
- Each connection between areas of the basal ganglia computes some simple
- function on a vector.
- Thus, these models are in exactly the form needed for use with the NEF.
- As a result, we have extended these models to create a biologically realistic
- spiking implementation that can process high-dimensional representations.
- This gives a close approximation to a maximum operation, but one where
- there are some situations where more than one action is selected, and some
- where no actions are selected (although these are rare occurrences and
- are only seen when actions have highly similar utilities).
+ The input is exactly the vector 
+\series bold
+
+\begin_inset Formula $\mathbf{U}$
+\end_inset
+
+
+\series default
+ described above, the list of utilities for each action.
+ The output is a vector of the same length, but which is zero for largest
+ element in 
+\series bold
+
+\begin_inset Formula $\mathbf{U}$
+\end_inset
+
+
+\series default
+ and positive for the other elements.
+ By implementing this dynamical system using the NEF, we achieve a biologically
+ realistic spiking implementation of action selection that gives a close
+ approximation to a maximum operation with a reasonable number of neurons
+ and which responds quickly to changing inputs.
  For further details, see 
 \begin_inset CommandInset citation
 LatexCommand citet
