@@ -211,7 +211,7 @@ neural compiler
  taking cognitive algorithms and converting them into vector-based descriptions
  consistent with mammalian neurobiological constraints.
  Sections 2 and 3 both end with descriptions of our open-source software
- that implements these ideas, Nengo.
+ Nengo that implements these ideas.
  Finally, in section 4 we show how these tools work can be used in concert
  to produce Spaun.
  Material throughout this paper is adapted from 
@@ -260,7 +260,7 @@ ed in biologically realistic ways.
  Importantly, the high-level algorithms must be expressed in terms of vectors
  and functions on those vectors (including ordinary differential equations).
  The resulting neural networks approximate the desired functions, and the
- accuracy of this approximation can be made arbitrarily small by increasing
+ error of this approximation can be made arbitrarily small by increasing
  the number of neurons.
  This makes the NEF ideal for expressing algorithms typically seen in domains
  such as control theory, and determining their relevance to brain function.
@@ -366,7 +366,7 @@ preferred direction vector
 
 .
  In the brain many neurons have a particular stimulus (or response) for
- which they will fire most quickly.
+ which they will fire most strongly.
  As the stimulus (or response) changes to become less similar to the preferred
  vector, the neuron will fire less quickly.
  This was originally identified in the motor system 
@@ -1420,235 +1420,6 @@ semantic pointers.
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-A generic schematic of a particular cognitive component can be seen in Figure
- 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:SPA-subsystem-interface"
-
-\end_inset
-
-.
- This core structure can be used for vision, audition, motor control, working
- memory, pattern completion, and so on.
- The details, of course, vary by function, as discussed below.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename SPA-subsystem-interface.eps
-	width 3.5in
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:SPA-subsystem-interface"
-
-\end_inset
-
- A generic component within the Semantic Pointer Architecture.
- Inputs are generally presented at the bottom interface, and the module
- preforms some function(s) on the input to create a compressed representation.
- The action selection system (described below) can take these results, transform
- them, and route them to other components.
- Many components can also be run in reverse, computing an (approximate)
- inverse operation, which decompresses or dereferences the pointer.
- This provides for hierarchical, structured representation and cognitive
- processing.
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:the-entire-SPA"
-
-\end_inset
-
- combines these basic components together with a control system.
- The separate components can be thought of as physically distinct areas
- of the brain, each of which can perform one type of operation on its inputs.
- The control system is responsible for ensuring that the right information
- is routed to the right component at the right time.
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename the-entire-SPA.eps
-	width 3.5in
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:the-entire-SPA"
-
-\end_inset
-
-A general schema for Semantic Pointer Architecture models.
- A full SPA model consists of multiple components as in Figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:SPA-subsystem-interface"
-
-\end_inset
-
-.
- Dark black lines are projections carrying semantic pointer representations
- between parts of the system, while thinner lines indicate control and error
- signals.
- 
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The 
-\begin_inset Quotes eld
-\end_inset
-
-semantic pointers
-\begin_inset Quotes erd
-\end_inset
-
- used by the SPA are compressed representations, where the compression 
-\shape italic
-maintains similarity information
-\shape default
-.
- That is, semantic pointers are vectors that are formed by taking input
- vector(s) and producing a lower-dimensional representation of the original
- high-dimensional representation.
- While this compression is assumed to be 
-\begin_inset Quotes eld
-\end_inset
-
-lossy
-\begin_inset Quotes erd
-\end_inset
-
-, it is generally possible to recover the original high-dimensional representati
-on (or something very similar).
- Because of this compression/decompression relationship, similar inputs
- will produce similar outputs.
-\end_layout
-
-\begin_layout Standard
-In short, semantic pointers are compact ways of referencing large amounts
- of data; consequently they function similarly to 
-\begin_inset Quotes eld
-\end_inset
-
-pointers
-\begin_inset Quotes erd
-\end_inset
-
- as understood in computer science.
- Typically, in computer science a 
-\begin_inset Quotes eld
-\end_inset
-
-pointer
-\begin_inset Quotes erd
-\end_inset
-
- is the address of some large amount of data stored in memory.
- Pointers are easy to transmit, manipulate and store, so they can act as
- an efficient proxy for the data they point to.
- Semantic pointers provide the same kind of efficiency benefits in a neural
- setting.
-\end_layout
-
-\begin_layout Standard
-Unlike pointers in computer science, however, semantic pointers are 
-\emph on
-semantic
-\emph default
-.
- That is, they are systematically related to the information that they are
- used to reference.
- This means that semantic pointers carry similarity information that is
- derived from their source, in contrast to an arbitrary index that does
- not contain semantic information, as generally used in modern computers.
- 
-\end_layout
-
-\begin_layout Standard
-In our models, we use a variety of compression operations.
- For vision (and other sensory modalities), we learn this compression from
- the structure of the sensory input.
- This is the same approach taken by vision researchers who use Deep Belief
- Networks 
-\begin_inset CommandInset citation
-LatexCommand cite
-key "Hinton2006,Tang2010"
-
-\end_inset
-
-.
- However, for cognitive operations such as combining concepts together into
- structured representations, we use a particular mathematical function,
- as discussed in the next section.
- Importantly, this function (circular convolution) is straightforward for
- neurons to accurately compute given the NEF described above (section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:The-Neural-Engineering"
-
-\end_inset
-
-).
- 
 \end_layout
 
 \begin_layout Subsection
@@ -3449,6 +3220,268 @@ key "Eliasmith2013"
 \end_layout
 
 \begin_layout Subsection
+The Overall Architecture
+\end_layout
+
+\begin_layout Standard
+The previous sections detail how to make models of particular neural areas
+ that perform particular cognitive functions such as memory (integration)
+ or the binding operation (circular convolution).
+ It also describes how these components may encorporate learning, and how
+ the the flow of information between the components can be controlled.
+ The result is a general cognitive architecture where every component can
+ be implemented in neurons.
+ 
+\end_layout
+
+\begin_layout Standard
+When we design such systems, we have found that the models of particular
+ neural areas (or modules) are all of a particular form, shown in Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:SPA-subsystem-interface"
+
+\end_inset
+
+.
+ This core structure can be used for vision, audition, motor control, working
+ memory, pattern completion, and so on.
+ The details of exactly what function is being computed, of course, vary
+ by brain area.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename SPA-subsystem-interface.eps
+	width 3.5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:SPA-subsystem-interface"
+
+\end_inset
+
+ A generic component within the Semantic Pointer Architecture.
+ Inputs are generally presented at the bottom interface, and the module
+ preforms some function(s) on the input to create a compressed representation.
+ The action selection system (described below) can take these results, transform
+ them, and route them to other components.
+ Many components can also be run in reverse, computing an (approximate)
+ inverse operation, which decompresses or dereferences the pointer.
+ This provides for hierarchical, structured representation and cognitive
+ processing.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:the-entire-SPA"
+
+\end_inset
+
+ combines these basic components together with a control system.
+ The separate components can be thought of as physically distinct areas
+ of the brain, each of which can perform one type of operation on its inputs.
+ The control system is responsible for ensuring that the right information
+ is routed to the right component at the right time.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename the-entire-SPA.eps
+	width 3.5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:the-entire-SPA"
+
+\end_inset
+
+A general schema for Semantic Pointer Architecture models.
+ A full SPA model consists of multiple components as in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:SPA-subsystem-interface"
+
+\end_inset
+
+.
+ Dark black lines are projections carrying semantic pointer representations
+ between parts of the system, while thinner lines indicate control and error
+ signals.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In particular, the 
+\begin_inset Quotes eld
+\end_inset
+
+semantic pointers
+\begin_inset Quotes erd
+\end_inset
+
+ used by the SPA are compressed representations, where the compression 
+\shape italic
+maintains similarity information
+\shape default
+.
+ That is, the vector for 
+\begin_inset Quotes eld
+\end_inset
+
+dogs chase cats
+\begin_inset Quotes erd
+\end_inset
+
+ will be similar to the vector for 
+\begin_inset Quotes eld
+\end_inset
+
+dogs chase cars
+\begin_inset Quotes erd
+\end_inset
+
+ (where similarity is measured as the dot product between vectors), but
+ will be much less similar to 
+\begin_inset Quotes eld
+\end_inset
+
+cats chase dogs
+\begin_inset Quotes erd
+\end_inset
+
+ and not at all similar to 
+\begin_inset Quotes eld
+\end_inset
+
+cats ignore dogs
+\begin_inset Quotes erd
+\end_inset
+
+.
+ These combined vectors are of the same length as the original vectors,
+ so there is certainly a loss of imformation in this compression of multiple
+ vectors into a single vector.
+ However, it is generally possible to recover the original high-dimensional
+ representation (or something very similar) thanks to the inverse operation.
+ Because of this compression/decompression relationship, similar inputs
+ will produce similar outputs.
+\end_layout
+
+\begin_layout Standard
+In short, semantic pointers are compact ways of referencing large amounts
+ of data; consequently they function similarly to 
+\begin_inset Quotes eld
+\end_inset
+
+pointers
+\begin_inset Quotes erd
+\end_inset
+
+ as understood in computer science.
+ Typically, in computer science a 
+\begin_inset Quotes eld
+\end_inset
+
+pointer
+\begin_inset Quotes erd
+\end_inset
+
+ is the address of some large amount of data stored in memory.
+ Pointers are easy to transmit, manipulate and store, so they can act as
+ an efficient proxy for the data they point to.
+ Semantic pointers provide the same kind of efficiency benefits in a neural
+ setting.
+ This is why we use them to transfer information between cognitive modules.
+\end_layout
+
+\begin_layout Standard
+Unlike pointers in computer science, however, semantic pointers are 
+\emph on
+semantic
+\emph default
+.
+ That is, they are systematically related to the information that they are
+ used to reference.
+ This means that semantic pointers carry similarity information that is
+ derived from their source, in contrast to an arbitrary index that does
+ not contain semantic information, as generally used in modern computers.
+ 
+\end_layout
+
+\begin_layout Standard
+Of course, we do not have to use the same compression operation everywhere.
+ For vision (and other sensory modalities), we learn this compression from
+ the structure of the sensory input.
+ This is the same approach taken by vision researchers who use Deep Belief
+ Networks 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hinton2006,Tang2010"
+
+\end_inset
+
+.
+ However, for cognitive operations such as combining concepts together into
+ structured representations, we use the circular convolution described above.
+\end_layout
+
+\begin_layout Subsection
 SPA in Nengo
 \end_layout
 
@@ -3679,8 +3712,9 @@ key "Dewolf"
 
 .
  Together, these and other components allow Spaun to cover 20 anatomical
- brain areas, while being consistent with many of the physiological properties
- of neurons found in those areas.
+ brain areas, while being consistent in terms of the large-scale connectivity
+ between and within these regions and the neurotransmitter time constants
+ observed within these regions.
  To put this in perspective, the human brain has approximately 1000 areas
  
 \begin_inset CommandInset citation
@@ -3819,7 +3853,6 @@ status open
 
 \begin_layout Plain Layout
 \align center
- 
 \begin_inset Graphics
 	filename spaunarchitecture.eps
 	width 3.5in

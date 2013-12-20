@@ -141,13 +141,19 @@ Abstract:
 
 1. Introduction:
 - Next to last sentence grammatically incorrect.
-
+    - REORDERED
+    
 2. The Neural engineering framework:
 - P1, line33, 2nd col.: (a) smaller (degree of) accuracy is opposite to (a) larger (degree of) accuracy. The sentence in the article sounds strange and expresses the opposite of what I suspect the authors wish to convey. A large degree of accuracy is better than a small degree of accuracy. I suggest rephrasing this.
+   - OOPS -- THANKS FOR CATCHING THAT
+   
 - P2, line27, 1st col.: I suggest to replace 'quickly' with 'strongly'.
-
+   - REPLACED
+   
 3. The Semantic Pointer Architecture (SPA)
 - The first paragraphs keep referring to concepts (e.g. the analogy to pointers in computer science) which are explained in paragraphs following shortly afterwards. I suspect this is again due to the fact that these paragraphs paraphrase parts of the supplementary material to Eliasmith et al. 2012. For the uninitiated reader (a likely target audience for a review paper) it would be better to reverse the order. This section of the article would also benefit from a better (more concrete) explanation of compression as understood within the SPA (see last paragraph before 'A. Structure'). I suggest to modify (reorder and partially rewrite) the first paragraphs of this section accordingly. This will benefit any reader interested in getting to know the subject.
+ - REORGANIZED, AND EXTENSIVE REWRITING
+
 - P5, line3, 2nd co.: Missing reference
 
 4. Semantic Pointer Architecture Unified Network:
