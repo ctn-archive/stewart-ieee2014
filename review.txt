@@ -110,15 +110,19 @@ Page 11 would not print on my printer.  It's a pretty good printer, so I imagine
  - REMOVED AND SIMPLIFIED
  
 One basic thing I could not figure out is if the rules are held as vectors or as connection weights.
-
+ - ADDED PARAGRAPH AFTER FIRST COMPLETE RULE SHOWING WHAT CONNECTIONS ARE MADE WHERE
+ 
 "The NEF allows very large-scale neural models to be built via optimization, rather than through online or batch learning, as is standard for neural network research."  I think this terminology is incorrect.  Surely, most neural network researchers are optimizing their networks with either online or batch learning routines.  Perhaps you mean by optimization a closed-form least squares operation?
-
+ - ADDED "analytic closed-form"
+ 
 Is the STDP rule necessary for successful operation of SPA?  You make it sound like you could swap out NEF for the hPES rule in building a large system.  I'm skeptical.  Have you actually done this?  You mention a very simple function as an example.  What is the equation for hPES for a given synapse?  If it's really not crucial to the creation / operation of the large system, then given the complexity of the rest of the material, you may be better off cutting the right column of page 9. This is just a suggestion.
 
 The sentence "This means that memories will decay over time, as expected" should be cut.  It implies that correspondence between SPA and the brain that is unfounded.
-
+  - WE BELIEVE THIS IS A WEAK ENOUGH CLAIM TO KEEP IN THE PAPER
+  
 "while being consistent with many of the physiological properties of neurons found in those areas." I doubt very much a neurophysiologist would agree with this statement.  I think it should be cut, but if you want to keep it, you should list those similarities, and cite references for each one.
-
+  - CHANGED TO "while being consistent in terms of the large-scale connectivity between and within these regions and the neurotransmitter time constants observed within these regions."
+  
 "the human brain has approximately 1000" - Missing citation [?]
 
 Some of the rules are coming of the page (U_2 = (visual \dot (ZERO + ...

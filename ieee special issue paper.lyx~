@@ -2563,7 +2563,7 @@ not
  The basal ganglia thus control the exploitation of cortical resources by
  selecting appropriate motor and cognitive actions, based on representations
  available in cortex itself.
- 
+ [TODO: improve this description of thalamus]
 \end_layout
 
 \begin_layout Standard
@@ -3210,9 +3210,9 @@ Learning
 \end_layout
 
 \begin_layout Standard
-The NEF allows very large-scale neural models to be built via optimization,
- rather than through online or batch learning, as is standard for neural
- network research.
+The NEF allows very large-scale neural models to be built via an analytic
+ closed-form optimization, rather than through online or batch learning,
+ as is standard for neural network research.
  However, complex cognitive systems exhibit adaptive behavior based on experienc
 e.
  To account for adaptation, we can use the NEF to generate the initial connectio

@@ -211,7 +211,7 @@ neural compiler
  taking cognitive algorithms and converting them into vector-based descriptions
  consistent with mammalian neurobiological constraints.
  Sections 2 and 3 both end with descriptions of our open-source software
- that implements these ideas, Nengo.
+ Nengo that implements these ideas.
  Finally, in section 4 we show how these tools work can be used in concert
  to produce Spaun.
  Material throughout this paper is adapted from 
@@ -3210,9 +3210,9 @@ Learning
 \end_layout
 
 \begin_layout Standard
-The NEF allows very large-scale neural models to be built via optimization,
- rather than through online or batch learning, as is standard for neural
- network research.
+The NEF allows very large-scale neural models to be built via an analytic
+ closed-form optimization, rather than through online or batch learning,
+ as is standard for neural network research.
  However, complex cognitive systems exhibit adaptive behavior based on experienc
 e.
  To account for adaptation, we can use the NEF to generate the initial connectio
@@ -3679,8 +3679,9 @@ key "Dewolf"
 
 .
  Together, these and other components allow Spaun to cover 20 anatomical
- brain areas, while being consistent with many of the physiological properties
- of neurons found in those areas.
+ brain areas, while being consistent in terms of the large-scale connectivity
+ between and within these regions and the neurotransmitter time constants
+ observed within these regions.
  To put this in perspective, the human brain has approximately 1000 areas
  
 \begin_inset CommandInset citation
@@ -3819,7 +3820,6 @@ status open
 
 \begin_layout Plain Layout
 \align center
- 
 \begin_inset Graphics
 	filename spaunarchitecture.eps
 	width 3.5in
