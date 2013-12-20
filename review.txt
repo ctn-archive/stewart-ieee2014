@@ -1,0 +1,163 @@
+Reviewer(s)' Comments to Author:
+Reviewer: 1
+Comments to the Author
+I very much enjoyed reading your well written manuscript. There are a few improvements I would suggest to improve clarity for the reader, and a number of minor corrections that need to be made. I will present these in order of appearance while going through the manuscript.
+
+Eq (3): E is obviously the error to minimise, but it is not defined as such, nor is (3) a statement of standard LSE optimisation. It is a statement of the error, but this is not what the sentence above the equation implies. Please rewrite the sentence or restate the equation in argmin form. Also, 'N' is missing above the sigma. The correct form is shown in Eq (2).
+ - FIXED
+
+After updating (3), (5) should also be made consistent with this.
+ - FIXED
+
+Above Eq (7): 'We have shown [15],[14] …' Do you have room to include a brief derivation here? It would save the reader from having to look at other papers. Also, it only just occurred to me, but I would normally expect numbered references to be numbered in order of appearance, not in alphabetical order. I am not certain, but suspect that the pIEEE style guide will advise the same.
+ - DERIVATION ADDED
+ 
+Fig. 4 is ill-formatted and extends across Fig 5.
+
+P5.C2.L3 & P10.C1.L57: references shown as [?]
+
+P5.C2.L56: Involution is a mathematical function that is its own inverse. How does this relate to the undefined permutation operation you use to produce S? Please clarify how you obtain the inverse. The reader also needs to understand this later to understand the calculation of T1, etc.
+ - FIXED
+ 
+P6.C2.L33: 'Determining the maximum value over the elements in a vector turns out to be difficult to do in neurons.' This statement is not clear to me. In ref [48], action selection seems to be done over a set of scalar utility values. Is this what you mean with 'the elements in a vector' in the statement above? It seems to me that this could be done with a Winner-Take-All type network, which wouldn't need that many neurons, for instance as shown in Fig 2B in [48]. I have the feeling I am missing something here, but this to me indicates that this part of your manuscript is not as clear as it should be. Again, as with understanding how to implement network dynamics (Section II.C) it would be nice to have more details in this paper, rather than to have to go and look it up elsewhere. If you need more room, I am not convinced that the Nengo code adds much to the paper (on the other hand, it also doesn't bother me, if you prefer to keep it).
+ - CLARIFIED AND EXPANDED
+
+P10.C2: Expression for U2 is clipped
+
+Figs 12b & 13a: The font size in these figures is significantly too small.
+___
+
+Reviewer: 2
+Comments to the Author
+On the whole, the review is very well written and I found it very easy to understand (excepting section B. Control).  While I know a lot about neural systems, I am not intimately familiar with the neural engineering framework.  The manuscript was written with enough detail to get the gist of the ideas while not getting bogged down in detail.  There were a couple of places I did get lost, however.  I list a number of high level points at the top, and afterwards smaller stuff that I believe would still enhance the readability of the article.  I am a big fan of this work, and I really like this article.  I want to help improve it, so I hope the authors are not dismayed by the quality or quantity of suggested improvements.
+
+MAIN CONCERNS
+
+I have real concerns that a broader audience may *heavily* over interpret the claims of biological plausibility.  While it is true that spiking neurons plus some attempts at adding biological learning rules (e.g. [34]]) add a degree of biological plausibility to the NEF and Spaun architectures, the truth of the matter is that for the most part Eliasmith and colleagues are pursuing ideas that are *far* beyond what is currently experimentally verifiable.  This is not a criticism at all, given the embryonic state of neuroscience in 2013, just a statement of fact.  For example, the semantic pointer architecture (SPA) is complete conjecture.  Sure, in a loose sense, these ideas are biologically plausible, but it doesn't mean they are anywhere close to correct.  The ideas advanced are very clever conjectures.  But only time will tell if they are right.  I would like to see this definition of biological plausibility made clear enough so that the lay audience can understand the distinction between a humble plausibility, which boils down to spiking + motivations here and there, vs. everything else, which boils down to utter conjecture.
+
+"This is exactly the sort of mistake typically made by people, and is part of how we validate our models. After all, to accurately model human cognition Spaun should make the same sort of mistakes as people do." Please cut this.   Just because Spaun makes mistakes with memory, doesn't mean it's similar to the human brain.  Almost all the statements like this should be removed.  The state of neuroscience isn't nearly far along for these statements to be meaningful, and they are deeply misleading.
+
+"It has been shown to reproduce spike patterns in the basal ganglia during a reinforcement learning task, single neuron tuning curves found in primary visual cortex, population spectrogram shifts during a working memory task, recognition accuracy on naturalistic stimuli (i.e., handwritten digits), and reaction times during a counting task [14].
+Are all of these the same [14] citation? If not, please cite them all. Assuming they do come from [14], the problem is that this citations are coming from a book by the main author of the review, not a peer reviewed journal read by neuroscientists.  It is therefore difficult to know if these statements should be taken at face value.  For this reason, it is very difficult for me to find these statements reasonable to admit. Perhaps [14] is just a summary citation.  If so, then the original citations for the peer-reviewed articles should be used for these examples.
+
+"The Semantic Pointer Architecture suggests a means of organizing neural models consistent with contemporary neuroscience".  While true to some extent, again this is a meaningless statement due to the state of neuroscience.  I think it should be cut because it is deeply misleading.
+
+For my part, I think the authors do themselves a disservice to use a metric such as "the largest functional brain model" as a way to distinguish themselves.  My experience of computational neuroscience is that those who distinguish themselves as having the largest simulation almost always have the least to offer scientifically.  This group most certainly does not fall into this camp, which is why "largest model" seems a disservice.  Honestly, I'm not sure how to address my concern but I encourage the authors to think about it. As a pro in the field, I hate the idea that the complexity of model the simulation can achieve (something akin to Kolmogorov complexity) is being routinely swapped out for the largest number of neurons a model has (something akin to who has the bigger computers, i.e. who has more money).  The Kolmogorov complexity of the European Blue Brain project is "spit out the string '01' a billion times", despite the gajillion components and multi-component neurons contained in the model.  Switzerland has rolling brown outs and the Blue Brain has epilepsy.  Nice.
+
+The section on "B. Control" needs to be massaged pretty heavily, I think. Perhaps even rewritten. Despite several attempts, I could not get more than a vague idea of what was being communicated.  This seems like the neatest, most new thinking related to SPA/Spaun so the effort would be worth it to improve it substantially.
+
+While the NEF is explained regarding how one codes up a simple y = L x type of vector function, I think it would be nice to have a paragraph like "putting it altogether" for SPA/Spaun.  How are all the bits of spaun successfully glued together in terms of the nuts and bolts?  The authors have explained how the system is intended to work, but not how it put together.  Is it really just NEF over and over again?  Even stating that would be a statement of the power of the framework.
+
+The section on dynamics was unclear to me.  I understand the point about synaptic filtering, but the next paragraph doesn't sew it all together for me.  Perhaps I would understand it better if the connection of equation (7) to the derivative dx/dt was made clear, or perhaps the least squares error function was also defined.  Dynamics can be baffling to some, so I hope this gets a better treatment.
+
+MINOR POINTS
+
+"originally identified in the motor system..."  The idea of neural tuning (e.g. preferred directions) go back to Hubel and Weisel with respect to orientation tuning (orientation in 2D space is a vector, no?).  If you are referring to something more complex than Figure 1d, it should be made more clear.
+
+"For linear functions f(x) = Lx, we can put L directly .... In general, the neural connection weights needed to compute the function y = Lf(x) are:"   Is f(x) the linear function on the vector space x, i.e. f(x) = L x?  I thought y = f(x), so y = L x, so I don't understand y = L f(x). in the next sentence.  Please make clearer.
+
+My intuition is that the dynamics principle boils down to the Echostate architecture, in which the desired dynamical output is decoded and then fed back in to the network.  If I'm right, it should be cited or compare and contrast.  If I'm wrong, please ignore this point.
+
+Please put time scales on the figures with time.  This is important for figure 4a, where it would be interesting to note oscillation period (and the number of neurons and which neurotransmitters were used).
+
+Something with figure 5 (or 4?) is very wrong.  It has somehow grown so large as to hide the caption of Figure 5.
+
+The idea of semantic pointers seems very similar to semantic hashing. You mention these references at the end of the section III, but shouldn't these citations be at the very beginning?  Perhaps you are claiming priority of the idea?  I'm not sure but if so, please cite it.  I also think it would be helpful to cite "Semantic Hashing" by Salukhutdinov and Hinton 2007, since that goes straight for the idea.
+
+There is a citation missing [?] at the top of page 5, second column.
+
+I think the "hypothesis" about structured information should be moved to the top of the structure section, or reiterated there.  This is highly speculative stuff.
+
+In the structure section, you write "where verb' is the inverse of verb".  I get the general idea of what you are proposing but I don't understand this statement.  Aren't verb and verb' vectors, in which case what is the inverse, and in what sense?  I guess you are defining the inverse as S bind verb' pulls out chase. If so, then I'm curious how one finds verb and verb'.  Perhaps the inverse bit below (involution, etc., should be moved up and expanded a bit?)
+
+I did not find figure 6 particularly helpful.  I understand that it builds off of figure 5, but I could not understand the point, other than "encoded stuff goes places".
+
+In figure 7, the caption says that "... 38 randomly chosen neurons in the Bind population are shown", but there is a small "C" in the title of the subfigure.
+
+I did not understand the mechanics of the generalization of 3->33->333-> at all.  I guess T1 = 3 and T2 = 3 and T = 3 So P4 = 333 bind 3?
+
+The section "B. Control" I think would be better labeled "Action selection and action execution".  The authors previously mentioned control in the sense of traditional control theory (e.g. controlling a plant) previously, so I wan't ready for this new concept of control.
+
+I did not understand the paragraph with "monitor the current state of the system and determine the similarity between this state and the preferred states for each action. I didn't understand what a "preferred state" was.  It should probably be defined and a very simple example given.
+
+The connection anatomical explanation of the basal ganglia didn't make sense coming right after something about not being able to compute the max in NEF.
+
+In the paragraph starting "To execute the actions chosen by this mechanism", there is a confusion of terminology in which neuroanatomical terms: basal ganglia, cortex, etc. are used to describe *model* components.  I think this usage of exact neuroanatomical terms to describe model components should be avoided as it can only serve to cause confusion.  This happens here and there in the manuscript, also. The same is true of Figure 8, especially given the diagram it  is confusing.  How about "model of the thalamus" instead of "thalamus", etc.?
+
+The "thalamus" of the model was never defined or described but it being used in this paragraph.
+
+
+"Psychologists have consistently inferred from behavior... in that case the timing is due to the neurotransmitter time constants."  This is pretty far fetched.  The section is already complicated.  My suggestion is to remove it.
+
+Page 11 would not print on my printer.  It's a pretty good printer, so I imagine there may be something wrong with the figure on the page or perhaps the figure is too large.
+
+"we can think of the utility mapping as being statistical inference." Huh?  From wikipedia I have, "statistical inference is the process of drawing conclusions from data that are subject to random variation". The manuscript has not defined any noise model anywhere.  The notion of probability hasn't been defined whatsoever.  Please expand or remove.
+
+One basic thing I could not figure out is if the rules are held as vectors or as connection weights.
+
+"The NEF allows very large-scale neural models to be built via optimization, rather than through online or batch learning, as is standard for neural network research."  I think this terminology is incorrect.  Surely, most neural network researchers are optimizing their networks with either online or batch learning routines.  Perhaps you mean by optimization a closed-form least squares operation?
+
+Is the STDP rule necessary for successful operation of SPA?  You make it sound like you could swap out NEF for the hPES rule in building a large system.  I'm skeptical.  Have you actually done this?  You mention a very simple function as an example.  What is the equation for hPES for a given synapse?  If it's really not crucial to the creation / operation of the large system, then given the complexity of the rest of the material, you may be better off cutting the right column of page 9. This is just a suggestion.
+
+The sentence "This means that memories will decay over time, as expected" should be cut.  It implies that correspondence between SPA and the brain that is unfounded.
+
+"while being consistent with many of the physiological properties of neurons found in those areas." I doubt very much a neurophysiologist would agree with this statement.  I think it should be cut, but if you want to keep it, you should list those similarities, and cite references for each one.
+
+"the human brain has approximately 1000" - Missing citation [?]
+
+Some of the rules are coming of the page (U_2 = (visual \dot (ZERO + ...
+
+Figure IV should be Figure 13, I think.
+
+Figure 13 was messed up.  I didn't see any overlaid spiking activity in the thought bubbles, and the majority of "areas" of Spaun in c) had no spiking activity.  Did I miss something r or perhaps the caption needs to be rewritten.
+
+Reviewer: 3
+Comments to the Author
+The authors present a thorough and largely well written review of the Neural Engineering Framework (NEF) in the context of its use in implementing the model SPAUN (see Eliasmith et al. in Science, 2012) employing the Semantic Pointer Architecture (SPA). The first parts of the review (Sections I and II) mostly paraphrase the beginning of the supplementary material of Eliasmith et al. 2012. This is understandable, since this is a review article and since there are only so many ways to express given ideas in text form, but 1. sometimes comes at the expense of readability, and 2. does not justify the lack of proper citations of source material (see below for both points) even if it concerns a self-citation. This being said I am positive on both the form and the content of the article and recommend publication. I believe it will be a valuable resource for anyone interested in learning about NEF/Nengo/SPA and SPAUN. However I suggest to address the comments below (first specific comments by section, followed by some general comments/suggestions)
+
+
+Abstract:
+- no comments.
+
+1. Introduction:
+- Next to last sentence grammatically incorrect.
+
+2. The Neural engineering framework:
+- P1, line33, 2nd col.: (a) smaller (degree of) accuracy is opposite to (a) larger (degree of) accuracy. The sentence in the article sounds strange and expresses the opposite of what I suspect the authors wish to convey. A large degree of accuracy is better than a small degree of accuracy. I suggest rephrasing this.
+- P2, line27, 1st col.: I suggest to replace 'quickly' with 'strongly'.
+
+3. The Semantic Pointer Architecture (SPA)
+- The first paragraphs keep referring to concepts (e.g. the analogy to pointers in computer science) which are explained in paragraphs following shortly afterwards. I suspect this is again due to the fact that these paragraphs paraphrase parts of the supplementary material to Eliasmith et al. 2012. For the uninitiated reader (a likely target audience for a review paper) it would be better to reverse the order. This section of the article would also benefit from a better (more concrete) explanation of compression as understood within the SPA (see last paragraph before 'A. Structure'). I suggest to modify (reorder and partially rewrite) the first paragraphs of this section accordingly. This will benefit any reader interested in getting to know the subject.
+- P5, line3, 2nd co.: Missing reference
+
+4. Semantic Pointer Architecture Unified Network:
+- P10, line57, 1st col.: missing reference
+- P10, line15-17, 2nd col.: formatting issues
+- P10: The authors refer to Figure IV multiple times although figures are numbered with Arabic numerals
+
+Figures:
+- Figures 1, 2, and 3 appear to be exact copies of the corresponding figures in the supplementary material of Eliasmith et al. 2012. The previous publication must be acknowledged.
+- Figures 4/5 are an overlapping mess.
+
+
+General comments:
+
+- As it is obvious from my introductory statement and the limited amount of specific comments above, I have few complaints about the form of the manuscript and the main ideas expressed therein. In fact I personally appreciate the 2012 SPAUN paper and the NEF/Nengo/SPA framework in general very much.
+
+However in the present context of an IEEE review I have one concern. This concern has to do with the typical scope of IEEE proceedings (electrical engineering and computer science). In fact, for instance on P1, lines50-52, 2nd col. the authors state that they wish to give an "engineering-oriented summary" of NEF and Nengo and imply a utility of their framework in e.g. control theory (P3, line45/46, 2nd col.). However the authors then go on to discuss NEF/SPA in the context of modeling cognitive phenomena (with SPAUN as an example), referring to biological plausibility, previous models of distinct brain areas etc. If the authors wish to establish links to e.g. control engineering and related disciplines they should offer some ideas on how the NEF-style 'neural compiling' is 'engineering-oriented'. Solving engineering problems often offers the 'luxury' of being able to ignore biological constraints whereas NEF/Nengo/SPA offers advantages for precisely the opposite problem. That is, NEF/SPA is being used to account for cognitive capabilities of large biological (spiking) neural systems with all its constraints and variability (in fact SPAUN exhibits error rates similar to human subjects in some tasks). If the authors insist on the rather forced connection to 'engineering aspects' the following questions should be answered. What concrete uses do the authors envision except for the modeling of neural systems? Why would people, that are usually not interested in biology wish to approximate exact functions on vector spaces and action selection via sets of rules with biologically plausible spiking neurons? Or at least: What lessons learned from large-scale neural models (e.g. of cognitive capabilities), for which NEF/SPA seems so appropriate, are expected to transfer in a more abstract form to applications?
+
+Maybe the brief mention of the connection to neuromorphic engineering might also be expanded upon in the discussion, and other potential applications of NEF/SPA can be discussed and contrasted with traditional methods in the respective fields. These issues would be highly interesting and at the same time would help to set the article apart from computational neuroscience literature and previously published work. The alternative (though less interesting) solution would be to remove references to only weakly related fields. These are few in number anyway.
+
+- Finally, given the very interesting results and general power of NEF/SPA/SPAUN the authors can surely 'afford' to briefly outline (in the discussion) the main limitations of NEF/SPA in general and possibly their chosen example SPAUN in particular (although see the above comment).
+
+Reviewer: 4
+Comments to the Author
+The following are editorial comments from handling editor, Dr Mark McDonnell. I have provided them as a "reviewer" rather than copy inline within the editorial instructions.
+
+The reviewers clearly appreciate the paper, but have recommended that a number of improvements are required. These largely concern clarity, referencing, and assertions regarding the level of biological plausibility.
+
+Please also note that the special issue is organized into three overlapping themes: (i) Enabling technologies; (ii) Reverse engineering the brain; (iii) Biomimetic/Neuromorphic computation.  Please make minor changes to more explicitly link the material of your paper to one or more of these themes up-front.
+
+In particular, to this end I ask that the abstract be revised to provide an overview of the motivation and contributions of the work described in a paper at a higher level. For example, consider moving the final sentence of the abstract re a "useful tool set..." to much earlier in the abstract, and then build on that to state something about the potential benefits to  engineering of obtaining a better understanding about how neural computation connects to behavior.
+
+The following is a general statement being copied to authors in the issue. Bear in mind that to appeal to the general electronic engineering readership of the journal, it will be better to see a clear statement of possible applications of the work described and what advantages the work provides over existing approaches. This will be clearer for papers targeted at the enabling technologies theme. Where instead the motivation is entirely scientific rather than design focused, then some comments linking the knowledge obtained to possible applications in engineering will be appreciated.
