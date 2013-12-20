@@ -127,10 +127,71 @@ In this paper, we describe the methodology and tools we have developed for
 \end_layout
 
 \begin_layout Standard
-The theoretical frameworks and software tools we describe in this paper
- are general-purpose, in that they are suitable for the creation of other
- biologically realistic spiking neuron models capable of cognitive processing.
- We begin in section 2 with the Neural Engineering Framework, a 
+The major goal of this research is to understand how the brain works by
+ reverse-engineering it.
+ We do this by trying to build biologically 
+\emph on
+plausible
+\emph default
+ models of cognitive processes.
+ For us, these are models where the individual components can be made as
+ similar to real neurons as desired, and where the large-scale anatomy and
+ connectivity of the brain is respected.
+ While the work described here uses the leaky integrate-and-fire (LIF) model
+ of a neuron (the simplest and most common neuron model that produces spikes),
+ all of the techniques apply to more detailed neural models.
+ Different neurons in different brain areas have different properties, and
+ we use this neurological data to constrain our models.
+ However, we should note that while we have developed the first (and so
+ far only) large-scale neural models that perform cognitive tasks while
+ being consistent with human neurophysiology and psychological data, we
+ do not argue that this is the 
+\emph on
+only 
+\emph default
+way to build such models.
+ Rather, we believe that the Neural Engineering Framework (NEF) is a general
+ tool for implementing a very large set of algorithms in components like
+ neurons, and that the Semantic Pointer Architecture is one particular algorithm
+ that can be implemented with the NEF and that we believe is quite promising
+ for matching human performace.
+\end_layout
+
+\begin_layout Standard
+As a side effect of this reverse engineering goal, the Neural Engineering
+ Framework provides a methodology for biomimetic computation.
+ That is, it shows how to connect large numbers of very simple components
+ (neurons) with potentially stochastic behaviours acting in parallel to
+ compute functions of the form 
+\begin_inset Formula $\mathbf{y}=f(\mathbf{x})$
+\end_inset
+
+ and 
+\begin_inset Formula $\frac{d\mathbf{x}}{dt}=f(\mathbf{x},\mathbf{u})$
+\end_inset
+
+ where 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+, 
+\begin_inset Formula $\mathbf{y}$
+\end_inset
+
+, and
+\begin_inset Formula $\mathbf{u}$
+\end_inset
+
+ are vectors.
+ The individual components need not be exactly like neurons.
+ The only requirements are that the components sum their inputs and that
+ there is a low-pass filter on each connection.
+ This leads to the ability to perform useful computation with a very different
+ type of component than is seen in normal computing.
+\end_layout
+
+\begin_layout Standard
+We begin in section 2 with the Neural Engineering Framework, the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -138,8 +199,9 @@ neural compiler
 \begin_inset Quotes erd
 \end_inset
 
- capable of taking a vector-based description of a system (and its dynamics)
- and converting it into a spiking neural network.
+ that takes a vector-based description of a system (and its dynamics) and
+ converts it into a network of interacting components (in this case, spiking
+ neurons).
  In section 3 we describe the Semantic Pointer Architecture, a method for
  taking cognitive algorithms and converting them into vector-based descriptions
  consistent with mammalian neurobiological constraints.

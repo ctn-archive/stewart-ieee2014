@@ -157,6 +157,7 @@ The following are editorial comments from handling editor, Dr Mark McDonnell. I 
 The reviewers clearly appreciate the paper, but have recommended that a number of improvements are required. These largely concern clarity, referencing, and assertions regarding the level of biological plausibility.
 
 Please also note that the special issue is organized into three overlapping themes: (i) Enabling technologies; (ii) Reverse engineering the brain; (iii) Biomimetic/Neuromorphic computation.  Please make minor changes to more explicitly link the material of your paper to one or more of these themes up-front.
+  - ADDED TWO PARAGRAPHS ON THIS TO INTRODUCTION
 
 In particular, to this end I ask that the abstract be revised to provide an overview of the motivation and contributions of the work described in a paper at a higher level. For example, consider moving the final sentence of the abstract re a "useful tool set..." to much earlier in the abstract, and then build on that to state something about the potential benefits to  engineering of obtaining a better understanding about how neural computation connects to behavior.
 
