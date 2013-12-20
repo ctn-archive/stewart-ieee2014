@@ -1857,15 +1857,39 @@ key "Eliasmith2013"
 \end_layout
 
 \begin_layout Standard
-To unbind vectors (i.e., to extract information out of a sentence), the same
- circular convolution operation is used.
- For the inverse, we use an approximation found by permuting the elements
- of the vector (i.e., the involution).
- This is a linear operation (denoted here as 
+To unbind vectors (i.e., to extract information out of a sentence), we follow
+ Plate 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Plate1991g"
+
+\end_inset
+
+ in noting that circular correlation has an approximate inverse: circular
+ correlation.
+ Furthermore, circular correlation is same as circular convolution, except
+ that the second vector has its elements permuted.
+ In other words,
+\begin_inset Formula $\mathbf{A}\approx(\mathbf{A}\circledast\mathbf{B})\circledast\mathbf{B}'$
+\end_inset
+
+ where 
+\begin_inset Formula $\mathbf{B}'_{i}=\mathbf{B}_{(N-i)\mod N}$
+\end_inset
+
+.
+ Since the permutation is a linear operation (denoted here as 
 \begin_inset Formula $\mathbf{S}$
 \end_inset
 
-), so a very similar network can be used to compute the following
+), a very similar network to that shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Network-architecture-binding"
+
+\end_inset
+
+ can be used to compute the following
 \begin_inset Formula 
 \[
 \mathbf{A}\approx\mathbf{C}\circledast\mathbf{B}'=\mathbf{F}^{-1}(\mathbf{FC}\odot\mathbf{FSB})
