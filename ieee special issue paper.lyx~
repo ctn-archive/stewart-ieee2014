@@ -567,7 +567,7 @@ Any optimization method can be used to find these decoders.
  The simplest is to use standard least-squares optimization:
 \begin_inset Formula 
 \begin{equation}
-\underset{\mathbf{d}_{i}}{arg\, min}\int[\mathbf{x}-\sum_{i}a_{i}(\mathbf{x)}\mathbf{d}_{i}]^{2}d\mathbf{x}\label{eq:error}
+\underset{\mathbf{d}_{i}}{arg\, min}\int[\mathbf{x}-\sum_{i}^{N}a_{i}(\mathbf{x)}\mathbf{d}_{i}]^{2}d\mathbf{x}\label{eq:error}
 \end{equation}
 
 \end_inset
