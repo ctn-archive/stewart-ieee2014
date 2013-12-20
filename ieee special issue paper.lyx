@@ -2043,6 +2043,35 @@ key "Rasmussena,Rasmussen201"
 \end_inset
 
 , the leading measure of general intelligence.
+ In the case of the sequence 
+\begin_inset Quotes eld
+\end_inset
+
+3
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+33
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+333
+\begin_inset Quotes erd
+\end_inset
+
+, the result is approximately 
+\begin_inset Formula $\mathbf{three\circledast item1+three\circledast item2+three\circledast item3+three\circledast item4}$
+\end_inset
+
+.
  The necessary steps are natural to implement in neurons using the NEF,
  and the result is not only the first neural explanation of this cognitive
  behavior, but also the first explanation in any form which does not 

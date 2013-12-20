@@ -1950,8 +1950,32 @@ across
  for.
  However, semantic pointers allow the system to induce the pattern.
  To solve this problem with semantic pointers, each item is converted into
- a structured representation as above, then the transformation between each
- vector pair is estimated, and finally the estimates are averaged together.
+ a structured representation as above (so 
+\begin_inset Quotes eld
+\end_inset
+
+3
+\begin_inset Quotes erd
+\end_inset
+
+ becomes 
+\begin_inset Formula $\mathbf{three\circledast item1}$
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+33
+\begin_inset Quotes erd
+\end_inset
+
+ becomes 
+\begin_inset Formula $\mathbf{three\circledast item1+three\circledast item2}$
+\end_inset
+
+ and so on), then the transformation between each vector pair is estimated,
+ and finally the estimates are averaged together.
  The averaging gives an estimate of a generic 
 \begin_inset Quotes eld
 \end_inset
