@@ -50,9 +50,11 @@ For my part, I think the authors do themselves a disservice to use a metric such
  - WE DEFINITELY AGREE.  "LARGEST" has been replaced with "FIRST", with a highlight on the "FUNCTIONAL" aspect.
  
 The section on "B. Control" needs to be massaged pretty heavily, I think. Perhaps even rewritten. Despite several attempts, I could not get more than a vague idea of what was being communicated.  This seems like the neatest, most new thinking related to SPA/Spaun so the effort would be worth it to improve it substantially.
+ - REWORKED
 
 While the NEF is explained regarding how one codes up a simple y = L x type of vector function, I think it would be nice to have a paragraph like "putting it altogether" for SPA/Spaun.  How are all the bits of spaun successfully glued together in terms of the nuts and bolts?  The authors have explained how the system is intended to work, but not how it put together.  Is it really just NEF over and over again?  Even stating that would be a statement of the power of the framework.
-
+ - MORE ADDED TO DESCRIBE HOW RULES ARE IMPLEMENTED
+ 
 The section on dynamics was unclear to me.  I understand the point about synaptic filtering, but the next paragraph doesn't sew it all together for me.  Perhaps I would understand it better if the connection of equation (7) to the derivative dx/dt was made clear, or perhaps the least squares error function was also defined.  Dynamics can be baffling to some, so I hope this gets a better treatment.
  - ADDED DERIVATION OF EQ(7)
  
@@ -186,5 +188,6 @@ Please also note that the special issue is organized into three overlapping them
   - ADDED TWO PARAGRAPHS ON THIS TO INTRODUCTION
 
 In particular, to this end I ask that the abstract be revised to provide an overview of the motivation and contributions of the work described in a paper at a higher level. For example, consider moving the final sentence of the abstract re a "useful tool set..." to much earlier in the abstract, and then build on that to state something about the potential benefits to  engineering of obtaining a better understanding about how neural computation connects to behavior.
-
+  - REWORKED ABSTRACT
+  
 The following is a general statement being copied to authors in the issue. Bear in mind that to appeal to the general electronic engineering readership of the journal, it will be better to see a clear statement of possible applications of the work described and what advantages the work provides over existing approaches. This will be clearer for papers targeted at the enabling technologies theme. Where instead the motivation is entirely scientific rather than design focused, then some comments linking the knowledge obtained to possible applications in engineering will be appreciated.
