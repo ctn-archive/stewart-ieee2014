@@ -74,7 +74,8 @@ Terrence C.
 
 \begin_layout Abstract
 In this paper we review the theoretical and software tools used to construct
- Spaun, currently the largest functional brain model.
+ Spaun, the first (and so far only) brain model capable of performing cognitive
+ tasks.
  Specifically, we discuss the Neural Engineering Framework (NEF), a mathematical
  theory that provides methods for systematically generating biologically
  plausible spiking networks to implement nonlinear and linear dynamical
@@ -107,8 +108,12 @@ In this paper, we describe the methodology and tools we have developed for
  building large-scale systems from simulated spiking neurons.
  In particular, we describe two theoretical tools (the Neural Engineering
  Framework and the Semantic Pointer Architecture) and one software suite
- (Nengo) that we used to construct what is currently the world's largest
- brain model capable of performing a variety of tasks.
+ (Nengo) that we used to construct what is currently the world's first 
+\emph on
+functional
+\emph default
+ brain model (i.e.
+ one that is capable of performing a variety of cognitive tasks).
  This model, which we refer to as the Semantic Pointer Architecture Unified
  Network (or Spaun), consists of 2.5 million simulated spiking neurons whose
  properties and interconnections are consistent with those found in the
@@ -231,7 +236,8 @@ The Neural Engineering Framework (NEF)
 
 \begin_layout Standard
 The Neural Engineering Framework (NEF) is a general-purpose system for taking
- algorithms and implementing them using spiking neurons 
+ algorithms and implementing them using components such as spiking neurons
+ 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Eliasmith2003m"
@@ -3389,7 +3395,7 @@ The previous sections described our general approach to building large-scale
  that need to be computed by a cognitive system; 2) build neural components
  that implement those functions; and 3) determine how to route information
  between the components using the basal ganglia to provide integrated function.
- This approach has recently allowed us to build what is currently the largest
+ This approach has recently allowed us to build what is currently the first
  brain model that is capable of performing cognitive tasks.
  The resulting 2.5 million neuron model is called the Semantic Pointer Architectu
 re Unified Network, or 
@@ -3735,11 +3741,15 @@ reference "sub:Structure"
  there are in the list.
  In this particular case, this inaccuracy is enough to cause Spaun to make
  a mistake: it forgets the fourth item in the list (the eight).
- This is exactly the sort of mistake typically made by people, and is part
- of how we validate our models.
- After all, to accurately model human cognition Spaun should make the same
- sorts of mistakes as people do.
+ Indeed, the model follows a similar forgetting curve to that seen in people
  
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Choo2010"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -3819,11 +3829,44 @@ name "fig:spikeplot"
 
 \begin_layout Standard
 In fact, Spaun can be used to match a wide variety of data across many scales.
- It has been shown to reproduce spike patterns in the basal ganglia during
- a reinforcement learning task, single neuron tuning curves found in primary
- visual cortex, population spectrogram shifts during a working memory task,
- recognition accuracy on naturalistic stimuli (i.e., handwritten digits),
- and reaction times during a counting task 
+ Its components have been shown to reproduce spike patterns in the basal
+ ganglia during a reinforcement learning task 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bekolay2011a"
+
+\end_inset
+
+, single neuron tuning curves found in primary visual cortex 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2012b"
+
+\end_inset
+
+, population spectrogram shifts during a working memory task 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2012b"
+
+\end_inset
+
+, recognition accuracy on naturalistic stimuli (i.e., handwritten digits)
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2012b"
+
+\end_inset
+
+, and reaction times during a counting task 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eliasmith2012b"
+
+\end_inset
+
+, and similar results apply to the complete model as well 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Eliasmith2013"
@@ -3858,15 +3901,19 @@ The theoretical methods and software suite described in this article form
 \end_layout
 
 \begin_layout Standard
-The Semantic Pointer Architecture suggests a means of organizing neural
- models consistent with contemporary neuroscience, and provides a standard
- for expressing and manipulating structured, symbol-like representations
- using vectors.
- As such it provides a method for flexibly manipulating representations
- and passing them between different brain areas as appropriate for a given
- cognitive task.
- Both the NEF and SPA can optionally include neural learning rules, providing
- the system a way to adapt online from experience.
+The Semantic Pointer Architecture is our suggestion of a means of organizing
+ neural models that is consistent with contemporary neuroscience.
+ While it is clearly too early to claim that this is proveably how the brain
+ works, we believe that SPA provides a testable ongoing research program,
+ and at the very least provides what is currently the only standard for
+ expressing and manipulating structured, symbol-like representations while
+ being consistent with biological constraints [REF: Stewart&Eliasmith 2012,
+ Composisionality].
+ It provides a method for flexibly manipulating representations and passing
+ them between different brain areas as appropriate for a given cognitive
+ task.
+ Both the NEF and SPA can also optionally include neural learning rules,
+ providing the system a way to adapt online from experience.
 \end_layout
 
 \begin_layout Standard
@@ -3877,7 +3924,7 @@ To make these theoretical ideas more practically useful, we have also briefly
  use the NEF to solve for the connection weights needed, run the resulting
  model, and collect the results.
  Nengo has also been shown to scale up well, as it was used to create Spaun,
- the world's largest functional brain simulation, with 2.5 million neurons
+ the world's first functional brain simulation, with 2.5 million neurons
  and over 60 billion synapses.
 \end_layout
 
@@ -3952,10 +3999,6 @@ key "Stewart2009l"
  We believe these sorts of models will be extremely beneficial for understanding
  human cognition, treating brain disorders, and developing efficient parallel
  computation.
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \begin_layout Standard
