@@ -896,6 +896,23 @@ Principle 2 - Transformation
 \begin_layout Standard
 Connections between groups of neurons can also compute functions other than
  the identity function.
+ That is instead of 
+\series bold
+
+\begin_inset Formula $\mathbf{y}=\mathbf{x}$
+\end_inset
+
+
+\series default
+ we can do 
+\series bold
+
+\begin_inset Formula $\mathbf{y}=f(\mathbf{x})$
+\end_inset
+
+
+\series default
+.
  We do this by finding decoders 
 \series bold
 
@@ -957,7 +974,7 @@ reference "eq:weights"
  For the special case of linear functions
 \series bold
  
-\begin_inset Formula $f(\mathbf{x})=\mathbf{L}\mathbf{x}$
+\begin_inset Formula $\mathbf{y}=\mathbf{L}\mathbf{x}$
 \end_inset
 
 
@@ -1243,7 +1260,7 @@ a shows a single neural population with a recurrent feedback connection
 \begin_inset Formula $2\pi$
 \end_inset
 
-.
+ (~6.28 seconds).
  Importantly, we achieve different periods of oscillation without changing
  the neural property 
 \begin_inset Formula $\tau$
@@ -1754,7 +1771,7 @@ A network computing the binding operation (circular convolution) on two
  constant.
  The spiking activity over 200ms of 38 randomly chosen neurons in the output
  population are shown.
- These neurons encode 
+ The Bind neurons encode 
 \begin_inset Formula $\mathbf{FA}$
 \end_inset
 
@@ -3759,7 +3776,7 @@ Buffers
  constant.
  However, the neural approximation of the integrator will never be perfect
  (with a finite number of neurons).
- This means that memories will decay over time, as expected.
+ This means that the stored information will decay over time, as expected.
 \end_layout
 
 \begin_layout Section

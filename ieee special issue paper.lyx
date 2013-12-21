@@ -4351,18 +4351,24 @@ From a computational perspective, simulating large-scale neural models on
  second of behavior on a high-end workstation.
  While we believe that this simulation can be made much more efficient (and
  in the latest version of our software we have made significant improvements
- [REF new Nengo paper]), it is clear that alternate computing approaches
- would be advantageous.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bekolay2014"
+
+\end_inset
+
+), it is clear that alternate computing approaches would be advantageous.
 \end_layout
 
 \begin_layout Standard
-Indeed, the NEF can also been seen as a general method for programming neuromorp
-hic computers.
- A wide variety of these brain-inspired computing devices exist, all based
+A wide variety of these brain-inspired computing devices exist, all based
  around the idea of having a large number of simple neuron-like components
  whose spiking activity is based on the sum of their inputs.
- These include efficient digital architectures employing thousands or millions
- of ARM cores 
+ We have used the NEF as a general method for programming such neuromorphic
+ computers.
+ Examples of using the NEF in this way can be found on efficient digital
+ architectures employing thousands or millions of ARM cores 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Galluppi2012"
@@ -4384,9 +4390,9 @@ key "Choudhary2012"
 \end_inset
 
 .
- There are many benefits to these new paradigms, including orders of magnitude
- better power efficiency per computation, robustness to noise and variability,
- and massive parallelism 
+ There are many benefits to this new computing paradigm, including orders
+ of magnitude better power efficiency per computation, robustness to noise
+ and variability, and massive parallelism 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "hasler2013"
@@ -4394,24 +4400,38 @@ key "hasler2013"
 \end_inset
 
 .
- Because the NEF was developed to deal with these sorts of systems (but
- in a biological setting), it has proven an effective means of programming
- this kind of hardware by indicating what the connection weights should
- be to achieve different computational results.
+ 
+\end_layout
+
+\begin_layout Standard
+Because the NEF was developed to address systems with these same properties
+ (but in a biological setting), it has proven an effective means of programming
+ such hardware, by indicating what the connection weights should be to achieve
+ different computational results.
  For example, the NEF has been used to control a robot that can learn by
- treating training examples as the function to be approximated [Stewart,
- T.C., Galluppi, F., Conradt, J.
- (2013) Learning by example with SpiNNaker, Nengo, and an Omnidirectional
- robot.
- Bernstein Sparks Workshop.
- Tutzing, Germany], to do operational space control on a 3-joint arm [Samir
- Menon, Sam Fok, Kwabena A Boahen, Demonstration: Controlling Robot Dynamics
- With Spiking Neurons, NIPS 2013], and to implement a model of the rat hippocamp
-us' path integration ability on a mobile robot [Galluppi, F., Conradt, J.,
- Stewart, T.C., Eliasmith, C., Horiuchi, T., Tapson, J., Tripp, B., Etienne-Cummings,
- R., Furber, S.
- (2012) Spiking ratSLAM: Rat Hippocampus Cells in Spiking Neural Hardware.
- Biomedical Circuits and Systems Conference.].
+ treating training examples as the function to be approximated 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Stewart2013"
+
+\end_inset
+
+, to do operational space control on a 3-joint arm 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Menon2013"
+
+\end_inset
+
+, and to implement a model of the rat hippocampus' path integration ability
+ on a mobile robot 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "galluppi2012live"
+
+\end_inset
+
+.
  In all of these examples, the algorithms being implemented are well-suited
  to approximation using the NEF, and so are much more efficient when implemented
  on neuromorphic hardware than on traditional computing devices.

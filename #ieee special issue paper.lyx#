@@ -161,7 +161,7 @@ way to build such models.
  tool for implementing a very large set of algorithms in components like
  neurons, and that the Semantic Pointer Architecture is one particular algorithm
  that can be implemented with the NEF and that we believe is quite promising
- for matching human performace.
+ for matching human performance.
 \end_layout
 
 \begin_layout Standard
@@ -896,6 +896,23 @@ Principle 2 - Transformation
 \begin_layout Standard
 Connections between groups of neurons can also compute functions other than
  the identity function.
+ That is instead of 
+\series bold
+
+\begin_inset Formula $\mathbf{y}=\mathbf{x}$
+\end_inset
+
+
+\series default
+ we can do 
+\series bold
+
+\begin_inset Formula $\mathbf{y}=f(\mathbf{x})$
+\end_inset
+
+
+\series default
+.
  We do this by finding decoders 
 \series bold
 
@@ -957,7 +974,7 @@ reference "eq:weights"
  For the special case of linear functions
 \series bold
  
-\begin_inset Formula $f(\mathbf{x})=\mathbf{L}\mathbf{x}$
+\begin_inset Formula $\mathbf{y}=\mathbf{L}\mathbf{x}$
 \end_inset
 
 
@@ -1240,10 +1257,10 @@ a shows a single neural population with a recurrent feedback connection
 \end_inset
 
  is 100ms, but the period of oscillation is 
-\begin_inset Formula $2/\pi$
+\begin_inset Formula $2\pi$
 \end_inset
 
-.
+ (~6.28 seconds).
  Importantly, we achieve different periods of oscillation without changing
  the neural property 
 \begin_inset Formula $\tau$
@@ -1260,7 +1277,7 @@ a shows a single neural population with a recurrent feedback connection
 
 \series default
 , giving a period of 
-\begin_inset Formula $1/\pi$
+\begin_inset Formula $\pi$
 \end_inset
 
 , instead.
@@ -1754,7 +1771,7 @@ A network computing the binding operation (circular convolution) on two
  constant.
  The spiking activity over 200ms of 38 randomly chosen neurons in the output
  population are shown.
- These neurons encode 
+ The Bind neurons encode 
 \begin_inset Formula $\mathbf{FA}$
 \end_inset
 
@@ -2343,32 +2360,73 @@ reference "fig:cortex_bg_thalamus"
 
 ).
  Roughly speaking, the SPA assumes that cortex provides, stores, and manipulates
- representations, the basal ganglia map current brain states to courses
- of action, and the thalamus applies routing signals to cortical and input
- pathways.
- To route information, we form a connection from the output of one processing
- component to the input of another processing component through an intermediate
- group of neurons.
- Each of these connections is optimized to compute the identity function.
- As a result, we can use the output from the basal ganglia to 
-\shape italic
-inhibit
-\shape default
- the firing of neurons in this intermediate population.
- That is, whenever a particular action is 
-\shape italic
+ representations, the basal ganglia determine which action to take based
+ on those representations, and the thalamus implements the desired routing
+ action between areas of the cortex.
+ To perform this routing, we need to organize neurons such that there is
+ a connection from one cortical area to another such that this connection
+ will compute 
+\begin_inset Formula $\mathbf{y=x}$
+\end_inset
+
+ if the action is selected, and 
+\begin_inset Formula $\mathbf{y=0}$
+\end_inset
+
+ if it is not selected.
+ This can be done in two ways; first, we could simply use the NEF to approximate
+ that nonlinear function.
+ However, for this particular special case there is a simpler approach.
+ We start by forming an intermediate group of neurons 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ and forming connections from 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ and to 
+\begin_inset Formula $\mathbf{y}$
+\end_inset
+
+ such that 
+\begin_inset Formula $\mathbf{y=z=x}.$
+\end_inset
+
+ As it stands, this will always route information from 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+to 
+\begin_inset Formula $\mathbf{y}$
+\end_inset
+
+.
+ However, we can now simply connect the output neurons for this action from
+ the basal ganglia to the neural population 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ with strong negative weights (i.e.
+ without using the NEF).
+ This means that whenever the action is 
+\emph on
 not
-\shape default
- chosen, the relevant interconnections are all strongly inhibited, stopping
- the intermediate neurons from firing.
- If they do not fire, their input to their target populations will be zero,
- so they will not route their input signal to the target.
- This matches closely with the connectivity and inhibition characteristics
- found in the mammalian brain.
- The basal ganglia thus control the exploitation of cortical resources by
- selecting appropriate motor and cognitive actions, based on representations
- available in cortex itself.
- [TODO: improve this description of thalamus]
+\emph default
+ selected, the neurons in 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ will stop firing, resulting in a value of 0 being passed to 
+\begin_inset Formula $\mathbf{y}$
+\end_inset
+
+.
+ These 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ neurons form our model of the thalamus.
 \end_layout
 
 \begin_layout Standard
@@ -3718,7 +3776,7 @@ Buffers
  constant.
  However, the neural approximation of the integrator will never be perfect
  (with a finite number of neurons).
- This means that memories will decay over time, as expected.
+ This means that the stored information will decay over time, as expected.
 \end_layout
 
 \begin_layout Section
@@ -4274,11 +4332,12 @@ l neurons.
 In addition to these limitations, it is clear that there are many kinds
  of brain function not well reflected in Spaun.
  For instance, the ability of the model to lay down new long term memories
- is minimal (only the RL addresses this issue at all).
- Similarly, there is little environmental interaction of the model -- its
- single remains fixed, and it does not see its own output.
- Much work remains to be done to see what additional functions are necessary
- to allow such a model to be embedded in a dynamic, open-ended environment.
+ is minimal (this only occurs in one of the eight tasks).
+ Similarly, there is little environmental interaction of the model: its
+ single eye remains fixed, and it does not see its own output.
+ Much work remains to be done to determine what additional functions are
+ necessary to allow such a model to be embedded in a dynamic, open-ended
+ environment.
  Relatedly, learning new cognitive behaviors in such an environment is a
  well-known challenge with few general, effective solutions.
  It has not yet been shown how these kinds of models can be used to effectively
@@ -4286,29 +4345,37 @@ In addition to these limitations, it is clear that there are many kinds
 \end_layout
 
 \begin_layout Standard
-On a more practical side, simulating models like Spaun is computationally
- challenging.
- For the Spaun model, it took approximately 2.5h of simulation time to generate
- one second of real-time behavior on a supercomputer.
- While we believe that this simulation can be made much more efficient,
- it is clear that large-scale neural simulation will require extremely powerful
- computers.
+From a computational perspective, simulating large-scale neural models on
+ conventional computational hardware is difficult.
+ For Spaun, it took approximately 2.5h of simulation time to generate one
+ second of behavior on a high-end workstation.
+ While we believe that this simulation can be made much more efficient (and
+ in the latest version of our software we have made significant improvements
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bekolay2014"
+
+\end_inset
+
+), it is clear that alternate computing approaches would be advantageous.
 \end_layout
 
 \begin_layout Standard
-Because of these challenges, we have recently been working with the neuromorphic
- engineering community to exploit and develop a variety of brain-like computatio
-nal platforms.
- These include efficient digital architectures employing thousands or millions
- of ARM cores 
+A wide variety of these brain-inspired computing devices exist, all based
+ around the idea of having a large number of simple neuron-like components
+ whose spiking activity is based on the sum of their inputs.
+ We have used the NEF as a general method for programming such neuromorphic
+ computers.
+ Examples of using the NEF in this way c efficient digital architectures
+ employing thousands or millions of ARM cores 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Galluppi2012"
 
 \end_inset
 
-, more analog architectures that directly incorporate forms of learning
- 
+, analog architectures that directly incorporate forms of learning 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Corradi"
@@ -4333,15 +4400,35 @@ key "hasler2013"
 \end_inset
 
 .
- Because the NEF was developed to deal with many of the same issues in a
- biological setting, it has proven an effective means of programming much
- of this kind of hardware.
-\end_layout
+ Because the NEF was developed to deal with these sorts of systems (but
+ in a biological setting), it has proven an effective means of programming
+ this kind of hardware by indicating what the connection weights should
+ be to achieve different computational results.
+ For example, the NEF has been used to control a robot that can learn by
+ treating training examples as the function to be approximated [Stewart,
+ T.C., Galluppi, F., Conradt, J.
+ (2013) Learning by example with SpiNNaker, Nengo, and an Omnidirectional
+ robot.
+ Bernstein Sparks Workshop.
+ Tutzing, Germany], to do operational space control on a 3-joint arm 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Menon2013"
 
-\begin_layout Standard
-For example, ???Terry could you put in some examples of robots, etc...
- specific things being done with neuromorphic hardware.
- might want to even cite youtube videos????
+\end_inset
+
+, and to implement a model of the rat hippocampus' path integration ability
+ on a mobile robot 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "galluppi2012live"
+
+\end_inset
+
+.
+ In all of these examples, the algorithms being implemented are well-suited
+ to approximation using the NEF, and so are much more efficient when implemented
+ on neuromorphic hardware than on traditional computing devices.
 \end_layout
 
 \begin_layout Standard
@@ -4351,7 +4438,11 @@ While current hardware implementations remain small scale compared to models
  Indeed, we expect that a full hardware implementation of Spaun will be
  completed within the next two years.
  This co-development of algorithms, programming techniques, and infrastructure
- in the neuromorphic space,  
+ in the neuromorphic space, provides fertile ground for designing and testing
+ brain-like models.
+ We believe that such models will allow us both to better understand biological
+ brain function, and to develop a new class of solution to challenging informati
+on processing problems.
 \end_layout
 
 \begin_layout Section
@@ -4374,7 +4465,7 @@ The theoretical methods and software suite described in this article form
 \begin_layout Standard
 The Semantic Pointer Architecture is our suggestion of a means of organizing
  neural models that is consistent with contemporary neuroscience.
- While it is clearly too early to claim that this is proveably how the brain
+ While it is clearly too early to claim that this is provably how the brain
  works, we believe that SPA provides a testable ongoing research program,
  and at the very least provides what is currently the only standard for
  expressing and manipulating structured, symbol-like representations while
@@ -4453,8 +4544,8 @@ key "Galluppi2012,Choudhary2012"
 \end_layout
 
 \begin_layout Standard
-Simulating the human brain is a monumental task -- clearly beyond what a
- single research group can accomplish.
+Simulating the human brain is a monumental task and clearly beyond what
+ a single research group can accomplish.
  This is why we are interested in helping to create general, open tools
  that can be applied to many different brain areas and many different kinds
  of cognitive tasks.
@@ -4524,8 +4615,9 @@ status open
 \end_layout
 
 \begin_layout Biography
-He is a post-doctoral research associate with the Centre for Theoretical
- Neuroscience at the University of Waterloo, in Waterloo, Canada.
+He is a post-doctoral research associate in the Department of Systems Design
+ Engineering with the Centre for Theoretical Neuroscience at the University
+ of Waterloo, in Waterloo, Canada.
  His core interests are in understanding human cognition by building biologicall
 y realistic neural simulations, and he is currently focusing on language
  processing and motor control.
