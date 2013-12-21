@@ -1240,7 +1240,7 @@ a shows a single neural population with a recurrent feedback connection
 \end_inset
 
  is 100ms, but the period of oscillation is 
-\begin_inset Formula $2/\pi$
+\begin_inset Formula $2\pi$
 \end_inset
 
 .
@@ -1260,7 +1260,7 @@ a shows a single neural population with a recurrent feedback connection
 
 \series default
 , giving a period of 
-\begin_inset Formula $1/\pi$
+\begin_inset Formula $\pi$
 \end_inset
 
 , instead.
@@ -2343,32 +2343,73 @@ reference "fig:cortex_bg_thalamus"
 
 ).
  Roughly speaking, the SPA assumes that cortex provides, stores, and manipulates
- representations, the basal ganglia map current brain states to courses
- of action, and the thalamus applies routing signals to cortical and input
- pathways.
- To route information, we form a connection from the output of one processing
- component to the input of another processing component through an intermediate
- group of neurons.
- Each of these connections is optimized to compute the identity function.
- As a result, we can use the output from the basal ganglia to 
-\shape italic
-inhibit
-\shape default
- the firing of neurons in this intermediate population.
- That is, whenever a particular action is 
-\shape italic
+ representations, the basal ganglia determine which action to take based
+ on those representations, and the thalamus implements the desired routing
+ action between areas of the cortex.
+ To perform this routing, we need to organize neurons such that there is
+ a connection from one cortical area to another such that this connection
+ will compute 
+\begin_inset Formula $\mathbf{y=x}$
+\end_inset
+
+ if the action is selected, and 
+\begin_inset Formula $\mathbf{y=0}$
+\end_inset
+
+ if it is not selected.
+ This can be done in two ways; first, we could simply use the NEF to approximate
+ that nonlinear function.
+ However, for this particular special case there is a simpler approach.
+ We start by forming an intermediate group of neurons 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ and forming connections from 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+ and to 
+\begin_inset Formula $\mathbf{y}$
+\end_inset
+
+ such that 
+\begin_inset Formula $\mathbf{y=z=x}.$
+\end_inset
+
+ As it stands, this will always route information from 
+\begin_inset Formula $\mathbf{x}$
+\end_inset
+
+to 
+\begin_inset Formula $\mathbf{y}$
+\end_inset
+
+.
+ However, we can now simply connect the output neurons for this action from
+ the basal ganglia to the neural population 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ with strong negative weights (i.e.
+ without using the NEF).
+ This means that whenever the action is 
+\emph on
 not
-\shape default
- chosen, the relevant interconnections are all strongly inhibited, stopping
- the intermediate neurons from firing.
- If they do not fire, their input to their target populations will be zero,
- so they will not route their input signal to the target.
- This matches closely with the connectivity and inhibition characteristics
- found in the mammalian brain.
- The basal ganglia thus control the exploitation of cortical resources by
- selecting appropriate motor and cognitive actions, based on representations
- available in cortex itself.
- [TODO: improve this description of thalamus]
+\emph default
+ selected, the neurons in 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ will stop firing, resulting in a value of 0 being passed to 
+\begin_inset Formula $\mathbf{y}$
+\end_inset
+
+.
+ These 
+\begin_inset Formula $\mathbf{z}$
+\end_inset
+
+ neurons form our model of the thalamus.
 \end_layout
 
 \begin_layout Standard
@@ -4274,11 +4315,12 @@ l neurons.
 In addition to these limitations, it is clear that there are many kinds
  of brain function not well reflected in Spaun.
  For instance, the ability of the model to lay down new long term memories
- is minimal (only the RL addresses this issue at all).
- Similarly, there is little environmental interaction of the model -- its
- single remains fixed, and it does not see its own output.
- Much work remains to be done to see what additional functions are necessary
- to allow such a model to be embedded in a dynamic, open-ended environment.
+ is minimal (this only occurs in one of the eight tasks).
+ Similarly, there is little environmental interaction of the model: its
+ single eye remains fixed, and it does not see its own output.
+ Much work remains to be done to determine what additional functions are
+ necessary to allow such a model to be embedded in a dynamic, open-ended
+ environment.
  Relatedly, learning new cognitive behaviors in such an environment is a
  well-known challenge with few general, effective solutions.
  It has not yet been shown how these kinds of models can be used to effectively
@@ -4340,7 +4382,22 @@ key "hasler2013"
 
 \begin_layout Standard
 For example, ???Terry could you put in some examples of robots, etc...
- specific things being done with neuromorphic hardware.???
+ specific things being done with neuromorphic hardware.
+ might want to even cite youtube videos????
+\end_layout
+
+\begin_layout Standard
+While current hardware implementations remain small scale compared to models
+ like Spaun, we expect that in the near future, there will be a significant
+ increase in the size of neuromorphic platforms available.
+ Indeed, we expect that a full hardware implementation of Spaun will be
+ completed within the next two years.
+ This co-development of algorithms, programming techniques, and infrastructure
+ in the neuromorphic space, provides fertile ground for designing and testing
+ brain-like models.
+ We believe that such models will both allow us to better understand biological
+ brain function, and develop a new class of solution to challenging information
+ processing problems.
 \end_layout
 
 \begin_layout Section
