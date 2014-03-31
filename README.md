@@ -1,4 +1,5 @@
-ieee-2013
+ieee-2014
 =========
 
-Draft for IEEE special issue paper
+Proceedings of IEEE paper "Large-scale synthesis of functional spiking neural circuits" from Stewart and Eliasmith.
+http://ieeexplore.ieee.org/xpl/articleDetails.jsp?tp=&arnumber=6779629
